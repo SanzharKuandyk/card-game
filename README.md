@@ -16,7 +16,8 @@ cloudflared tunnel --url http://localhost:47833
 | Join            | QR invite, name, team of 1–4 and character. Up to 80 players. Host can join as a player.                                                |
 | Map             | One seeded map shared by every team: 15 rows, branching routes, visible danger, bosses at 8/15. Projector Map shows team locations.     |
 | Deck            | Ten starting cards. Card choices and upgrades last for the run.                                                                         |
-| Turn            | Draw five; three energy; play several cards, then End turn.                                                                             |
+| Turn            | Draw five; three energy. Opening-room turns allow 90 seconds; later turns 60. Everyone ending early advances immediately.               |
+| Help            | Lobby basics, optional tips during the real opening fight, and a short ? reference. Hide tips is personal and saved for this run.       |
 | Cooperation     | Give allies Block, energy, draws and repeated attacks. Named plays and effects appear on phones and projector.                          |
 | Battle          | Choose one of two common cards and one uncommon, or Skip. Gain 20 gold. Hard routes include stronger encounters.                        |
 | Elite           | More enemy health and defensive/support enemies. Rare-card choice, relic choice and 35 gold.                                            |

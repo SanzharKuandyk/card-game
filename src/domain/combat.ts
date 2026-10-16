@@ -90,6 +90,14 @@ export function draw(b: Combat, actor: BattleActor, count: number): void {
     actor.handRevision++;
   }
 }
+export function playerTurnDuration(
+  b: Pick<Combat, "openingRoom">,
+  content: Content,
+): number {
+  return b.openingRoom
+    ? (content.timing.openingTurn ?? content.timing.turn)
+    : content.timing.turn;
+}
 export function createCombat(
   id: string,
   kind: Combat["kind"],
@@ -99,8 +107,10 @@ export function createCombat(
   rng: number,
   now: number,
   content: Content,
+  options: { openingRoom?: boolean } = {},
 ): Combat {
   const b: Combat = {
+    openingRoom: options.openingRoom ?? false,
     id,
     kind,
     turn: 1,
@@ -108,7 +118,7 @@ export function createCombat(
     actors: {},
     enemies: [],
     intents: [],
-    deadline: now + content.timing.turn,
+    deadline: now + playerTurnDuration(options, content),
     rng,
     log: [],
     eventSequence: 0,
@@ -1194,7 +1204,7 @@ export function enemyPhase(b: Combat, now: number, content: Content): void {
 export function beginTurn(b: Combat, now: number, content: Content): void {
   b.turn++;
   b.phase = "player";
-  b.deadline = now + content.timing.turn;
+  b.deadline = now + playerTurnDuration(b, content);
   for (const a of Object.values(b.actors)) {
     a.energy = 3;
     if (a.relicState) a.relicState.turnUses = {};

@@ -6,6 +6,16 @@ Heroes start with 40 health, 3 energy and a 10-card deck. Draw 5 per turn, up to
 
 Battles grant 20 personal gold and a two-common/one-uncommon card offer. Elites grant 35 gold, a rare-card offer and a relic offer. Start with 50 gold. Shared boss victories grant 30 gold and the existing rare-card offer. Gold and rewards are keyed by source node/boss and owner, preventing replay/retry farming. Skip adds no card or relic.
 
+## Opening room
+
+The lobby shows three basics and the character's expandable combination. The old separate practice fight is removed. In new sessions, row 1 allows 90 seconds per player turn, including retries; everyone ending early advances immediately. Later rooms and bosses retain 60-second turns. Existing saved sessions retain their frozen timings. Pause, extensions and interrupted-room restoration preserve the remaining clock.
+
+Optional opening-room guidance uses the existing helper space and static highlights. It explains costs, playing several cards, incoming attacks, Block, an available starter combination and End turn. Selected-card text, numerical previews, targeting and error messages take priority. A combination is suggested only when its pieces and energy are available; Rogue also needs room for generated attacks. No play is compulsory and no hand is arranged for teaching.
+
+After a hint has been eligible for six seconds it is remembered as seen. Hide tips is personal and lasts for the current session, including reconnects, reloads and retries. Help can show tips again while still in row 1; previously seen hints stay seen. Preferences are stored in the player's browser, with an in-memory fallback if storage is unavailable. Tips stop after row 1 and are suppressed during playback, pause, disconnection, read-only control, recovery, Help and shared encounters. Short screens prioritise controls and use highlights with the full explanation in Help.
+
+The ? button opens a short reference over the current game without clearing selection, changing the combat layout or pausing time. Closing it restores keyboard focus. These changes do not alter cards, relics, encounter health, rewards or deck shuffling.
+
 ## Questions
 
 The first team reaching a boss gate atomically records first arrival, suspends all route decisions and starts the gate's once-only quiz. A host-called boss identifies the host and grants no first-arrival bonus. The same frozen roster participates in its two questions and boss. Late arrivals spectate until the next encounter; disconnected players within the existing 15-second grace period are enrolled. Missing submissions remain incorrect in the frozen denominator.

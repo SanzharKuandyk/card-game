@@ -97,6 +97,12 @@ test("real sockets: early start, duplicate receipt, ownership, reconnect and res
     const combat = server.app.sessions.get(session.id)!.crews["team-1"]!
       .progress.combat!;
     assert.equal(combat.actors[player.memberId]!.hand.length, 5);
+    assert.equal(combat.openingRoom, true);
+    await server.app.advance(4000);
+    assert.equal(
+      combat.deadline - server.app.sessions.get(session.id)!.activeMs,
+      86000,
+    );
     socket.disconnect();
     socket = await connect("player", playerCookie);
     assert.equal(
@@ -116,6 +122,11 @@ test("real sockets: early start, duplicate receipt, ownership, reconnect and res
   try {
     const s = restored.app.sessions.get(session.id)!;
     assert.equal(s.status, "paused");
+    assert.equal(s.crews["team-1"]!.progress.combat!.openingRoom, true);
+    assert.equal(
+      s.crews["team-1"]!.progress.combat!.deadline - s.activeMs,
+      86000,
+    );
     assert.equal(
       s.crews["team-1"]!.progress.combat!.actors[player.memberId]!.hand.length,
       5,

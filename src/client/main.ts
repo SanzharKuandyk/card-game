@@ -14,6 +14,7 @@ import "./styles/combat-readability.css";
 import "./styles/projector.css";
 import "./styles/playback-queue.css";
 import "./styles/expansion.css";
+import "./styles/onboarding.css";
 const router = createRouter({
   history: createWebHistory(),
   routes: [

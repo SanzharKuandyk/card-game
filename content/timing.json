@@ -1,5 +1,6 @@
 {
   "turn": 60000,
+  "openingTurn": 90000,
   "enemy": 8000,
   "intro": 20000,
   "prediction": 25000,

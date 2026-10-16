@@ -11,7 +11,8 @@ import MapPanel from "../components/MapPanel.vue";
 import RewardPanel from "../components/RewardPanel.vue";
 import DeckDialog from "../components/DeckDialog.vue";
 import CombatArt from "../components/CombatArt.vue";
-import HowToPlay from "../components/HowToPlay.vue";
+import HelpDialog from "../components/HelpDialog.vue";
+import { combinations } from "../onboarding/hints.ts";
 import { useCombatFeedback } from "../use-combat-feedback.ts";
 const game = useGame(),
   route = useRoute();
@@ -74,7 +75,6 @@ const {
 const combatActive = computed(
   () =>
     (!!held.value || (!!v.value?.combat && !v.value.rewards.length)) &&
-    !showHelp.value &&
     !v.value?.quiz,
 );
 const crew = computed(() =>
@@ -124,7 +124,7 @@ function eventSelect(index: number) {
     class="player-shell"
     :class="{
       'combat-shell':
-        (!!held || (!!v?.combat && !v.rewards.length)) && !showHelp && !v?.quiz,
+        (!!held || (!!v?.combat && !v.rewards.length)) && !v?.quiz,
     }"
   >
     <fieldset class="player-controls" aria-label="Player screen">
@@ -228,6 +228,7 @@ function eventSelect(index: number) {
         :upcoming="upcoming"
         :recent="recent"
         locked
+        :help-open="showHelp"
         @help="showHelp = true"
         @cards="
           showDeck = true;
@@ -264,22 +265,15 @@ function eventSelect(index: number) {
         <h1>{{ crew?.name }}</h1>
         <p>{{ crew?.members.map((m) => m.name).join(" · ") }}</p>
         <p>Waiting to start</p>
-        <button class="primary" @click="showHelp = true">Try a turn</button>
+        <div class="lobby-basics">
+          <p>Cards spend energy.</p>
+          <p>Block protects your health until your next turn.</p>
+          <p>The enemy acts after everyone ends their turn.</p>
+        </div>
         <details>
           <summary>Your first combination</summary>
           <p>
-            {{
-              {
-                guardian:
-                  "Gain Block with Brace, then use Shield Strike. Your Block stays.",
-                rogue:
-                  "Knifework creates free attacks. Play them before Finishing Cut.",
-                alchemist:
-                  "Toxic Dart applies Poison. Venom Coat turns enemy Poison into Block.",
-                channeler:
-                  "Charge strengthens Windup. Relay repeats a teammate attack.",
-              }[v.hero!.character]
-            }}
+            {{ combinations[v.hero!.character].text }}
           </p>
         </details>
       </section>
@@ -298,6 +292,7 @@ function eventSelect(index: number) {
       </section>
       <BattlePanel
         v-else-if="v.combat"
+        :help-open="showHelp"
         :combat="v.combat"
         :scene="scene"
         :beat="beat"
@@ -409,11 +404,7 @@ function eventSelect(index: number) {
         @select="selectCard"
       />
       <RelicsDialog v-if="showRelics" @close="showRelics = false" />
-      <HowToPlay
-        v-if="showHelp && v"
-        :cards="v.cards"
-        @close="showHelp = false"
-      />
+      <HelpDialog v-if="showHelp && v" @close="showHelp = false" />
     </fieldset>
   </main>
 </template>

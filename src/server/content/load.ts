@@ -196,6 +196,7 @@ export async function loadContent(root = resolve("content")): Promise<Content> {
   const timing = z
     .object({
       turn: z.number().positive(),
+      openingTurn: z.number().int().positive().optional(),
       enemy: z.number().positive(),
       intro: z.number().positive(),
       prediction: z.number().positive(),

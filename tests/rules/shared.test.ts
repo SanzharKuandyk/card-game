@@ -144,7 +144,7 @@ test("pause, all-offline suspension, host skip and deck changes during battle", 
   assert.deepEqual(s.crews["team-1"]!.progress, first);
   assert.equal(
     s.crews["team-1"]!.progress.combat!.deadline - s.activeMs,
-    60000,
+    90000,
   );
   assert.throws(() => triggerBoss(s, 8, null, context), /already/);
 });

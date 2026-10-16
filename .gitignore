@@ -19,13 +19,18 @@ data/
 *.pem
 *.key
 
-# Generated test output and logs (keep docs/ verification evidence)
+# Generated test output, screenshots and measurement reports
 test-results/
 playwright-report/
 blob-report/
 coverage/
 *.log
 *.log.*
+docs/screenshots/
+docs/*-responsive.json
+docs/responsive.json
+docs/capacity.json
+docs/projector-overview.json
 
 # Private implementation notes and editor/OS files
 .Codex/

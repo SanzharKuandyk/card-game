@@ -182,6 +182,7 @@ export interface Contribution {
   helped: string[];
 }
 export interface Combat {
+  openingRoom?: boolean;
   id: string;
   kind: "route" | "boss";
   turn: number;
@@ -264,6 +265,7 @@ export interface Content {
     reward: number;
   };
   timing: {
+    openingTurn?: number;
     turn: number;
     enemy: number;
     intro: number;
@@ -452,6 +454,7 @@ export interface ActorView {
   powers: Record<string, number>;
 }
 export interface CombatView {
+  openingRoom?: boolean;
   id: string;
   kind: "route" | "boss";
   turn: number;

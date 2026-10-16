@@ -79,6 +79,7 @@ function combatView(
     : null;
   return {
     id: b.id,
+    openingRoom: b.openingRoom ?? false,
     kind: b.kind,
     turn: b.turn,
     phase: b.phase,

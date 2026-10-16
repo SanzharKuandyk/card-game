@@ -186,6 +186,10 @@ function enterNode(
       seedFrom(`${s.seed}:${node.id}`),
       s.activeMs,
       s.content,
+      {
+        openingRoom:
+          node.row === 1 && s.content.timing.openingTurn !== undefined,
+      },
     );
   } else if (node.kind === "shop") {
     p.phase = "shop";

@@ -1,5 +1,21 @@
 # Verification
 
+Screenshot and measurement files are generated inspection outputs. New outputs are ignored by Git; rerun the referenced inspection scripts to reproduce them. Verification prose and the scripts remain source-controlled.
+
+## Opening-room teaching — 17 October 2026
+
+The lobby now has three short explanations and the existing expandable character combination. The separate Try a turn simulation has been removed. Help opens a native reference over the mounted combat screen without changing its layout class, selected card, readiness or clock. New sessions give every row-1 player turn 90 seconds; everyone ending early advances immediately. Row 2 onward and shared bosses retain 60-second turns. Existing frozen saves retain their previous timing and do not acquire automatic teaching.
+
+Teaching uses existing helper slots and restrained static highlights. Selected-card text, numerical previews and target/error instructions remain authoritative. Starter combinations require their cards, sufficient energy and, for Rogue, generated-card space. Accepted play events produce the follow-up hint after playback finishes. Dismissal and seen hints use a versioned session/member browser key; blocked storage falls back to memory. No teaching command, gameplay phase, database table, damage change or deck arrangement was added.
+
+All 22 Node rule/server checks pass. New cases cover first/subsequent opening turns, normal and boss duration, early End turn, retries, host extension/pause, boss interruption, old frozen content, four characters' hint prerequisites and malformed preference data. The existing real-socket persistence journey now saves an opening fight with 86 seconds left, restarts the server and verifies the same paused clock and opening flag.
+
+The final three affected Playwright journeys pass serially in 1.6 minutes: WebKit lobby/opening guidance with unavailable-storage fallback, polling and foreground reconnect; four-player combat with Help preserving selection/arena bounds/focus, a server-rejected play, saved Hide tips, rewards/reload and no teaching in the 60-second second room; and ordered card/enemy playback with reduced motion, finishing blow and the post-play hint appearing after animation. The first rejection-test attempt mutated the fixture before clicking and correctly caused the UI to disable Play; the final check injects the change when the command reaches the server. Final type check, lint, production build and Git whitespace check pass.
+
+The populated inspection in `scripts/inspect-onboarding.ts` passes 30 samples: initial hands, full ten-card combination hands, enemy selection and player targeting at 294×534, 360×800, 388×619, 667×375, 844×390, 768×1024 and 1366×768, plus portrait and asymmetric landscape notch profiles. Hands, Help and action footers remain reachable without horizontal page overflow. At the smallest full-hand sizes, the target selector uses the existing internal details scroll. Opening-only full hands at 601–700px portrait height use a smaller artwork area; established smaller-screen and later-room geometry remains unchanged. Help keeps arena bounds and card selection, closes with Escape and restores focus. Reduced motion retains static guidance.
+
+Evidence: `opening-responsive.json`, screenshots `opening-initial-*`, `opening-combination-*`, `opening-selected-*`, `opening-target-*` and `opening-help-*`. These are local browser/emulated safe-area checks; physical Android/iPhone and classroom teaching acceptance remain pending. The earlier 80-client latency result is unchanged; no new load suite is justified by cosmetic guidance. Temporary servers use disposable data; the classroom server and saved games are left untouched.
+
 ## View switching and phone reliability — 17 October 2026
 
 Map/Battles switching uses local display state and keeps crew-keyed boards mounted. A focused browser regression switches three times, checks that canonical crew state is unchanged, then verifies normal card/enemy playback and reload. Projector access remains read-only; host links open a separate tab and do not replace host identity.

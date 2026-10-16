@@ -109,7 +109,7 @@ async function playAvailable(page: Page, context: BrowserContext, id: string) {
   return false;
 }
 
-test("phone fallback, practice and foreground recovery in WebKit", async ({
+test("phone fallback, opening guidance and foreground recovery in WebKit", async ({
   browser,
 }) => {
   const h = await host(browser);
@@ -135,22 +135,48 @@ test("phone fallback, practice and foreground recovery in WebKit", async ({
     await page.getByRole("button", { name: "Join", exact: true }).click();
     await page.getByRole("button", { name: /^guardian/i }).click();
     await page.getByRole("button", { name: "Join team" }).click();
-    await page.getByRole("button", { name: "Try a turn", exact: true }).click();
-    const practice = page.getByRole("dialog", { name: "Try a turn" });
-    await practice.getByRole("button", { name: /Strike, 1 energy/ }).click();
-    await practice.getByRole("button", { name: /Practice enemy/ }).click();
-    await practice.getByRole("button", { name: "Play", exact: true }).click();
-    await expect(practice).toContainText("6/12 HP");
-    await practice
-      .getByRole("button", { name: "End turn", exact: true })
-      .click();
-    await practice.getByRole("button", { name: "Got it", exact: true }).click();
+    await expect(
+      page.getByRole("button", { name: "Try a turn", exact: true }),
+    ).toHaveCount(0);
+    await expect(page.locator(".lobby-basics")).toContainText(
+      "Cards spend energy.",
+    );
+    await expect(page.locator(".lobby-basics")).toContainText(
+      "The enemy acts after everyone ends their turn.",
+    );
     await h.page.getByRole("button", { name: "Start", exact: true }).click();
     await page.locator(".route-node.available").first().click();
     await expect(
       page.getByRole("heading", { name: "Turn 1", exact: true }),
     ).toBeVisible();
     const saved = await view(phone, h.id);
+    expect(saved.combat!.remainingMs).toBe(90000);
+    expect(saved.combat!.openingRoom).toBe(true);
+    await expect(page.locator(".hand.learning-highlight")).toBeVisible();
+    await page.getByRole("button", { name: "Help", exact: true }).click();
+    const help = page.getByRole("dialog", { name: "Help", exact: true });
+    await page.evaluate(() => {
+      const set = Storage.prototype.setItem;
+      Storage.prototype.setItem = function (key, value) {
+        if (key.startsWith("learning:"))
+          throw new DOMException("Storage unavailable", "QuotaExceededError");
+        return set.call(this, key, value);
+      };
+      try {
+        (
+          document.querySelector(
+            ".help-reference > button",
+          ) as HTMLButtonElement
+        ).click();
+      } finally {
+        Storage.prototype.setItem = set;
+      }
+    });
+    await expect(
+      help.getByRole("button", { name: "Show tips", exact: true }),
+    ).toBeVisible();
+    await help.getByRole("button", { name: "Show tips", exact: true }).click();
+    await page.keyboard.press("Escape");
     await expect(
       page.getByRole("button", { name: /^Your character: Phone player/ }),
     ).toContainText("YOU");
@@ -339,9 +365,78 @@ test("four-player fight, rotation, reward and reconnect", async ({
   await expect(liveTeam.locator(".board-member")).toHaveCount(4);
   await expect(liveProjector.locator("iframe")).toHaveCount(0);
   const initialHand = (await view(players[0]!.context, h.id)).combat!.hand;
-  await players[0]!.page
-    .locator(`[data-card-uid="${initialHand[0]!.uid}"]`)
-    .click();
+  const basic = initialHand.find((c) =>
+    ["strike", "guard"].includes(c.cardId),
+  )!;
+  await players[0]!.page.locator(`[data-card-uid="${basic.uid}"]`).click();
+  const page = players[0]!.page;
+  const arenaBefore = await page.locator(".combat-arena").boundingBox();
+  await page.getByRole("button", { name: "Help", exact: true }).click();
+  const help = page.getByRole("dialog", { name: "Help", exact: true });
+  await expect(help).toContainText("You can play several cards.");
+  await expect(page.locator(".player-shell")).toHaveClass(/combat-shell/);
+  expect(await page.locator(".combat-arena").boundingBox()).toEqual(
+    arenaBefore,
+  );
+  await help.getByRole("button", { name: "Hide tips", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Help", exact: true }),
+  ).toBeFocused();
+  await expect(page.locator(`[data-card-uid="${basic.uid}"]`)).toHaveClass(
+    /selected/,
+  );
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "End turn", exact: true }),
+  ).toBeEnabled();
+  await expect(page.locator(".learning-highlight")).toHaveCount(0);
+  const playerView = await view(players[0]!.context, h.id);
+  const key = `learning:1:${h.id}:${playerView.memberId}`;
+  expect(
+    await page.evaluate(
+      (k) => JSON.parse(localStorage.getItem(k)!).hidden,
+      key,
+    ),
+  ).toBe(true);
+  // The preview is legal, then a server-side change makes the committed play invalid.
+  await page.locator(`[data-card-uid="${basic.uid}"]`).click();
+  await expect(page.getByRole("button", { name: /^Play ·/ })).toBeEnabled();
+  const logLength = server.app.sessions.get(h.id)!.crews["team-1"]!.progress
+    .combat!.log.length;
+  const peer = [...server.io.sockets.sockets.values()].find(
+    (socket) => socket.data.identity?.identity.memberId === playerView.memberId,
+  )!;
+  let rejectNextPlay = true;
+  peer.use((packet, next) => {
+    if (
+      packet[0] === "command" &&
+      packet[1]?.command?.kind === "play" &&
+      rejectNextPlay
+    ) {
+      rejectNextPlay = false;
+      server.app.sessions.get(h.id)!.crews["team-1"]!.progress.combat!.actors[
+        playerView.memberId!
+      ]!.energy = 0;
+    }
+    next();
+  });
+  await page.getByRole("button", { name: /^Play ·/ }).click();
+  await expect(page.locator(".error")).toContainText("Not enough energy");
+  expect(
+    server.app.sessions.get(h.id)!.crews["team-1"]!.progress.combat!.log.length,
+  ).toBe(logLength);
+  expect(
+    await page.evaluate(
+      (k) => JSON.parse(localStorage.getItem(k)!).seen.includes("more"),
+      key,
+    ),
+  ).toBe(false);
+  server.app.sessions.get(h.id)!.crews["team-1"]!.progress.combat!.actors[
+    playerView.memberId!
+  ]!.energy = 3;
+  server.app.onPublish(h.id);
+  await page.getByLabel("Team signal").selectOption("Ready");
   await expect(liveTeam.locator(".board-member").first()).toContainText(
     "Player 1",
   );
@@ -407,6 +502,28 @@ test("four-player fight, rotation, reward and reconnect", async ({
   await expect(
     players[0]!.page.getByRole("button", { name: /Cards · 11/ }),
   ).toBeVisible();
+  for (const p of players.slice(1)) {
+    await p.page.getByRole("button", { name: "Skip", exact: true }).click();
+  }
+  await server.app.advance(1);
+  for (const p of players.slice(0, 3))
+    await p.page.locator(".route-node.available").first().click();
+  await expect(
+    page.getByRole("heading", { name: "Turn 1", exact: true }),
+  ).toBeVisible();
+  const later = await view(players[0]!.context, h.id);
+  expect(later.combat!.openingRoom).toBe(false);
+  expect(later.combat!.remainingMs).toBe(60000);
+  // Even a manual preference reset cannot teach a later room.
+  await page.evaluate((k) => {
+    localStorage.removeItem(k);
+    window.dispatchEvent(
+      new StorageEvent("storage", { key: k, newValue: null }),
+    );
+  }, key);
+  await expect(
+    page.locator(".learning-highlight, .learning-guidance"),
+  ).toHaveCount(0);
   await liveProjector.close();
   for (const p of players) await p.context.close();
   await h.page.goto(`${base}/`);
@@ -491,6 +608,9 @@ test("card reveal, damage impact, reduced motion and finishing blow", async ({
     "2 blocked · 4 health lost",
   );
   await expect(p.page.locator(".played-card-stage")).toHaveCount(0);
+  await expect(p.page.locator(".learning-copy")).toHaveText(
+    "You can play more cards while you have energy.",
+  );
   const history = p.page.getByRole("button", { name: "History", exact: true });
   await history.click();
   await expect(

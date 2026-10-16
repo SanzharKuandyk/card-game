@@ -22,6 +22,8 @@ import type {
 import CombatLink from "./CombatLink.vue";
 import ImpactBurst from "./ImpactBurst.vue";
 import { impactFor } from "../combat-feedback.ts";
+import { useOnboarding } from "../onboarding/use-onboarding.ts";
+import { LearningAnchor } from "../onboarding/model.ts";
 const props = defineProps<{
   combat: CombatView;
   scene: CombatView | null;
@@ -32,6 +34,7 @@ const props = defineProps<{
   upcoming: PlaybackItem[];
   recent: PlaybackItem[];
   locked?: boolean;
+  helpOpen?: boolean;
 }>();
 const game = useGame();
 defineEmits<{ help: []; cards: [] }>();
@@ -170,6 +173,19 @@ const turnHint = computed(() => {
     return `Needs ${current.value.cost} energy. You have ${own.value?.energy ?? 0}.`;
   return "Play applies this card now. End turn lets the enemies act after everyone ends.";
 });
+const { hint: learningHint, hide: hideTips } = useOnboarding({
+  view: () => game.view,
+  scene: () => b.value,
+  selected: () => !!selected.value,
+  connected: () => game.connected,
+  blocked: () =>
+    !!props.locked ||
+    !!props.beat ||
+    props.upcoming.length > 0 ||
+    !!props.helpOpen ||
+    game.busy ||
+    !!game.error,
+});
 function intentHint(enemyId: string) {
   if (
     (props.beat?.sourceId === enemyId &&
@@ -285,6 +301,7 @@ watch(
   <section
     class="battle battle-fit"
     :class="{
+      'opening-room': !!combat.openingRoom,
       revealing: b.phase === 'enemy',
       'prediction-active': b.phase.startsWith('prediction'),
     }"
@@ -402,6 +419,15 @@ watch(
               <button
                 v-if="enemy.hp > 0"
                 class="enemy-intention"
+                :class="{
+                  'learning-highlight':
+                    learningHint?.anchor === LearningAnchor.Intent &&
+                    b.intents.some(
+                      (i) =>
+                        i.enemyId === enemy.id &&
+                        i.targets.some((t) => t.memberId === own?.memberId),
+                    ),
+                }"
                 :aria-label="`${enemy.name} intention: ${intentLabel(enemy.id)}`"
                 @click="inspectedIntent = enemy.id"
               >
@@ -519,7 +545,13 @@ watch(
         :aria-busy="!!beat"
       >
         <div class="hand-heading">
-          <EnergyDisplay :amount="own.energy" />
+          <EnergyDisplay
+            :amount="own.energy"
+            :class="{
+              'learning-highlight':
+                learningHint?.anchor === LearningAnchor.Energy,
+            }"
+          />
           <span>{{
             own.recovery
               ? "Recovery"
@@ -567,7 +599,15 @@ watch(
             Shelter <small>1 energy · give 4 Block</small>
           </button>
         </div>
-        <div v-else class="hand">
+        <div
+          v-else
+          class="hand"
+          :class="{
+            'learning-highlight':
+              learningHint?.anchor === LearningAnchor.Hand &&
+              !learningHint.cardUids.length,
+          }"
+        >
           <CardTile
             v-for="card in b.hand"
             :key="card.uid"
@@ -576,6 +616,9 @@ watch(
             :cost="card.cost"
             :unaffordable="card.cost > own.energy"
             compact
+            :class="{
+              'learning-highlight': learningHint?.cardUids.includes(card.uid),
+            }"
             :selected="selected === card.uid"
             :disabled="
               b.phase !== 'player' ||
@@ -608,7 +651,23 @@ watch(
               "
             /><span class="keyword-link">Details</span>
           </button>
-          <p v-if="!selected" class="turn-hint">{{ turnHint }}</p>
+          <p
+            v-if="!selected"
+            class="turn-hint"
+            :class="{ 'learning-guidance': !!learningHint }"
+          >
+            <span :class="{ 'learning-copy': !!learningHint }">{{
+              learningHint?.text ?? turnHint
+            }}</span>
+            <button
+              v-if="learningHint"
+              class="learning-hide"
+              aria-label="Hide tips"
+              @click="hideTips"
+            >
+              ×
+            </button>
+          </p>
           <label
             v-if="current?.definition.target === 'enemy'"
             class="enemy-target"
@@ -698,7 +757,11 @@ watch(
           >
             Play{{ current ? ` · ${current.cost} energy` : "" }}</button
           ><button
-            :class="{ selected: own.ended }"
+            :class="{
+              selected: own.ended,
+              'learning-highlight':
+                learningHint?.anchor === LearningAnchor.EndTurn,
+            }"
             :disabled="
               b.phase !== 'player' || game.busy || !game.view?.controlling
             "
