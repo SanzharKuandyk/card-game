@@ -1,0 +1,8 @@
+{
+  "turn": 60000,
+  "enemy": 8000,
+  "intro": 20000,
+  "prediction": 25000,
+  "feedback": 8000,
+  "vote": 20000
+}

@@ -1,0 +1,464 @@
+/* Projector-only arenas. Snapshots never change row heights or team order. */
+.live-projector {
+  height: 100dvh;
+}
+.projector-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  color: #f4f0df;
+  font-size: 14px;
+}
+.projector-search input {
+  width: 230px;
+  min-height: 40px;
+}
+.live-heading img {
+  margin-left: 0;
+}
+.projector-reset {
+  min-height: 40px;
+}
+.live-projector .live-team-grid {
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: max-content;
+  scrollbar-gutter: stable;
+  overflow-anchor: none;
+  scroll-behavior: auto;
+}
+.live-projector .team-board {
+  height: 316px;
+  grid-template-columns: minmax(0, 1.2fr) 330px minmax(0, 1fr);
+  grid-template-rows: 48px minmax(0, 1fr);
+  border: 1px solid #9caf9e;
+  border-left: 5px solid var(--team-colour);
+  background: linear-gradient(180deg, #fffdf4 48px, #eaf0e3 49px, #f4f0df 100%);
+  contain: layout;
+}
+.live-projector .team-board > header {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  padding: 4px 14px;
+  gap: 14px;
+  border-bottom: 1px solid #d7ddcf;
+}
+.live-projector .team-board > header > strong {
+  font-size: 20px;
+}
+.live-projector .team-board > header > span {
+  font-size: 14px;
+}
+.live-projector .team-board .board-inspect,
+.live-projector .team-board .board-toggle {
+  min-height: 36px;
+  font-size: 14px;
+  padding: 4px 8px;
+}
+.live-projector .board-turn {
+  grid-column: 3;
+  grid-row: 1;
+  background: #fffdf4;
+  padding: 4px 14px;
+  border-bottom: 1px solid #d7ddcf;
+  font-size: 15px;
+}
+.live-projector .board-turn .turn-clock {
+  min-height: 32px;
+  font-size: 18px;
+}
+.live-projector .team-board > .board-members {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  min-width: 0;
+  border: 0;
+}
+.live-projector .board-member {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  max-width: 170px;
+  min-width: 0;
+  height: 232px;
+  padding: 8px;
+  border: 1px solid #c5d6c8;
+  border-radius: 12px;
+  background: #fafff5b8;
+  text-align: center;
+  font-size: 18px;
+}
+.live-projector .board-person {
+  flex-direction: column;
+  width: 100%;
+  gap: 3px;
+}
+.live-projector .board-person svg {
+  width: 68px;
+  height: 76px;
+}
+.live-projector .board-person strong {
+  width: 100%;
+  font-size: 16px;
+}
+.live-projector .board-member b small {
+  font-size: 13px;
+}
+.live-projector .board-resources {
+  font-size: 12px;
+  white-space: normal;
+}
+.live-projector .board-readiness {
+  font-size: 12px;
+  text-align: center;
+}
+.live-projector .board-member .meter {
+  width: 100%;
+  height: 5px;
+}
+.live-projector .member-offline {
+  background: #e8e4dc;
+}
+.live-projector .board-enemies {
+  grid-column: 3;
+  grid-row: 2;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  gap: 14px;
+  background: transparent;
+  border: 0;
+  overflow: visible;
+}
+.live-projector .board-enemies > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  max-width: 230px;
+  height: 240px;
+  text-align: center;
+}
+.live-projector .board-enemies .board-enemy-intent {
+  flex: none;
+  min-height: 34px;
+  padding: 5px 10px;
+  border: 0;
+  background: #f4dcb8;
+  color: #713a20;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.live-projector .board-enemies .combat-art {
+  width: 88px;
+  height: 92px;
+}
+.live-projector .board-enemies strong {
+  font-size: 19px;
+}
+.live-projector .board-enemies > div > span:not(.meter) {
+  font-size: 16px;
+}
+.live-projector .board-enemies .meter {
+  width: 100%;
+  height: 6px;
+}
+.live-projector .board-enemies .board-status {
+  min-height: 35px;
+  width: 100%;
+  font-size: 12px;
+  white-space: normal;
+  overflow: visible;
+}
+.live-projector .actor-effects {
+  min-height: 28px;
+  margin: 0;
+}
+.live-projector .actor-effects > button {
+  min-height: 28px;
+  font-size: 12px;
+}
+.live-projector .actor-effects .effects-summary {
+  display: none;
+}
+.live-projector .board-playback {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 152px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+  padding: 8px;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: hidden;
+}
+.live-projector .board-play-card {
+  position: relative;
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 152px;
+  height: 222px;
+  padding: 12px 9px 9px;
+  border: 3px solid #8b805e;
+  border-radius: 12px;
+  background: linear-gradient(#fffdf2, #f2e6c6);
+  box-shadow:
+    0 4px 0 #b7aa84,
+    0 8px 16px #253d3020;
+  text-align: center;
+  gap: 5px;
+}
+.live-projector .board-play-card > .card-art {
+  width: 100%;
+  height: 58px;
+  flex-shrink: 0;
+}
+.live-projector .board-play-card strong {
+  font-size: 16px;
+  line-height: 1.12;
+}
+.live-projector .board-play-card small {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.live-projector .board-card-description {
+  font-size: 12px;
+  line-height: 1.25;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+.live-projector .board-card-cost {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #8e6218;
+  color: #fff;
+  border: 2px solid #fff5cd;
+  font-weight: 800;
+}
+.live-projector .board-card-rule,
+.live-projector .board-outcomes {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.live-projector .board-extra {
+  font-size: 12px;
+}
+.live-projector .board-idle {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #6c796c;
+  font-size: 15px;
+}
+.live-projector .board-fight-result {
+  top: 0;
+  right: 0;
+  font-size: 15px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.live-projector .is-revealing .board-play-card {
+  animation: projector-card-arrive 300ms ease-out both;
+}
+.live-projector .is-impact .board-play-card {
+  transform: translateX(5px) rotate(2deg);
+}
+.live-projector .team-board .effect-burst {
+  font-size: 20px;
+  z-index: 3;
+}
+.live-projector .board-collapsed {
+  height: 50px;
+  grid-template-rows: 48px;
+}
+.live-projector .board-collapsed > .board-members,
+.live-projector .board-collapsed > .board-enemies,
+.live-projector .board-collapsed > .board-playback {
+  display: none;
+}
+@keyframes projector-card-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(-35px) rotate(-7deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(0) scale(1);
+  }
+}
+@media (max-width: 1400px) {
+  .live-projector .team-board {
+    grid-template-columns: minmax(0, 1.15fr) 290px minmax(0, 1fr);
+  }
+  .live-projector .team-board > .board-members {
+    gap: 5px;
+    padding: 10px 8px;
+  }
+  .live-projector .board-member {
+    padding: 6px 4px;
+  }
+  .live-projector .board-person svg {
+    width: 54px;
+    height: 66px;
+  }
+  .live-projector .board-playback {
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .live-projector .board-play-card {
+    width: 140px;
+  }
+  .live-projector .board-enemies {
+    gap: 8px;
+    padding: 10px 8px;
+  }
+}
+@media (max-width: 1000px) {
+  .live-projector .team-board {
+    height: 370px;
+    grid-template-columns: minmax(0, 1fr) 220px minmax(0, 1fr);
+  }
+  .live-projector .team-board > header {
+    gap: 6px;
+    padding: 4px 8px;
+  }
+  .live-projector .team-board > header > strong {
+    font-size: 16px;
+  }
+  .live-projector .team-board > .board-members {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 145px;
+    align-content: center;
+  }
+  .live-projector .board-member {
+    height: 145px;
+    gap: 2px;
+    width: 100%;
+    font-size: 14px;
+  }
+  .live-projector .board-person svg {
+    height: 34px;
+    width: 34px;
+  }
+  .live-projector .board-person strong {
+    font-size: 13px;
+  }
+  .live-projector .board-resources {
+    font-size: 10px;
+  }
+  .live-projector .board-playback {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+  .live-projector .board-play-card {
+    flex: none;
+    height: 210px;
+  }
+  .live-projector .board-outcomes,
+  .live-projector .board-card-rule {
+    font-size: 12px;
+    width: 100%;
+  }
+  .live-projector .board-enemies {
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 8px;
+  }
+  .live-projector .board-enemies > div {
+    flex: 1 1 80px;
+    height: auto;
+    min-width: 80px;
+  }
+  .live-projector .board-enemies .combat-art {
+    width: 52px;
+    height: 52px;
+  }
+  .live-projector .board-enemies strong {
+    font-size: 14px;
+  }
+  .live-projector .board-enemies .board-enemy-intent {
+    font-size: 11px;
+  }
+  .live-projector .board-turn {
+    font-size: 12px;
+    gap: 4px;
+    padding: 4px 6px;
+  }
+  .live-projector .board-collapsed {
+    height: 50px;
+  }
+}
+@media (max-width: 700px) {
+  .projector-search {
+    margin-left: 0;
+  }
+  .projector-search input {
+    width: 160px;
+  }
+  .live-projector .team-board {
+    height: 640px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 48px 38px 300px 250px;
+  }
+  .live-projector .team-board > header {
+    grid-column: 1 / -1;
+  }
+  .live-projector .board-turn {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .live-projector .team-board > .board-members {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .live-projector .board-enemies {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  .live-projector .board-playback {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+  }
+  .live-projector .board-collapsed {
+    height: 88px;
+    grid-template-rows: 48px 38px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-projector .is-revealing .board-play-card {
+    animation: none;
+  }
+  .live-projector .is-impact .board-play-card {
+    transform: none;
+  }
+}

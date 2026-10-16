@@ -1,0 +1,2668 @@
+[
+  {
+    "id": "late-jump",
+    "topic": "movement",
+    "kind": "predict",
+    "prompt": "One player presses Jump 80 ms after leaving the edge. Another presses it 80 ms before landing. Which jumps happen?",
+    "rule": "A platformer allows 100 ms of coyote time and remembers Jump for 100 ms before landing.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Only the ledge jump",
+        "explanation": "Coyote time handles the ledge, but buffering handles the landing too."
+      },
+      {
+        "id": "b",
+        "text": "Both jumps",
+        "explanation": "Both inputs fall inside their separate 100 ms windows."
+      },
+      {
+        "id": "c",
+        "text": "Only the landing jump",
+        "explanation": "The ledge input is also inside coyote time."
+      }
+    ],
+    "correctOptionId": "b",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Leave the edge → wait 80 ms → press Jump",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 30,
+              "y": 72,
+              "w": 100,
+              "h": 16,
+              "label": "Edge",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 260,
+              "y": 72,
+              "w": 110,
+              "h": 16,
+              "label": "Landing",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 145,
+              "y": 65,
+              "w": 20,
+              "h": 20,
+              "label": "80 ms",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 285,
+              "y": 35,
+              "w": 20,
+              "h": 20,
+              "label": "80 ms",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 15,
+              "w": 0,
+              "h": 0,
+              "label": "100 ms grace / 100 ms buffer",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Press Jump → wait 80 ms → land",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 30,
+              "y": 72,
+              "w": 100,
+              "h": 16,
+              "label": "Edge",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 260,
+              "y": 72,
+              "w": 110,
+              "h": 16,
+              "label": "Landing",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 145,
+              "y": 65,
+              "w": 20,
+              "h": 20,
+              "label": "80 ms",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 285,
+              "y": 35,
+              "w": 20,
+              "h": 20,
+              "label": "80 ms",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 15,
+              "w": 0,
+              "h": 0,
+              "label": "100 ms grace / 100 ms buffer",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "The ledge jump uses coyote time.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 30,
+              "y": 72,
+              "w": 100,
+              "h": 16,
+              "label": "Edge",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 260,
+              "y": 72,
+              "w": 110,
+              "h": 16,
+              "label": "Landing",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 145,
+              "y": 40,
+              "w": 20,
+              "h": 20,
+              "label": "80 ms",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 285,
+              "y": 30,
+              "w": 20,
+              "h": 20,
+              "label": "80 ms",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 15,
+              "w": 0,
+              "h": 0,
+              "label": "100 ms grace / 100 ms buffer",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The landing jump uses the buffered input.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 30,
+              "y": 72,
+              "w": 100,
+              "h": 16,
+              "label": "Edge",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 260,
+              "y": 72,
+              "w": 110,
+              "h": 16,
+              "label": "Landing",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 145,
+              "y": 40,
+              "w": 20,
+              "h": 20,
+              "label": "80 ms",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 285,
+              "y": 30,
+              "w": 20,
+              "h": 20,
+              "label": "80 ms",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 15,
+              "w": 0,
+              "h": 0,
+              "label": "100 ms grace / 100 ms buffer",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        13,
+        71
+      ]
+    }
+  },
+  {
+    "id": "diagonal",
+    "topic": "movement",
+    "kind": "predict",
+    "prompt": "One holds Right. One holds Right + Up. Which trail is longer?",
+    "rule": "Both characters move for the same time. Horizontal and vertical speeds are added separately; the direction is not normalised.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Equal length",
+        "explanation": "Adding two full axes produces a longer combined movement."
+      },
+      {
+        "id": "b",
+        "text": "The diagonal trail",
+        "explanation": "Normalising the direction would remove the diagonal speed advantage."
+      },
+      {
+        "id": "c",
+        "text": "The straight trail",
+        "explanation": "The straight input only uses one axis."
+      }
+    ],
+    "correctOptionId": "b",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Both characters start together.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 40,
+              "y": 85,
+              "w": 12,
+              "h": 12,
+              "label": "Right",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 40,
+              "y": 85,
+              "w": 12,
+              "h": 12,
+              "label": "Right + Up",
+              "role": "actor"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 40,
+              "y1": 85,
+              "x2": 220,
+              "y2": 85
+            },
+            {
+              "x1": 40,
+              "y1": 85,
+              "x2": 220,
+              "y2": 15
+            }
+          ]
+        }
+      },
+      {
+        "label": "2",
+        "detail": "One moves right; the other moves right and up.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 40,
+              "y": 85,
+              "w": 12,
+              "h": 12,
+              "label": "Right",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 40,
+              "y": 85,
+              "w": 12,
+              "h": 12,
+              "label": "Right + Up",
+              "role": "actor"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 40,
+              "y1": 85,
+              "x2": 220,
+              "y2": 85
+            },
+            {
+              "x1": 40,
+              "y1": 85,
+              "x2": 220,
+              "y2": 15
+            }
+          ]
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "The diagonal character travels farther.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 220,
+              "y": 85,
+              "w": 12,
+              "h": 12,
+              "label": "Right",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 220,
+              "y": 15,
+              "w": 12,
+              "h": 12,
+              "label": "Right + Up",
+              "role": "actor"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 40,
+              "y1": 85,
+              "x2": 220,
+              "y2": 85
+            },
+            {
+              "x1": 40,
+              "y1": 85,
+              "x2": 220,
+              "y2": 15
+            }
+          ]
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Normalise the input direction to keep the same speed.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 220,
+              "y": 85,
+              "w": 12,
+              "h": 12,
+              "label": "Right",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 220,
+              "y": 15,
+              "w": 12,
+              "h": 12,
+              "label": "Right + Up",
+              "role": "actor"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 40,
+              "y1": 85,
+              "x2": 220,
+              "y2": 85
+            },
+            {
+              "x1": 40,
+              "y1": 85,
+              "x2": 220,
+              "y2": 15
+            }
+          ]
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        16
+      ]
+    }
+  },
+  {
+    "id": "camera",
+    "topic": "movement",
+    "kind": "predict",
+    "prompt": "Which camera motion matches the rule?",
+    "rule": "The player changes lane immediately. Each update the camera moves one quarter of the remaining distance towards the player.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Equal distance every update",
+        "explanation": "The remaining gap shrinks, so the steps shrink too."
+      },
+      {
+        "id": "b",
+        "text": "Instant snap, then stop",
+        "explanation": "Only the player snaps. The camera follows gradually."
+      },
+      {
+        "id": "c",
+        "text": "Large first step, then smaller steps",
+        "explanation": "Each camera step is a fraction of a progressively smaller gap."
+      }
+    ],
+    "correctOptionId": "c",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Player changes lane.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 315,
+              "y": 48,
+              "w": 40,
+              "h": 32,
+              "label": "Player",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 60,
+              "y": 20,
+              "w": 70,
+              "h": 65,
+              "label": "Camera",
+              "role": "sensor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Camera follows ¼ of the gap each update",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Camera begins behind the new position.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 315,
+              "y": 48,
+              "w": 40,
+              "h": 32,
+              "label": "Player",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 125,
+              "y": 20,
+              "w": 70,
+              "h": 65,
+              "label": "Camera",
+              "role": "sensor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Camera follows ¼ of the gap each update",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "The camera moves quickly at first.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 315,
+              "y": 48,
+              "w": 40,
+              "h": 32,
+              "label": "Player",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 60,
+              "y": 20,
+              "w": 70,
+              "h": 65,
+              "label": "Camera",
+              "role": "sensor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Camera follows ¼ of the gap each update",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "It slows as it approaches the player.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 315,
+              "y": 48,
+              "w": 40,
+              "h": 32,
+              "label": "Player",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 125,
+              "y": 20,
+              "w": 70,
+              "h": 65,
+              "label": "Camera",
+              "role": "sensor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Camera follows ¼ of the gap each update",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        10,
+        11,
+        14
+      ]
+    }
+  },
+  {
+    "id": "reverse",
+    "topic": "movement",
+    "kind": "predict",
+    "prompt": "What happens immediately after Left is held?",
+    "rule": "The character has rightward velocity. Holding Left applies leftward acceleration; it does not set velocity directly.",
+    "options": [
+      {
+        "id": "a",
+        "text": "It instantly moves left",
+        "explanation": "Acceleration changes velocity over time."
+      },
+      {
+        "id": "b",
+        "text": "It keeps moving right briefly, then reverses",
+        "explanation": "Leftward acceleration first reduces the existing rightward velocity."
+      },
+      {
+        "id": "c",
+        "text": "It stops and stays still",
+        "explanation": "Continued acceleration eventually creates leftward velocity."
+      }
+    ],
+    "correctOptionId": "b",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Character is moving right.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 210,
+              "y": 45,
+              "w": 45,
+              "h": 35,
+              "label": "Player",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 110,
+              "y": 20,
+              "w": 0,
+              "h": 0,
+              "label": "Input ←",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 20,
+              "w": 0,
+              "h": 0,
+              "label": "Velocity →",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Left input begins.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 245,
+              "y": 45,
+              "w": 45,
+              "h": 35,
+              "label": "Player",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 110,
+              "y": 20,
+              "w": 0,
+              "h": 0,
+              "label": "Input ←",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 20,
+              "w": 0,
+              "h": 0,
+              "label": "Velocity →",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "Rightward movement slows.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 210,
+              "y": 45,
+              "w": 45,
+              "h": 35,
+              "label": "Player",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 110,
+              "y": 20,
+              "w": 0,
+              "h": 0,
+              "label": "Input ←",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 20,
+              "w": 0,
+              "h": 0,
+              "label": "Velocity →",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The character then reverses to the left.",
+        "image": "movement",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 140,
+              "y": 45,
+              "w": 45,
+              "h": 35,
+              "label": "Player",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 110,
+              "y": 20,
+              "w": 0,
+              "h": 0,
+              "label": "Input ←",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 20,
+              "w": 0,
+              "h": 0,
+              "label": "Velocity ←",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        6,
+        7
+      ]
+    }
+  },
+  {
+    "id": "bodies",
+    "topic": "physics",
+    "kind": "repair",
+    "prompt": "Which body pair fits both jobs?",
+    "rule": "The train follows a scripted route and must not be pushed off it. Loose crates must fall and react to impacts.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Dynamic train; static crates",
+        "explanation": "A dynamic train may be pushed; static crates cannot fall."
+      },
+      {
+        "id": "b",
+        "text": "Static train; kinematic crates",
+        "explanation": "A static train cannot follow a route, and kinematic crates do not fall under gravity."
+      },
+      {
+        "id": "c",
+        "text": "Kinematic train; dynamic crates",
+        "explanation": "Code controls the train while physics controls the crates."
+      }
+    ],
+    "correctOptionId": "c",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "A train follows its route.",
+        "image": "physics",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 65,
+              "y": 55,
+              "w": 100,
+              "h": 30,
+              "label": "Train",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 240,
+              "y": 15,
+              "w": 42,
+              "h": 35,
+              "label": "Crate",
+              "role": "object"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Scripted route →",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "A loose crate falls into its path.",
+        "image": "physics",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 100,
+              "y": 55,
+              "w": 100,
+              "h": 30,
+              "label": "Train",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 240,
+              "y": 55,
+              "w": 42,
+              "h": 35,
+              "label": "Crate",
+              "role": "object"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Scripted route →",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "The train continues its scripted motion.",
+        "image": "physics",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 65,
+              "y": 55,
+              "w": 100,
+              "h": 30,
+              "label": "Train",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 240,
+              "y": 15,
+              "w": 42,
+              "h": 35,
+              "label": "Crate",
+              "role": "object"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Scripted route →",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The dynamic crate reacts to the collision.",
+        "image": "physics",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 100,
+              "y": 55,
+              "w": 100,
+              "h": 30,
+              "label": "Train",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 240,
+              "y": 55,
+              "w": 42,
+              "h": 35,
+              "label": "Crate",
+              "role": "object"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Scripted route →",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        26,
+        27
+      ]
+    }
+  },
+  {
+    "id": "impulse",
+    "topic": "physics",
+    "kind": "repair",
+    "prompt": "Which change fixes the repeated boost?",
+    "rule": "Jump should apply one impulse per press. The current code applies a new impulse on every physics tick while the button is held.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Apply the impulse only on the press edge",
+        "explanation": "One press now produces one impulse."
+      },
+      {
+        "id": "b",
+        "text": "Increase gravity",
+        "explanation": "Gravity changes the arc but leaves the repeated impulse bug."
+      },
+      {
+        "id": "c",
+        "text": "Increase the character mass",
+        "explanation": "Mass changes the response but does not stop repeated impulses."
+      }
+    ],
+    "correctOptionId": "a",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Jump is held over several physics ticks.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 140,
+              "y": 50,
+              "w": 40,
+              "h": 35,
+              "label": "Jump",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 28,
+              "w": 0,
+              "h": 0,
+              "label": "Held",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 65,
+              "w": 0,
+              "h": 0,
+              "label": "↑  ↑  ↑",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The current implementation keeps adding impulses.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 140,
+              "y": 30,
+              "w": 40,
+              "h": 35,
+              "label": "Jump",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 28,
+              "w": 0,
+              "h": 0,
+              "label": "Held",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 65,
+              "w": 0,
+              "h": 0,
+              "label": "↑  ↑  ↑",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "Detect a new press, not the held state.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 140,
+              "y": 50,
+              "w": 40,
+              "h": 35,
+              "label": "Jump",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 28,
+              "w": 0,
+              "h": 0,
+              "label": "One press",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 65,
+              "w": 0,
+              "h": 0,
+              "label": "↑ impulse once",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Apply one impulse, then let gravity act.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 140,
+              "y": 30,
+              "w": 40,
+              "h": 35,
+              "label": "Jump",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 28,
+              "w": 0,
+              "h": 0,
+              "label": "One press",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 300,
+              "y": 65,
+              "w": 0,
+              "h": 0,
+              "label": "↑ impulse once",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        28
+      ]
+    }
+  },
+  {
+    "id": "fixed-step",
+    "topic": "physics",
+    "kind": "predict",
+    "prompt": "How do their simulated jumps compare?",
+    "rule": "Both phones use the same fixed physics step, starting state and physics-tick input. One renders at 30 FPS; the other at 120 FPS.",
+    "options": [
+      {
+        "id": "a",
+        "text": "The 120 FPS jump is higher",
+        "explanation": "Render count does not change the fixed physics steps."
+      },
+      {
+        "id": "b",
+        "text": "The same arc, with smoother rendering at 120 FPS",
+        "explanation": "Equal physics steps and input produce the same simulated arc in this prototype."
+      },
+      {
+        "id": "c",
+        "text": "The 30 FPS jump is higher",
+        "explanation": "The slower display does not add extra force."
+      }
+    ],
+    "correctOptionId": "b",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Both start with the same jump impulse.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 100,
+              "y": 50,
+              "w": 16,
+              "h": 16,
+              "label": "30 FPS",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 280,
+              "y": 50,
+              "w": 16,
+              "h": 16,
+              "label": "120 FPS",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Same fixed physics ticks",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Physics ticks equally; rendering rates differ.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 100,
+              "y": 20,
+              "w": 16,
+              "h": 16,
+              "label": "30 FPS",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 280,
+              "y": 20,
+              "w": 16,
+              "h": 16,
+              "label": "120 FPS",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Same fixed physics ticks",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "The simulated positions agree at each physics tick.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 100,
+              "y": 50,
+              "w": 16,
+              "h": 16,
+              "label": "30 FPS",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 280,
+              "y": 50,
+              "w": 16,
+              "h": 16,
+              "label": "120 FPS",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Same fixed physics ticks",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The faster screen shows more visual frames.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 100,
+              "y": 20,
+              "w": 16,
+              "h": 16,
+              "label": "30 FPS",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 280,
+              "y": 20,
+              "w": 16,
+              "h": 16,
+              "label": "120 FPS",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 100,
+              "w": 0,
+              "h": 0,
+              "label": "Same fixed physics ticks",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        38
+      ]
+    }
+  },
+  {
+    "id": "falling",
+    "topic": "physics",
+    "kind": "predict",
+    "prompt": "Compared with the original jump, what changes?",
+    "rule": "Gravity is unchanged on the way up. It becomes stronger only after the jump reaches its apex.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Lower peak",
+        "explanation": "Upward motion has already completed before the change."
+      },
+      {
+        "id": "b",
+        "text": "Same peak, earlier landing",
+        "explanation": "The same ascent reaches the same peak; stronger falling gravity shortens descent."
+      },
+      {
+        "id": "c",
+        "text": "Higher peak",
+        "explanation": "Stronger gravity during descent cannot raise the completed peak."
+      }
+    ],
+    "correctOptionId": "b",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Both jumps rise with the same settings.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 100,
+              "y": 20,
+              "w": 15,
+              "h": 15,
+              "label": "Original",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 280,
+              "y": 20,
+              "w": 15,
+              "h": 15,
+              "label": "Modified",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 105,
+              "w": 0,
+              "h": 0,
+              "label": "Gravity changes only after the apex",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "At the apex, one switches to stronger gravity.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 100,
+              "y": 50,
+              "w": 15,
+              "h": 15,
+              "label": "Original",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 280,
+              "y": 50,
+              "w": 15,
+              "h": 15,
+              "label": "Modified",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 105,
+              "w": 0,
+              "h": 0,
+              "label": "Gravity changes only after the apex",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "Both reach the same peak.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 100,
+              "y": 20,
+              "w": 15,
+              "h": 15,
+              "label": "Original",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 280,
+              "y": 20,
+              "w": 15,
+              "h": 15,
+              "label": "Modified",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 105,
+              "w": 0,
+              "h": 0,
+              "label": "Gravity changes only after the apex",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The modified jump falls and lands sooner.",
+        "image": "jump",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 100,
+              "y": 50,
+              "w": 15,
+              "h": 15,
+              "label": "Original",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 280,
+              "y": 85,
+              "w": 15,
+              "h": 15,
+              "label": "Modified",
+              "role": "actor"
+            },
+            {
+              "shape": "text",
+              "x": 210,
+              "y": 105,
+              "w": 0,
+              "h": 0,
+              "label": "Gravity changes only after the apex",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        43
+      ]
+    }
+  },
+  {
+    "id": "swipe",
+    "topic": "collision",
+    "kind": "repair",
+    "prompt": "Which test detects this slice?",
+    "rule": "A swipe has one sample to the left of the fruit and the next to its right. Neither sample lies inside the fruit; their connecting segment crosses it.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Check only the two sample points",
+        "explanation": "Both endpoints miss even though the swipe crosses the fruit."
+      },
+      {
+        "id": "b",
+        "text": "Increase the damage value",
+        "explanation": "Damage is applied after detection; it cannot repair a missed collision."
+      },
+      {
+        "id": "c",
+        "text": "Check the segment between the samples",
+        "explanation": "The segment covers the path travelled between samples."
+      }
+    ],
+    "correctOptionId": "c",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Sample 1 is outside the fruit.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 210,
+              "y": 55,
+              "w": 28,
+              "h": 28,
+              "label": "Fruit",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 65,
+              "y": 80,
+              "w": 5,
+              "h": 5,
+              "label": "1",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 355,
+              "y": 30,
+              "w": 5,
+              "h": 5,
+              "label": "2",
+              "role": "actor"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Sample 2 is on the other side.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 210,
+              "y": 55,
+              "w": 28,
+              "h": 28,
+              "label": "Fruit",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 65,
+              "y": 80,
+              "w": 5,
+              "h": 5,
+              "label": "1",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 355,
+              "y": 30,
+              "w": 5,
+              "h": 5,
+              "label": "2",
+              "role": "actor"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 65,
+              "y1": 80,
+              "x2": 355,
+              "y2": 30
+            }
+          ]
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "The connecting segment crosses the fruit.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 210,
+              "y": 55,
+              "w": 28,
+              "h": 28,
+              "label": "Fruit",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 65,
+              "y": 80,
+              "w": 5,
+              "h": 5,
+              "label": "1",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 355,
+              "y": 30,
+              "w": 5,
+              "h": 5,
+              "label": "2",
+              "role": "actor"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 65,
+              "y1": 80,
+              "x2": 355,
+              "y2": 30
+            }
+          ]
+        }
+      },
+      {
+        "label": "2",
+        "detail": "A segment test detects the slice.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "circle",
+              "x": 210,
+              "y": 55,
+              "w": 28,
+              "h": 28,
+              "label": "Fruit",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 65,
+              "y": 80,
+              "w": 5,
+              "h": 5,
+              "label": "1",
+              "role": "actor"
+            },
+            {
+              "shape": "circle",
+              "x": 355,
+              "y": 30,
+              "w": 5,
+              "h": 5,
+              "label": "2",
+              "role": "actor"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 65,
+              "y1": 80,
+              "x2": 355,
+              "y2": 30
+            }
+          ]
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        65,
+        66
+      ]
+    }
+  },
+  {
+    "id": "layers",
+    "topic": "collision",
+    "kind": "predict",
+    "prompt": "A shot travels through water, past a teammate, then into a wall before the enemy. Where does it stop?",
+    "rule": "In this prototype, shots pass over water and through teammates, but stop at solid walls.",
+    "options": [
+      {
+        "id": "a",
+        "text": "At the water",
+        "explanation": "Water blocks movement here, but not shots."
+      },
+      {
+        "id": "b",
+        "text": "At the wall",
+        "explanation": "The wall is the first object on a blocking layer."
+      },
+      {
+        "id": "c",
+        "text": "At the enemy",
+        "explanation": "The wall stops the shot before it reaches the enemy."
+      }
+    ],
+    "correctOptionId": "b",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Shot → water → teammate",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 65,
+              "y": 35,
+              "w": 70,
+              "h": 50,
+              "label": "Water",
+              "role": "sensor"
+            },
+            {
+              "shape": "circle",
+              "x": 180,
+              "y": 60,
+              "w": 15,
+              "h": 15,
+              "label": "Ally",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 260,
+              "y": 25,
+              "w": 25,
+              "h": 65,
+              "label": "Wall",
+              "role": "danger"
+            },
+            {
+              "shape": "box",
+              "x": 345,
+              "y": 45,
+              "w": 35,
+              "h": 35,
+              "label": "Enemy",
+              "role": "object"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 15,
+              "y1": 60,
+              "x2": 235,
+              "y2": 60
+            }
+          ]
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Then wall → enemy",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 65,
+              "y": 35,
+              "w": 70,
+              "h": 50,
+              "label": "Water",
+              "role": "sensor"
+            },
+            {
+              "shape": "circle",
+              "x": 180,
+              "y": 60,
+              "w": 15,
+              "h": 15,
+              "label": "Ally",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 260,
+              "y": 25,
+              "w": 25,
+              "h": 65,
+              "label": "Wall",
+              "role": "danger"
+            },
+            {
+              "shape": "box",
+              "x": 345,
+              "y": 45,
+              "w": 35,
+              "h": 35,
+              "label": "Enemy",
+              "role": "object"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 15,
+              "y1": 60,
+              "x2": 235,
+              "y2": 60
+            }
+          ]
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "Water and teammate do not block it.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 65,
+              "y": 35,
+              "w": 70,
+              "h": 50,
+              "label": "Water",
+              "role": "sensor"
+            },
+            {
+              "shape": "circle",
+              "x": 180,
+              "y": 60,
+              "w": 15,
+              "h": 15,
+              "label": "Ally",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 260,
+              "y": 25,
+              "w": 25,
+              "h": 65,
+              "label": "Wall",
+              "role": "danger"
+            },
+            {
+              "shape": "box",
+              "x": 345,
+              "y": 45,
+              "w": 35,
+              "h": 35,
+              "label": "Enemy",
+              "role": "object"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 15,
+              "y1": 60,
+              "x2": 260,
+              "y2": 60
+            }
+          ]
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The wall stops it. The enemy is not hit.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 65,
+              "y": 35,
+              "w": 70,
+              "h": 50,
+              "label": "Water",
+              "role": "sensor"
+            },
+            {
+              "shape": "circle",
+              "x": 180,
+              "y": 60,
+              "w": 15,
+              "h": 15,
+              "label": "Ally",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 260,
+              "y": 25,
+              "w": 25,
+              "h": 65,
+              "label": "Wall",
+              "role": "danger"
+            },
+            {
+              "shape": "box",
+              "x": 345,
+              "y": 45,
+              "w": 35,
+              "h": 35,
+              "label": "Enemy",
+              "role": "object"
+            }
+          ],
+          "lines": [
+            {
+              "x1": 15,
+              "y1": 60,
+              "x2": 260,
+              "y2": 60
+            }
+          ]
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        60,
+        61,
+        62
+      ]
+    }
+  },
+  {
+    "id": "active-frames",
+    "topic": "collision",
+    "kind": "predict",
+    "prompt": "How many hits should the attack produce?",
+    "rule": "Only frames 3 and 4 have an active attack hitbox. The sword overlaps the target on frames 2 and 5 only.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Two hits",
+        "explanation": "Neither overlap happens during active attack frames."
+      },
+      {
+        "id": "b",
+        "text": "One hit",
+        "explanation": "A visible overlap alone does not create an active hitbox."
+      },
+      {
+        "id": "c",
+        "text": "No hit",
+        "explanation": "There is no overlap while the attack hitbox is active."
+      }
+    ],
+    "correctOptionId": "c",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "Overlap on frame 2; active frames are 3–4.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 30,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "1",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 107,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "2",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 184,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "3 active",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 261,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "4 active",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 338,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "5",
+              "role": "object"
+            },
+            {
+              "shape": "text",
+              "x": 140,
+              "y": 95,
+              "w": 0,
+              "h": 0,
+              "label": "Overlap: 2",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 350,
+              "y": 95,
+              "w": 0,
+              "h": 0,
+              "label": "Overlap: 5",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Another overlap on frame 5.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 30,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "1",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 107,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "2",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 184,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "3 active",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 261,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "4 active",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 338,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "5",
+              "role": "object"
+            },
+            {
+              "shape": "text",
+              "x": 140,
+              "y": 95,
+              "w": 0,
+              "h": 0,
+              "label": "Overlap: 2",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 350,
+              "y": 95,
+              "w": 0,
+              "h": 0,
+              "label": "Overlap: 5",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "Frame 2 is wind-up; frame 5 is recovery.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 30,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "1",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 107,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "2",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 184,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "3 active",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 261,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "4 active",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 338,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "5",
+              "role": "object"
+            },
+            {
+              "shape": "text",
+              "x": 140,
+              "y": 95,
+              "w": 0,
+              "h": 0,
+              "label": "Overlap: 2",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 350,
+              "y": 95,
+              "w": 0,
+              "h": 0,
+              "label": "Overlap: 5",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "Neither overlap produces damage.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 30,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "1",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 107,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "2",
+              "role": "object"
+            },
+            {
+              "shape": "box",
+              "x": 184,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "3 active",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 261,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "4 active",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 338,
+              "y": 35,
+              "w": 67,
+              "h": 35,
+              "label": "5",
+              "role": "object"
+            },
+            {
+              "shape": "text",
+              "x": 140,
+              "y": 95,
+              "w": 0,
+              "h": 0,
+              "label": "Overlap: 2",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 350,
+              "y": 95,
+              "w": 0,
+              "h": 0,
+              "label": "Overlap: 5",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        57
+      ]
+    }
+  },
+  {
+    "id": "near-miss",
+    "topic": "collision",
+    "kind": "predict",
+    "prompt": "What happens?",
+    "rule": "The player hurtbox is smaller than its sprite. The coin trigger extends beyond its artwork. The hazard touches only the player artwork; the coin trigger overlaps the player collider.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Damage and coin collected",
+        "explanation": "The hazard does not overlap the smaller hurtbox."
+      },
+      {
+        "id": "b",
+        "text": "Damage without collecting the coin",
+        "explanation": "The enlarged coin trigger does overlap the player collider."
+      },
+      {
+        "id": "c",
+        "text": "Coin collected without damage",
+        "explanation": "Collision shapes, rather than artwork edges, decide both outcomes."
+      }
+    ],
+    "correctOptionId": "c",
+    "setupReplay": [
+      {
+        "label": "1",
+        "detail": "A hazard grazes the outer artwork.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 80,
+              "y": 35,
+              "w": 80,
+              "h": 50,
+              "label": "Artwork",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 105,
+              "y": 47,
+              "w": 30,
+              "h": 27,
+              "label": "",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 145,
+              "y": 45,
+              "w": 20,
+              "h": 35,
+              "label": "Hazard",
+              "role": "danger"
+            },
+            {
+              "shape": "circle",
+              "x": 70,
+              "y": 64,
+              "w": 5,
+              "h": 5,
+              "label": "Coin",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 75,
+              "y": 64,
+              "w": 40,
+              "h": 40,
+              "label": "",
+              "role": "sensor"
+            },
+            {
+              "shape": "text",
+              "x": 280,
+              "y": 55,
+              "w": 0,
+              "h": 0,
+              "label": "Small hurtbox",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 280,
+              "y": 85,
+              "w": 0,
+              "h": 0,
+              "label": "Large coin trigger",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The nearby coin trigger overlaps the player collider.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 80,
+              "y": 35,
+              "w": 80,
+              "h": 50,
+              "label": "Artwork",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 105,
+              "y": 47,
+              "w": 30,
+              "h": 27,
+              "label": "",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 145,
+              "y": 45,
+              "w": 20,
+              "h": 35,
+              "label": "Hazard",
+              "role": "danger"
+            },
+            {
+              "shape": "circle",
+              "x": 70,
+              "y": 64,
+              "w": 5,
+              "h": 5,
+              "label": "Coin",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 75,
+              "y": 64,
+              "w": 40,
+              "h": 40,
+              "label": "",
+              "role": "sensor"
+            },
+            {
+              "shape": "text",
+              "x": 280,
+              "y": 55,
+              "w": 0,
+              "h": 0,
+              "label": "Small hurtbox",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 280,
+              "y": 85,
+              "w": 0,
+              "h": 0,
+              "label": "Large coin trigger",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "resultReplay": [
+      {
+        "label": "1",
+        "detail": "The hazard misses the actual hurtbox.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 80,
+              "y": 35,
+              "w": 80,
+              "h": 50,
+              "label": "Artwork",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 105,
+              "y": 47,
+              "w": 30,
+              "h": 27,
+              "label": "",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 145,
+              "y": 45,
+              "w": 20,
+              "h": 35,
+              "label": "Hazard",
+              "role": "danger"
+            },
+            {
+              "shape": "circle",
+              "x": 70,
+              "y": 64,
+              "w": 5,
+              "h": 5,
+              "label": "Coin",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 75,
+              "y": 64,
+              "w": 40,
+              "h": 40,
+              "label": "",
+              "role": "sensor"
+            },
+            {
+              "shape": "text",
+              "x": 280,
+              "y": 55,
+              "w": 0,
+              "h": 0,
+              "label": "Small hurtbox",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 280,
+              "y": 85,
+              "w": 0,
+              "h": 0,
+              "label": "Large coin trigger",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      },
+      {
+        "label": "2",
+        "detail": "The pickup trigger collects the coin.",
+        "image": "collision",
+        "scene": {
+          "nodes": [
+            {
+              "shape": "box",
+              "x": 80,
+              "y": 35,
+              "w": 80,
+              "h": 50,
+              "label": "Artwork",
+              "role": "sensor"
+            },
+            {
+              "shape": "box",
+              "x": 105,
+              "y": 47,
+              "w": 30,
+              "h": 27,
+              "label": "",
+              "role": "actor"
+            },
+            {
+              "shape": "box",
+              "x": 145,
+              "y": 45,
+              "w": 20,
+              "h": 35,
+              "label": "Hazard",
+              "role": "danger"
+            },
+            {
+              "shape": "circle",
+              "x": 70,
+              "y": 64,
+              "w": 5,
+              "h": 5,
+              "label": "Coin",
+              "role": "object"
+            },
+            {
+              "shape": "circle",
+              "x": 75,
+              "y": 64,
+              "w": 40,
+              "h": 40,
+              "label": "",
+              "role": "sensor"
+            },
+            {
+              "shape": "text",
+              "x": 280,
+              "y": 55,
+              "w": 0,
+              "h": 0,
+              "label": "Small hurtbox",
+              "role": "hint"
+            },
+            {
+              "shape": "text",
+              "x": 280,
+              "y": 85,
+              "w": 0,
+              "h": 0,
+              "label": "Large coin trigger",
+              "role": "hint"
+            }
+          ],
+          "lines": []
+        }
+      }
+    ],
+    "source": {
+      "week": 6,
+      "physicalSlides": [
+        52,
+        70
+      ]
+    }
+  }
+]

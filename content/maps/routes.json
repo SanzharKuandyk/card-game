@@ -1,0 +1,100 @@
+[
+  {
+    "id": "r1-0",
+    "row": 1,
+    "lane": 0,
+    "kind": "battle",
+    "next": ["r2-0", "r2-1"]
+  },
+  {
+    "id": "r2-0",
+    "row": 2,
+    "lane": 0,
+    "kind": "battle",
+    "next": ["r3-0", "r3-1"]
+  },
+  {
+    "id": "r2-1",
+    "row": 2,
+    "lane": 1,
+    "kind": "event",
+    "next": ["r3-0", "r3-1"]
+  },
+  {
+    "id": "r3-0",
+    "row": 3,
+    "lane": 0,
+    "kind": "elite",
+    "next": ["r4-0"]
+  },
+  {
+    "id": "r3-1",
+    "row": 3,
+    "lane": 1,
+    "kind": "rest",
+    "next": ["r4-0"]
+  },
+  {
+    "id": "r4-0",
+    "row": 4,
+    "lane": 0,
+    "kind": "battle",
+    "next": ["r5-0"]
+  },
+  {
+    "id": "r5-0",
+    "row": 5,
+    "lane": 0,
+    "kind": "boss",
+    "next": ["r6-0"]
+  },
+  {
+    "id": "r6-0",
+    "row": 6,
+    "lane": 0,
+    "kind": "battle",
+    "next": ["r7-0", "r7-1"]
+  },
+  {
+    "id": "r7-0",
+    "row": 7,
+    "lane": 0,
+    "kind": "battle",
+    "next": ["r8-0", "r8-1"]
+  },
+  {
+    "id": "r7-1",
+    "row": 7,
+    "lane": 1,
+    "kind": "event",
+    "next": ["r8-0", "r8-1"]
+  },
+  {
+    "id": "r8-0",
+    "row": 8,
+    "lane": 0,
+    "kind": "elite",
+    "next": ["r9-0"]
+  },
+  {
+    "id": "r8-1",
+    "row": 8,
+    "lane": 1,
+    "kind": "rest",
+    "next": ["r9-0"]
+  },
+  {
+    "id": "r9-0",
+    "row": 9,
+    "lane": 0,
+    "kind": "battle",
+    "next": ["r10-0"]
+  },
+  {
+    "id": "r10-0",
+    "row": 10,
+    "lane": 0,
+    "kind": "boss",
+    "next": []
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "raider",
+    "name": "Raider",
+    "pattern": "raider",
+    "weight": 1
+  },
+  {
+    "id": "guard",
+    "name": "Guard",
+    "pattern": "guard",
+    "weight": 1
+  },
+  {
+    "id": "support",
+    "name": "Signal Keeper",
+    "pattern": "support",
+    "weight": 0.3
+  },
+  {
+    "id": "colossus",
+    "name": "Colossus",
+    "pattern": "colossus",
+    "weight": 1
+  },
+  {
+    "id": "sentinel",
+    "name": "Sentinel",
+    "pattern": "sentinel",
+    "weight": 1
+  }
+]

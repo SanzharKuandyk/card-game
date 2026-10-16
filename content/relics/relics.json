@@ -1,0 +1,122 @@
+[
+  {
+    "id": "brace-ring",
+    "name": "Brace Ring",
+    "text": "Your first card that gives you Block each turn gives 3 more.",
+    "rarity": "common",
+    "character": "guardian",
+    "effect": "first-block",
+    "amount": 3,
+    "tags": ["first-block"]
+  },
+  {
+    "id": "blood-battery",
+    "name": "Blood Battery",
+    "text": "The first card that costs you health each turn gives 1 energy. Actual health must be lost.",
+    "rarity": "rare",
+    "character": "guardian",
+    "effect": "health-energy",
+    "amount": 1,
+    "tags": ["health-energy"]
+  },
+  {
+    "id": "tripwire",
+    "name": "Tripwire",
+    "text": "After your third manually played Attack each turn, gain 3 Block. Once per turn.",
+    "rarity": "common",
+    "character": "rogue",
+    "effect": "third-attack",
+    "amount": 3,
+    "tags": ["third-attack"]
+  },
+  {
+    "id": "folded-note",
+    "name": "Folded Note",
+    "text": "Your first deliberate discard each turn draws 1 card. End-turn discards do not count.",
+    "rarity": "common",
+    "character": "rogue",
+    "effect": "discard-draw",
+    "amount": 1,
+    "tags": ["discard-draw"]
+  },
+  {
+    "id": "glass-filter",
+    "name": "Glass Filter",
+    "text": "The first time your card applies Poison each turn, gain 3 Block.",
+    "rarity": "common",
+    "character": "alchemist",
+    "effect": "poison-block",
+    "amount": 3,
+    "tags": ["poison-block"]
+  },
+  {
+    "id": "recycler",
+    "name": "Recycler",
+    "text": "The first card you exhaust each turn draws 1 card.",
+    "rarity": "rare",
+    "character": "alchemist",
+    "effect": "exhaust-draw",
+    "amount": 1,
+    "tags": ["exhaust-draw"]
+  },
+  {
+    "id": "relay-pin",
+    "name": "Relay Pin",
+    "text": "The first time your card effectively helps another player each turn, draw 1 card.",
+    "rarity": "common",
+    "character": "channeler",
+    "effect": "help-draw",
+    "amount": 1,
+    "tags": ["help-draw"]
+  },
+  {
+    "id": "capacitor",
+    "name": "Capacitor",
+    "text": "Your first damaging hit from an Attack kept across a turn gains 4 damage. Once per turn.",
+    "rarity": "rare",
+    "character": "channeler",
+    "effect": "retained-damage",
+    "amount": 4,
+    "tags": ["retained-damage"]
+  },
+  {
+    "id": "opening-lens",
+    "name": "Opening Lens",
+    "text": "Draw 1 extra card at the start of each encounter.",
+    "rarity": "common",
+    "character": "shared",
+    "effect": "opening-draw",
+    "amount": 1,
+    "tags": ["opening-draw"]
+  },
+  {
+    "id": "spare-shell",
+    "name": "Spare Shell",
+    "text": "Start each turn with 2 extra Block.",
+    "rarity": "common",
+    "character": "shared",
+    "effect": "turn-block",
+    "amount": 2,
+    "tags": ["turn-block"]
+  },
+  {
+    "id": "repair-kit",
+    "name": "Repair Kit",
+    "text": "After your first victory at a route node, heal 3. Cannot revive you. Retries cannot repeat this reward.",
+    "rarity": "common",
+    "character": "shared",
+    "effect": "victory-heal",
+    "amount": 3,
+    "tags": ["victory-heal"]
+  },
+  {
+    "id": "overcharged-coil",
+    "name": "Overcharged Coil",
+    "text": "On the first turn, gain 1 energy but draw 1 fewer opening card.",
+    "rarity": "rare",
+    "character": "shared",
+    "effect": "opening-energy",
+    "amount": 1,
+    "tags": ["opening-energy"]
+  }
+]

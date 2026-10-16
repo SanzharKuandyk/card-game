@@ -1,0 +1,8 @@
+{
+  "announce": 8000,
+  "demonstrate": 6000,
+  "answer": 25000,
+  "minimumAnswer": 12000,
+  "reveal": 12000,
+  "reward": 35000
+}

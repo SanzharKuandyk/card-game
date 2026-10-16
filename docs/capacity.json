@@ -1,0 +1,35 @@
+{
+  "projectorLayout": {
+    "allTeamsVisible": true,
+    "overflow": false,
+    "scrollHeight": 968,
+    "clientHeight": 968
+  },
+  "players": 80,
+  "teams": 80,
+  "firstArrivalAccepted": 1,
+  "commands": 565,
+  "serverCommandLatencyMs": {
+    "p50": 390.0486000000001,
+    "p95": 949.3582000000006
+  },
+  "executionMs": {
+    "p50": 6.49159999999938,
+    "p95": 30.337099999999737
+  },
+  "under100msTarget": false,
+  "localRoundTripMs": {
+    "p50": 395.38559999999995,
+    "p95": 955.7911999999997
+  },
+  "eventLoopDelayMs": {
+    "p95": 21.200895,
+    "max": 95.354879
+  },
+  "rssMB": 440.6953125,
+  "projectionBytes": {
+    "median": 50352,
+    "max": 230937
+  },
+  "rulesVersion": "cards-v2"
+}

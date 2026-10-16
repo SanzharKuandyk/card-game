@@ -1,0 +1,2555 @@
+[
+  {
+    "id": "brace",
+    "name": "Brace",
+    "character": "guardian",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["fortress"],
+    "text": "Gain 7 Block.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 7
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain 10 Block.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 10
+        }
+      ]
+    }
+  },
+  {
+    "id": "shield-strike",
+    "name": "Shield Strike",
+    "character": "guardian",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["fortress"],
+    "text": "Deal damage equal to your Block. Keep your Block.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 0,
+        "scale": "block"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 4 damage plus your Block.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 4,
+          "scale": "block"
+        }
+      ]
+    }
+  },
+  {
+    "id": "blood-spark",
+    "name": "Blood Spark",
+    "character": "guardian",
+    "rarity": "common",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["blood"],
+    "text": "Lose 3 health. Gain 1 energy. Exhaust.",
+    "effects": [
+      {
+        "op": "lose-hp",
+        "amount": 3
+      },
+      {
+        "op": "energy",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Lose 3 health. Gain 2 energy. Exhaust.",
+      "effects": [
+        {
+          "op": "lose-hp",
+          "amount": 3
+        },
+        {
+          "op": "energy",
+          "amount": 2
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "heavy-swing",
+    "name": "Heavy Swing",
+    "character": "guardian",
+    "rarity": "common",
+    "cost": 2,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["blood"],
+    "text": "Deal 14 damage.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 14
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Deal 19 damage.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 19
+        }
+      ]
+    }
+  },
+  {
+    "id": "shared-wall",
+    "name": "Shared Wall",
+    "character": "guardian",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "any-hero",
+    "tags": ["fortress", "team"],
+    "text": "Give a player 6 Block.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 6
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Give a player 9 Block.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 9
+        }
+      ]
+    },
+    "crossTeam": true
+  },
+  {
+    "id": "counterstance",
+    "name": "Counterstance",
+    "character": "guardian",
+    "rarity": "common",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["fortress"],
+    "text": "For this fight, return 2 damage whenever an enemy hits you.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 2,
+        "key": "thorns"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Return 3 damage whenever an enemy hits you.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 3,
+          "key": "thorns"
+        }
+      ]
+    }
+  },
+  {
+    "id": "redline",
+    "name": "Redline",
+    "character": "guardian",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["blood"],
+    "text": "Lose 2 health. Deal 8 damage plus health lost this turn.",
+    "effects": [
+      {
+        "op": "lose-hp",
+        "amount": 2
+      },
+      {
+        "op": "damage",
+        "amount": 8,
+        "scale": "lost-hp"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Lose 2 health. Deal 11 damage plus health lost this turn.",
+      "effects": [
+        {
+          "op": "lose-hp",
+          "amount": 2
+        },
+        {
+          "op": "damage",
+          "amount": 11,
+          "scale": "lost-hp"
+        }
+      ]
+    }
+  },
+  {
+    "id": "steady-hands",
+    "name": "Steady Hands",
+    "character": "guardian",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["fortress"],
+    "text": "Gain 4 Block. Draw 1.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 4
+      },
+      {
+        "op": "draw",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain 7 Block. Draw 1.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 7
+        },
+        {
+          "op": "draw",
+          "amount": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "hold-the-line",
+    "name": "Hold the Line",
+    "character": "guardian",
+    "rarity": "uncommon",
+    "cost": 2,
+    "type": "power",
+    "target": "self",
+    "tags": ["fortress"],
+    "text": "Keep your Block between turns.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 1,
+        "key": "keep-block"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Keep your Block between turns.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 1,
+          "key": "keep-block"
+        }
+      ]
+    }
+  },
+  {
+    "id": "first-wall",
+    "name": "First Wall",
+    "character": "guardian",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["fortress"],
+    "text": "Double your first Block gain each turn.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 1,
+        "key": "double-first-block"
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Double your first Block gain each turn.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 1,
+          "key": "double-first-block"
+        }
+      ]
+    }
+  },
+  {
+    "id": "raise-the-rampart",
+    "name": "Raise the Rampart",
+    "character": "guardian",
+    "rarity": "uncommon",
+    "cost": 2,
+    "type": "skill",
+    "target": "self",
+    "tags": ["fortress"],
+    "text": "Double your Block.",
+    "effects": [
+      {
+        "op": "double-block",
+        "amount": 0
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Double your Block.",
+      "effects": [
+        {
+          "op": "double-block",
+          "amount": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "pain-into-power",
+    "name": "Pain into Power",
+    "character": "guardian",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["blood"],
+    "text": "When you spend health on your turn, gain 1 Strength.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 1,
+        "key": "hp-strength"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "When you spend health on your turn, gain 2 Strength.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 2,
+          "key": "hp-strength"
+        }
+      ]
+    }
+  },
+  {
+    "id": "wall-crash",
+    "name": "Wall Crash",
+    "character": "guardian",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["fortress"],
+    "text": "Deal twice your Block as damage. Lose your Block.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 0,
+        "scale": "block",
+        "factor": 2
+      },
+      {
+        "op": "spend-block",
+        "amount": 0
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Deal three times your Block as damage. Lose your Block.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 0,
+          "scale": "block",
+          "factor": 3
+        },
+        {
+          "op": "spend-block",
+          "amount": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "defiant",
+    "name": "Defiant",
+    "character": "guardian",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "power",
+    "target": "self",
+    "tags": ["fortress"],
+    "text": "Each Block gain on your turn deals 2 damage to the first standing enemy.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 2,
+        "key": "block-damage"
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Each Block gain deals 3 damage to the first standing enemy.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 3,
+          "key": "block-damage"
+        }
+      ]
+    }
+  },
+  {
+    "id": "blood-pact",
+    "name": "Blood Pact",
+    "character": "guardian",
+    "rarity": "rare",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["blood"],
+    "text": "Once each turn, spending health draws 2 cards.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 2,
+        "key": "hp-draw"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Once each turn, spending health draws 3 cards.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 3,
+          "key": "hp-draw"
+        }
+      ]
+    }
+  },
+  {
+    "id": "stand-together",
+    "name": "Stand Together",
+    "character": "guardian",
+    "rarity": "rare",
+    "cost": 1,
+    "type": "skill",
+    "target": "none",
+    "tags": ["fortress", "team"],
+    "text": "Give every teammate 5 Block. Exhaust.",
+    "effects": [
+      {
+        "op": "all-block",
+        "amount": 5
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Give every teammate 8 Block. Exhaust.",
+      "effects": [
+        {
+          "op": "all-block",
+          "amount": 8
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "quickstep",
+    "name": "Quickstep",
+    "character": "rogue",
+    "rarity": "common",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["flurry"],
+    "text": "Draw 1. Exhaust.",
+    "effects": [
+      {
+        "op": "draw",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Draw 2. Exhaust.",
+      "effects": [
+        {
+          "op": "draw",
+          "amount": 2
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "knifework",
+    "name": "Knifework",
+    "character": "rogue",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["flurry"],
+    "text": "Create 3 Sparks: free 4-damage attacks that Exhaust.",
+    "effects": [
+      {
+        "op": "generate",
+        "amount": 3,
+        "key": "spark"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Create 4 Sparks.",
+      "effects": [
+        {
+          "op": "generate",
+          "amount": 4,
+          "key": "spark"
+        }
+      ]
+    }
+  },
+  {
+    "id": "feint",
+    "name": "Feint",
+    "character": "rogue",
+    "rarity": "common",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["discard"],
+    "text": "Discard a chosen card. Draw 2. Exhaust.",
+    "effects": [
+      {
+        "op": "discard",
+        "amount": 1
+      },
+      {
+        "op": "draw",
+        "amount": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Discard a chosen card. Draw 3. Exhaust.",
+      "effects": [
+        {
+          "op": "discard",
+          "amount": 1
+        },
+        {
+          "op": "draw",
+          "amount": 3
+        }
+      ]
+    },
+    "choose": "hand",
+    "exhaust": true
+  },
+  {
+    "id": "finishing-cut",
+    "name": "Finishing Cut",
+    "character": "rogue",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["flurry"],
+    "text": "Deal 4 damage for each earlier attack you played this turn.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 0,
+        "scale": "attacks",
+        "factor": 4
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 5 damage for each earlier attack this turn.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 0,
+          "scale": "attacks",
+          "factor": 5
+        }
+      ]
+    }
+  },
+  {
+    "id": "slip-away",
+    "name": "Slip Away",
+    "character": "rogue",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["discard"],
+    "text": "Gain 8 Block. Discard a chosen card.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 8
+      },
+      {
+        "op": "discard",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain 11 Block. Discard a chosen card.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 11
+        },
+        {
+          "op": "discard",
+          "amount": 1
+        }
+      ]
+    },
+    "choose": "hand"
+  },
+  {
+    "id": "pocket-knife",
+    "name": "Pocket Knife",
+    "character": "rogue",
+    "rarity": "common",
+    "cost": 0,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["flurry"],
+    "text": "Deal 4 damage.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 4
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Deal 6 damage.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 6
+        }
+      ]
+    }
+  },
+  {
+    "id": "false-step",
+    "name": "False Step",
+    "character": "rogue",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["discard"],
+    "text": "Deal 8 damage. Draw 1, then discard a chosen card.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 8
+      },
+      {
+        "op": "draw",
+        "amount": 1
+      },
+      {
+        "op": "discard",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 11 damage. Draw 1, then discard a chosen card.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 11
+        },
+        {
+          "op": "draw",
+          "amount": 1
+        },
+        {
+          "op": "discard",
+          "amount": 1
+        }
+      ]
+    },
+    "choose": "hand"
+  },
+  {
+    "id": "hidden-charge",
+    "name": "Hidden Charge",
+    "character": "rogue",
+    "rarity": "common",
+    "cost": 2,
+    "type": "skill",
+    "target": "self",
+    "tags": ["discard"],
+    "text": "Gain 1 energy. If deliberately discarded, gain that energy for free.",
+    "effects": [
+      {
+        "op": "energy",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Gain 2 energy. If deliberately discarded, gain it for free.",
+      "effects": [
+        {
+          "op": "energy",
+          "amount": 2
+        }
+      ]
+    },
+    "discardEffect": [
+      {
+        "op": "energy",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "id": "rhythm",
+    "name": "Rhythm",
+    "character": "rogue",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["flurry"],
+    "text": "Every third card you play gives 3 Block.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 3,
+        "key": "rhythm"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Every third card gives 5 Block.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 5,
+          "key": "rhythm"
+        }
+      ]
+    }
+  },
+  {
+    "id": "fresh-pocket",
+    "name": "Fresh Pocket",
+    "character": "rogue",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["discard"],
+    "text": "Discard your remaining hand. Draw the same number plus 1. Exhaust.",
+    "effects": [
+      {
+        "op": "discard",
+        "amount": 0,
+        "all": true
+      },
+      {
+        "op": "draw",
+        "amount": 1,
+        "scale": "discarded"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Discard your hand. Draw the same number plus 2. Exhaust.",
+      "effects": [
+        {
+          "op": "discard",
+          "amount": 0,
+          "all": true
+        },
+        {
+          "op": "draw",
+          "amount": 2,
+          "scale": "discarded"
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "double-edge",
+    "name": "Double Edge",
+    "character": "rogue",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["flurry"],
+    "text": "Your generated Sparks deal 3 more damage.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 3,
+        "key": "spark-bonus"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Your Sparks deal 5 more damage.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 5,
+          "key": "spark-bonus"
+        }
+      ]
+    }
+  },
+  {
+    "id": "light-fingers",
+    "name": "Light Fingers",
+    "character": "rogue",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["discard"],
+    "text": "Once per turn, deliberately discarding draws 1.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 1,
+        "key": "discard-draw"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Once per turn, deliberately discarding draws 2.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 2,
+          "key": "discard-draw"
+        }
+      ]
+    }
+  },
+  {
+    "id": "full-house",
+    "name": "Full House",
+    "character": "rogue",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "skill",
+    "target": "self",
+    "tags": ["flurry"],
+    "text": "Draw until you hold 8 cards. Exhaust.",
+    "effects": [
+      {
+        "op": "draw",
+        "amount": 8
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Draw until you hold 10 cards. Exhaust.",
+      "effects": [
+        {
+          "op": "draw",
+          "amount": 10
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "last-word",
+    "name": "Last Word",
+    "character": "rogue",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["discard"],
+    "text": "Deal 12 damage plus 3 per card discarded this turn.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 12,
+        "scale": "discarded",
+        "factor": 3
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Deal 15 damage plus 3 per discarded card.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 15,
+          "scale": "discarded",
+          "factor": 3
+        }
+      ]
+    }
+  },
+  {
+    "id": "chain-reaction",
+    "name": "Chain Reaction",
+    "character": "rogue",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "power",
+    "target": "self",
+    "tags": ["flurry"],
+    "text": "Every fifth attack deals 8 damage to all enemies.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 8,
+        "key": "attack-chain"
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Every fifth attack deals 12 damage to all enemies.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 12,
+          "key": "attack-chain"
+        }
+      ]
+    }
+  },
+  {
+    "id": "vanishing-act",
+    "name": "Vanishing Act",
+    "character": "rogue",
+    "rarity": "rare",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["discard"],
+    "text": "Gain 6 Block for each card discarded this turn.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 0,
+        "scale": "discarded",
+        "factor": 6
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain 8 Block for each card discarded this turn.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 0,
+          "scale": "discarded",
+          "factor": 8
+        }
+      ]
+    }
+  },
+  {
+    "id": "toxic-dart",
+    "name": "Toxic Dart",
+    "character": "alchemist",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["poison"],
+    "text": "Deal 5 damage. Apply 3 Poison.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 5
+      },
+      {
+        "op": "poison",
+        "amount": 3
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 7 damage. Apply 4 Poison.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 7
+        },
+        {
+          "op": "poison",
+          "amount": 4
+        }
+      ]
+    }
+  },
+  {
+    "id": "venom-coat",
+    "name": "Venom Coat",
+    "character": "alchemist",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["poison"],
+    "text": "Gain Block equal to all enemy Poison, plus 3.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 3,
+        "scale": "poison"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain Block equal to all enemy Poison, plus 6.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 6,
+          "scale": "poison"
+        }
+      ]
+    }
+  },
+  {
+    "id": "burn-scrap",
+    "name": "Burn Scrap",
+    "character": "alchemist",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["recycle"],
+    "text": "Exhaust a chosen card. Gain 6 Block.",
+    "effects": [
+      {
+        "op": "exhaust",
+        "amount": 1
+      },
+      {
+        "op": "block",
+        "amount": 6
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Exhaust a chosen card. Gain 9 Block.",
+      "effects": [
+        {
+          "op": "exhaust",
+          "amount": 1
+        },
+        {
+          "op": "block",
+          "amount": 9
+        }
+      ]
+    },
+    "choose": "hand"
+  },
+  {
+    "id": "transmute",
+    "name": "Transmute",
+    "character": "alchemist",
+    "rarity": "common",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["recycle"],
+    "text": "Exhaust a chosen card. Draw 2. Exhaust.",
+    "effects": [
+      {
+        "op": "exhaust",
+        "amount": 1
+      },
+      {
+        "op": "draw",
+        "amount": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Exhaust a chosen card. Draw 3. Exhaust.",
+      "effects": [
+        {
+          "op": "exhaust",
+          "amount": 1
+        },
+        {
+          "op": "draw",
+          "amount": 3
+        }
+      ]
+    },
+    "choose": "hand",
+    "exhaust": true
+  },
+  {
+    "id": "spill",
+    "name": "Spill",
+    "character": "alchemist",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "enemy",
+    "tags": ["poison"],
+    "text": "Apply 3 Poison to all enemies.",
+    "effects": [
+      {
+        "op": "poison",
+        "amount": 3,
+        "all": true
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Apply 5 Poison to all enemies.",
+      "effects": [
+        {
+          "op": "poison",
+          "amount": 5,
+          "all": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "spent-fuel",
+    "name": "Spent Fuel",
+    "character": "alchemist",
+    "rarity": "common",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["recycle"],
+    "text": "Gain 1 energy. Create a Scrap in your discard pile. Exhaust.",
+    "effects": [
+      {
+        "op": "energy",
+        "amount": 1
+      },
+      {
+        "op": "generate",
+        "amount": 1,
+        "key": "scrap-discard"
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Gain 2 energy. Create a Scrap in discard. Exhaust.",
+      "effects": [
+        {
+          "op": "energy",
+          "amount": 2
+        },
+        {
+          "op": "generate",
+          "amount": 1,
+          "key": "scrap-discard"
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "reclaim",
+    "name": "Reclaim",
+    "character": "alchemist",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "discard",
+    "tags": ["recycle"],
+    "text": "Return a chosen discard card to your hand. Exhaust.",
+    "effects": [
+      {
+        "op": "recover",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Return a chosen discard card. It costs 1 less this turn. Exhaust.",
+      "effects": [
+        {
+          "op": "recover",
+          "amount": 1
+        },
+        {
+          "op": "reduce-cost",
+          "amount": 1
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "acid-wash",
+    "name": "Acid Wash",
+    "character": "alchemist",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["poison"],
+    "text": "Deal 8 damage. Apply 1 Weak.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 8
+      },
+      {
+        "op": "weak",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 11 damage. Apply 2 Weak.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 11
+        },
+        {
+          "op": "weak",
+          "amount": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "clean-burn",
+    "name": "Clean Burn",
+    "character": "alchemist",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["recycle"],
+    "text": "Exhausting a card gives 3 Block.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 3,
+        "key": "exhaust-block"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Exhausting a card gives 4 Block.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 4,
+          "key": "exhaust-block"
+        }
+      ]
+    }
+  },
+  {
+    "id": "renewal",
+    "name": "Renewal",
+    "character": "alchemist",
+    "rarity": "uncommon",
+    "cost": 2,
+    "type": "power",
+    "target": "self",
+    "tags": ["recycle"],
+    "text": "Exhausting a card draws 1.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 1,
+        "key": "exhaust-draw"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Exhausting a card draws 1.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 1,
+          "key": "exhaust-draw"
+        }
+      ]
+    }
+  },
+  {
+    "id": "poison-mist",
+    "name": "Poison Mist",
+    "character": "alchemist",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["poison"],
+    "text": "At turn start, apply 2 Poison to all enemies.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 2,
+        "key": "poison-mist"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "At turn start, apply 3 Poison to all enemies.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 3,
+          "key": "poison-mist"
+        }
+      ]
+    }
+  },
+  {
+    "id": "catalytic-hit",
+    "name": "Catalytic Hit",
+    "character": "alchemist",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["poison"],
+    "text": "Deal 6 damage plus this enemy's Poison.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 6,
+        "scale": "poison"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 9 damage plus this enemy's Poison.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 9,
+          "scale": "poison"
+        }
+      ]
+    }
+  },
+  {
+    "id": "boiling-point",
+    "name": "Boiling Point",
+    "character": "alchemist",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "skill",
+    "target": "enemy",
+    "tags": ["poison"],
+    "text": "Double this enemy's Poison. Exhaust.",
+    "effects": [
+      {
+        "op": "poison",
+        "amount": 0,
+        "scale": "poison"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Double this enemy's Poison. Exhaust.",
+      "effects": [
+        {
+          "op": "poison",
+          "amount": 0,
+          "scale": "poison"
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "scrap-storm",
+    "name": "Scrap Storm",
+    "character": "alchemist",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["recycle"],
+    "text": "Deal 3 damage per exhausted card to all enemies.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 0,
+        "scale": "exhausted",
+        "all": true,
+        "factor": 3
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Deal 4 damage per exhausted card to all enemies.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 0,
+          "scale": "exhausted",
+          "all": true,
+          "factor": 4
+        }
+      ]
+    }
+  },
+  {
+    "id": "scrap-furnace",
+    "name": "Scrap Furnace",
+    "character": "alchemist",
+    "rarity": "rare",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["recycle"],
+    "text": "Whenever you create a Scrap, deal 5 damage to all enemies.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 5,
+        "key": "scrap-damage"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Whenever you create a Scrap, deal 7 damage to all enemies.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 7,
+          "key": "scrap-damage"
+        }
+      ]
+    }
+  },
+  {
+    "id": "last-reserve",
+    "name": "Last Reserve",
+    "character": "alchemist",
+    "rarity": "rare",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["recycle"],
+    "text": "Exhaust your remaining hand. Gain 1 energy per card. Exhaust.",
+    "effects": [
+      {
+        "op": "exhaust",
+        "amount": 0,
+        "all": true
+      },
+      {
+        "op": "energy",
+        "amount": 0,
+        "scale": "exhausted"
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Exhaust your hand. Gain 1 energy per card and draw 2. Exhaust.",
+      "effects": [
+        {
+          "op": "exhaust",
+          "amount": 0,
+          "all": true
+        },
+        {
+          "op": "energy",
+          "amount": 0,
+          "scale": "exhausted"
+        },
+        {
+          "op": "draw",
+          "amount": 2
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "charge",
+    "name": "Charge",
+    "character": "channeler",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["charge"],
+    "text": "Gain 6 Charge for this fight.",
+    "effects": [
+      {
+        "op": "charge",
+        "amount": 6
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain 9 Charge.",
+      "effects": [
+        {
+          "op": "charge",
+          "amount": 9
+        }
+      ]
+    }
+  },
+  {
+    "id": "windup",
+    "name": "Windup",
+    "character": "channeler",
+    "rarity": "common",
+    "cost": 2,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["charge"],
+    "text": "Deal 10 damage plus your Charge.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 10,
+        "scale": "charge"
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Deal 14 damage plus your Charge.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 14,
+          "scale": "charge"
+        }
+      ]
+    },
+    "retain": true
+  },
+  {
+    "id": "relay",
+    "name": "Relay",
+    "character": "channeler",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["team"],
+    "text": "Deal 5 damage. Repeat the next teammate attack on this enemy once.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 5
+      },
+      {
+        "op": "repeat-ally",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 8 damage. Repeat the next teammate attack once.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 8
+        },
+        {
+          "op": "repeat-ally",
+          "amount": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "gift",
+    "name": "Gift",
+    "character": "channeler",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "any-hero",
+    "tags": ["team"],
+    "text": "Give a player 1 energy. Exhaust.",
+    "effects": [
+      {
+        "op": "energy",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Give a player 2 energy. Exhaust.",
+      "effects": [
+        {
+          "op": "energy",
+          "amount": 2
+        }
+      ]
+    },
+    "crossTeam": true,
+    "exhaust": true
+  },
+  {
+    "id": "gather",
+    "name": "Gather",
+    "character": "channeler",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["charge"],
+    "text": "Gain 5 Block and 3 Charge.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 5
+      },
+      {
+        "op": "charge",
+        "amount": 3
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain 8 Block and 4 Charge.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 8
+        },
+        {
+          "op": "charge",
+          "amount": 4
+        }
+      ]
+    }
+  },
+  {
+    "id": "open-book",
+    "name": "Open Book",
+    "character": "channeler",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "any-hero",
+    "tags": ["team"],
+    "text": "A player draws 2.",
+    "effects": [
+      {
+        "op": "draw",
+        "amount": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "A player draws 3.",
+      "effects": [
+        {
+          "op": "draw",
+          "amount": 3
+        }
+      ]
+    },
+    "crossTeam": true
+  },
+  {
+    "id": "hold-thought",
+    "name": "Hold Thought",
+    "character": "channeler",
+    "rarity": "common",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["charge"],
+    "text": "Retain a chosen card this turn. Exhaust.",
+    "effects": [
+      {
+        "op": "retain",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Retain a chosen card. It costs 1 less this turn. Exhaust.",
+      "effects": [
+        {
+          "op": "retain",
+          "amount": 1
+        },
+        {
+          "op": "reduce-cost",
+          "amount": 1
+        }
+      ]
+    },
+    "choose": "hand",
+    "exhaust": true
+  },
+  {
+    "id": "follow-up",
+    "name": "Follow Up",
+    "character": "channeler",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["team"],
+    "text": "Deal 5 damage plus 2 per earlier teammate attack on this enemy.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 5.0,
+        "scale": "other-attacks",
+        "factor": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 8 damage plus 2 per earlier teammate attack.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 8,
+          "scale": "other-attacks",
+          "factor": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "second-voice",
+    "name": "Second Voice",
+    "character": "channeler",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "skill",
+    "target": "hand",
+    "tags": ["team"],
+    "text": "Copy a non-copying Attack in your hand. The copy Exhausts.",
+    "effects": [
+      {
+        "op": "copy",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Copy an Attack. Its copy costs 1 less and Exhausts.",
+      "effects": [
+        {
+          "op": "copy",
+          "amount": 1
+        },
+        {
+          "op": "reduce-cost",
+          "amount": 1
+        }
+      ]
+    },
+    "nonCopyable": true
+  },
+  {
+    "id": "patient-aim",
+    "name": "Patient Aim",
+    "character": "channeler",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["charge"],
+    "text": "At turn start, gain 3 Charge.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 3,
+        "key": "charge-start"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "At turn start, gain 5 Charge.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 5,
+          "key": "charge-start"
+        }
+      ]
+    }
+  },
+  {
+    "id": "prepare",
+    "name": "Prepare",
+    "character": "channeler",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "skill",
+    "target": "hand",
+    "tags": ["charge"],
+    "text": "A chosen card costs 1 less this turn.",
+    "effects": [
+      {
+        "op": "reduce-cost",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "A chosen card costs 2 less this turn.",
+      "effects": [
+        {
+          "op": "reduce-cost",
+          "amount": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "together",
+    "name": "Together",
+    "character": "channeler",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "skill",
+    "target": "none",
+    "tags": ["team"],
+    "text": "Every teammate gains 1 energy. Exhaust.",
+    "effects": [
+      {
+        "op": "all-energy",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Every teammate gains 1 energy. Exhaust.",
+      "effects": [
+        {
+          "op": "all-energy",
+          "amount": 1
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "grand-strike",
+    "name": "Grand Strike",
+    "character": "channeler",
+    "rarity": "rare",
+    "cost": 3,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["charge"],
+    "text": "Deal 12 damage plus twice your Charge.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 12,
+        "scale": "charge",
+        "factor": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 3,
+      "text": "Deal 18 damage plus twice your Charge.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 18,
+          "scale": "charge",
+          "factor": 2
+        }
+      ]
+    },
+    "retain": true
+  },
+  {
+    "id": "echo",
+    "name": "Echo",
+    "character": "channeler",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "power",
+    "target": "self",
+    "tags": ["charge"],
+    "text": "Repeat your first Attack each turn once.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 1,
+        "key": "echo"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Repeat your first Attack each turn once.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 1,
+          "key": "echo"
+        }
+      ]
+    }
+  },
+  {
+    "id": "conductor",
+    "name": "Conductor",
+    "character": "channeler",
+    "rarity": "rare",
+    "cost": 1,
+    "type": "power",
+    "target": "self",
+    "tags": ["team"],
+    "text": "Once each turn, helping another player draws 2 cards.",
+    "effects": [
+      {
+        "op": "power",
+        "amount": 2,
+        "key": "help-draw"
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Once each turn, helping another player draws 3.",
+      "effects": [
+        {
+          "op": "power",
+          "amount": 3,
+          "key": "help-draw"
+        }
+      ]
+    }
+  },
+  {
+    "id": "final-chorus",
+    "name": "Final Chorus",
+    "character": "channeler",
+    "rarity": "rare",
+    "cost": 2,
+    "type": "skill",
+    "target": "none",
+    "tags": ["team"],
+    "text": "Every teammate gains 2 energy. Exhaust.",
+    "effects": [
+      {
+        "op": "all-energy",
+        "amount": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Every teammate gains 2 energy. Exhaust.",
+      "effects": [
+        {
+          "op": "all-energy",
+          "amount": 2
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "strike",
+    "name": "Strike",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["general"],
+    "text": "Deal 6 damage.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 6
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 9 damage.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 9
+        }
+      ]
+    }
+  },
+  {
+    "id": "guard",
+    "name": "Guard",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["general"],
+    "text": "Gain 5 Block.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 5
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain 8 Block.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 8
+        }
+      ]
+    }
+  },
+  {
+    "id": "look-ahead",
+    "name": "Look Ahead",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["general"],
+    "text": "Draw 2.",
+    "effects": [
+      {
+        "op": "draw",
+        "amount": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Draw 3.",
+      "effects": [
+        {
+          "op": "draw",
+          "amount": 3
+        }
+      ]
+    }
+  },
+  {
+    "id": "trip",
+    "name": "Trip",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["general"],
+    "text": "Deal 5 damage. Apply 1 Weak.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 5
+      },
+      {
+        "op": "weak",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 8 damage. Apply 2 Weak.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 8
+        },
+        {
+          "op": "weak",
+          "amount": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "opening",
+    "name": "Opening",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "enemy",
+    "tags": ["team"],
+    "text": "Apply 2 Vulnerable.",
+    "effects": [
+      {
+        "op": "vulnerable",
+        "amount": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Apply 3 Vulnerable.",
+      "effects": [
+        {
+          "op": "vulnerable",
+          "amount": 3
+        }
+      ]
+    }
+  },
+  {
+    "id": "cover",
+    "name": "Cover",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "any-hero",
+    "tags": ["team"],
+    "text": "Give a player 7 Block.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 7
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Give a player 10 Block.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 10
+        }
+      ]
+    },
+    "crossTeam": true
+  },
+  {
+    "id": "sweep",
+    "name": "Sweep",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["general"],
+    "text": "Deal 5 damage to all enemies.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 5,
+        "all": true
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 8 damage to all enemies.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 8,
+          "all": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "readjust",
+    "name": "Readjust",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["discard"],
+    "text": "Discard a chosen card. Gain 4 Block.",
+    "effects": [
+      {
+        "op": "discard",
+        "amount": 1
+      },
+      {
+        "op": "block",
+        "amount": 4
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Discard a chosen card. Gain 7 Block.",
+      "effects": [
+        {
+          "op": "discard",
+          "amount": 1
+        },
+        {
+          "op": "block",
+          "amount": 7
+        }
+      ]
+    },
+    "choose": "hand"
+  },
+  {
+    "id": "small-sacrifice",
+    "name": "Small Sacrifice",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 0,
+    "type": "skill",
+    "target": "self",
+    "tags": ["blood"],
+    "text": "Lose 3 health. Draw 2. Exhaust.",
+    "effects": [
+      {
+        "op": "lose-hp",
+        "amount": 3
+      },
+      {
+        "op": "draw",
+        "amount": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Lose 3 health. Draw 3. Exhaust.",
+      "effects": [
+        {
+          "op": "lose-hp",
+          "amount": 3
+        },
+        {
+          "op": "draw",
+          "amount": 3
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "clear-out",
+    "name": "Clear Out",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "skill",
+    "target": "hand",
+    "tags": ["recycle"],
+    "text": "Exhaust a chosen card. Draw 1.",
+    "effects": [
+      {
+        "op": "exhaust",
+        "amount": 1
+      },
+      {
+        "op": "draw",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Exhaust a chosen card. Draw 2.",
+      "effects": [
+        {
+          "op": "exhaust",
+          "amount": 1
+        },
+        {
+          "op": "draw",
+          "amount": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "twin-hit",
+    "name": "Twin Hit",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["flurry"],
+    "text": "Deal 4 damage twice.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 4,
+        "hits": 2
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 6 damage twice.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 6,
+          "hits": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "rescue",
+    "name": "Rescue",
+    "character": "shared",
+    "rarity": "common",
+    "cost": 2,
+    "type": "skill",
+    "target": "any-hero",
+    "tags": ["team"],
+    "text": "Restore 8 health. Exhaust.",
+    "effects": [
+      {
+        "op": "heal",
+        "amount": 8
+      }
+    ],
+    "upgrade": {
+      "cost": 2,
+      "text": "Restore 12 health. Exhaust.",
+      "effects": [
+        {
+          "op": "heal",
+          "amount": 12
+        }
+      ]
+    },
+    "crossTeam": true,
+    "exhaust": true
+  },
+  {
+    "id": "fortify",
+    "name": "Fortify",
+    "character": "shared",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["fortress"],
+    "text": "Gain 12 Block. Exhaust.",
+    "effects": [
+      {
+        "op": "block",
+        "amount": 12
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Gain 16 Block. Exhaust.",
+      "effects": [
+        {
+          "op": "block",
+          "amount": 16
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "crew-call",
+    "name": "Crew Call",
+    "character": "shared",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "skill",
+    "target": "none",
+    "tags": ["team"],
+    "text": "Every teammate gains 4 Block. Exhaust.",
+    "effects": [
+      {
+        "op": "all-block",
+        "amount": 4
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Every teammate gains 6 Block. Exhaust.",
+      "effects": [
+        {
+          "op": "all-block",
+          "amount": 6
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "return-fire",
+    "name": "Return Fire",
+    "character": "shared",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["general"],
+    "text": "Deal 9 damage. Draw 1.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 9
+      },
+      {
+        "op": "draw",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Deal 12 damage. Draw 1.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 12
+        },
+        {
+          "op": "draw",
+          "amount": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "set-piece",
+    "name": "Set Piece",
+    "character": "shared",
+    "rarity": "uncommon",
+    "cost": 1,
+    "type": "skill",
+    "target": "hand",
+    "tags": ["general"],
+    "text": "Retain a chosen card. Draw 1. Exhaust.",
+    "effects": [
+      {
+        "op": "retain",
+        "amount": 1
+      },
+      {
+        "op": "draw",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 1,
+      "text": "Retain a chosen card. Draw 2. Exhaust.",
+      "effects": [
+        {
+          "op": "retain",
+          "amount": 1
+        },
+        {
+          "op": "draw",
+          "amount": 2
+        }
+      ]
+    },
+    "exhaust": true
+  },
+  {
+    "id": "spark",
+    "name": "Spark",
+    "character": "shared",
+    "rarity": "token",
+    "cost": 0,
+    "type": "attack",
+    "target": "enemy",
+    "tags": ["flurry"],
+    "text": "Deal 4 damage. Exhaust.",
+    "effects": [
+      {
+        "op": "damage",
+        "amount": 4
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Deal 6 damage. Exhaust.",
+      "effects": [
+        {
+          "op": "damage",
+          "amount": 6
+        }
+      ]
+    },
+    "exhaust": true,
+    "nonCopyable": true
+  },
+  {
+    "id": "scrap",
+    "name": "Scrap",
+    "character": "shared",
+    "rarity": "token",
+    "cost": 1,
+    "type": "skill",
+    "target": "self",
+    "tags": ["recycle"],
+    "text": "Draw 1. Exhaust.",
+    "effects": [
+      {
+        "op": "draw",
+        "amount": 1
+      }
+    ],
+    "upgrade": {
+      "cost": 0,
+      "text": "Draw 1. Exhaust.",
+      "effects": [
+        {
+          "op": "draw",
+          "amount": 1
+        }
+      ]
+    },
+    "exhaust": true,
+    "nonCopyable": true
+  }
+]

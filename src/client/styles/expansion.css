@@ -1,0 +1,848 @@
+/* Quiz, map and merchant surfaces own their layout; combat geometry is unchanged. */
+.quiz-panel,
+.shop-screen,
+.relic-offer {
+  width: 100%;
+  max-width: 1120px;
+  margin: auto;
+  padding: 16px;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+.quiz-heading,
+.shop-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.quiz-heading > div {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.quiz-heading h1 {
+  font-size: 24px;
+  margin: 0;
+}
+.quiz-heading span {
+  font-size: 14px;
+}
+.quiz-panel h1 {
+  font-size: clamp(20px, 3vw, 30px);
+  line-height: 1.25;
+  margin: 14px 0;
+}
+.quiz-rule {
+  padding: 12px;
+  border-radius: 10px;
+  background: #e9eee2;
+  line-height: 1.5;
+}
+.quiz-replay {
+  padding: 10px;
+  border: 1px solid #c7d1be;
+  border-radius: 12px;
+  background: #f9faf2;
+  min-width: 0;
+}
+.quiz-replay svg {
+  width: 100%;
+  max-height: 140px;
+  display: block;
+}
+.replay-step {
+  min-height: 2.7em;
+  line-height: 1.4;
+  margin: 6px 0;
+}
+.replay-controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.replay-controls button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.replay-controls [aria-pressed="true"] {
+  background: #285e52;
+  color: white;
+}
+.quiz-replay details {
+  margin-top: 8px;
+  font-size: 13px;
+}
+.quiz-options {
+  display: grid;
+  gap: 9px;
+  margin: 14px 0;
+}
+.quiz-options > button,
+.projector-option {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+  padding: 12px;
+  min-height: 56px;
+  border: 1px solid #a7b5a7;
+  border-radius: 10px;
+  background: #fffdf4;
+}
+.quiz-options > button:disabled {
+  opacity: 1;
+  color: #516359;
+}
+.quiz-options .selected {
+  box-shadow: inset 0 0 0 2px #aa7a1f;
+  background: #fff1c4;
+}
+.quiz-options .correct {
+  background: #d5edda;
+  border-color: #2e7858;
+  box-shadow: inset 0 0 0 2px #2e7858;
+}
+.quiz-options b {
+  min-width: 26px;
+}
+.quiz-explanation {
+  padding: 12px;
+  background: #e4eedc;
+  line-height: 1.4;
+}
+.quiz-explanation strong {
+  display: block;
+  margin-top: 6px;
+}
+.quiz-footer,
+.shop-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0 calc(8px + env(safe-area-inset-bottom));
+  background: #fffdf4;
+  z-index: 9;
+  border-top: 1px solid #cbd3c5;
+}
+.quiz-footer .primary,
+.shop-footer .primary {
+  min-width: 130px;
+  min-height: 48px;
+}
+.quiz-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+.quiz-team {
+  border: 1px solid #c5cdbd;
+  background: #fbfcf3;
+  padding: 9px;
+  border-radius: 9px;
+  min-width: 0;
+}
+.quiz-team header {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 13px;
+}
+.quiz-team header > span {
+  white-space: nowrap;
+  font-size: 12px;
+}
+.quiz-member-chips {
+  display: flex;
+  gap: 5px;
+  margin-top: 7px;
+  flex-wrap: wrap;
+}
+.quiz-member-chips > span {
+  background: #e9eddf;
+  padding: 5px 7px;
+  border-radius: 5px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.quiz-member-chips .correct {
+  background: #cce7cc;
+}
+.quiz-member-chips .incorrect {
+  background: #f2dfcc;
+}
+.quiz-team p {
+  margin: 6px 0 0;
+  font-size: 12px;
+}
+.projector-quiz {
+  padding: 16px 24px;
+  min-height: 0;
+  overflow: auto;
+  background: #f5f5e9;
+  color: #203c37;
+}
+.projector-question {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+}
+.projector-question h2 {
+  font-size: clamp(24px, 2.2vw, 36px);
+  margin: 0 0 10px;
+}
+.projector-question p {
+  font-size: 20px;
+}
+.projector-option {
+  font-size: 19px;
+}
+.projector-option > strong {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 15px;
+}
+.projector-quiz .quiz-replay svg {
+  max-height: 220px;
+}
+.projector-quiz .quiz-team-grid {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+.projector-quiz .quiz-team:has(.quiz-member-chips > span:nth-child(2)) {
+  grid-column: span 2;
+}
+.projector-quiz .quiz-member-chips > span {
+  font-size: 14px;
+}
+.projector-quiz .quiz-heading .turn-clock {
+  font-size: 30px;
+}
+.quiz-announcement {
+  padding: 24px;
+  text-align: center;
+}
+.quiz-announcement h2 {
+  font-size: 36px;
+}
+.shop-screen {
+  padding-top: calc(16px + env(safe-area-inset-top));
+  padding-left: max(12px, env(safe-area-inset-left));
+  padding-right: max(12px, env(safe-area-inset-right));
+}
+.shop-heading {
+  position: sticky;
+  top: 0;
+  background: #fffdf4;
+  z-index: 5;
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+.shop-heading h1 {
+  margin: 0;
+}
+.gold-display {
+  background: #fae6ae;
+  padding: 10px;
+  border-radius: 8px;
+  color: #654715;
+}
+.shop-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  gap: 12px;
+}
+.shop-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.shop-card > .card {
+  width: 100%;
+  height: auto;
+  min-height: 265px;
+  flex: 1;
+}
+.shop-card > button.primary {
+  font-size: 14px;
+  padding: 10px;
+  min-height: 46px;
+}
+.relic-offer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+  gap: 12px;
+}
+.relic-shop-item {
+  padding: 14px;
+  border: 1px solid #bca66b;
+  border-radius: 12px;
+  background: #faf3dd;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.relic-shop-item h2 {
+  font-size: 20px;
+  margin: 0;
+}
+.relic-shop-item p {
+  line-height: 1.5;
+  flex: 1;
+}
+.relic-shop-item > .primary {
+  margin-top: auto;
+  min-height: 46px;
+}
+.relic-symbol {
+  font-size: 38px;
+  color: #9b7127;
+}
+.relic-inspect {
+  border: 0;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  text-align: left;
+  padding: 0;
+  flex: 1;
+}
+.relic-inspect strong {
+  font-size: 19px;
+}
+.relic-inspect > span:last-child {
+  line-height: 1.5;
+}
+.shop-removal {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+}
+.shop-removal h2 {
+  margin: 0;
+}
+.shop-removal p {
+  font-size: 14px;
+}
+.shop-removal > button {
+  min-width: 130px;
+}
+.relic-dialog {
+  inset: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  width: min(680px, calc(100vw - 24px));
+  max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 24px);
+  max-height: calc(100dvh - 28px - var(--safe-top) - var(--safe-bottom));
+  border: 1px solid #a3b49f;
+  border-radius: 14px;
+  padding: 0;
+  background: #fffdf4;
+  color: #203c37;
+}
+.relic-dialog::backdrop {
+  background: #152d2bcc;
+}
+.relic-dialog > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  position: sticky;
+  top: 0;
+  background: #fffdf4;
+}
+.relic-list {
+  padding: 0 18px 18px;
+  overflow: auto;
+}
+.relic-list article {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid #d2d8c7;
+}
+.relic-list h3 {
+  margin: 0;
+}
+.relic-list p {
+  line-height: 1.5;
+  margin: 8px 0;
+}
+.relic-list .rare h3 {
+  color: #8b651a;
+}
+.shared-map {
+  padding: 12px;
+  min-width: 0;
+  background: #f5f3e5;
+  color: #203c37;
+}
+.shared-map .section-heading {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.shared-map .section-heading h1 {
+  font-size: 22px;
+}
+.shared-map-scroll {
+  max-height: 72dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.shared-map-graph {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.route-edge {
+  stroke: #b6b29b;
+  stroke-width: 2;
+  fill: none;
+}
+.route-node {
+  cursor: pointer;
+}
+.route-node > rect {
+  fill: #fffdf4;
+  stroke: #b1b8a0;
+  stroke-width: 1.5;
+}
+.route-node.available > rect {
+  fill: #fff1bc;
+  stroke: #956d20;
+  stroke-width: 3;
+}
+.route-node.visited > rect {
+  fill: #dbe9d6;
+}
+.route-node.elite > rect,
+.route-node.dangerous > rect {
+  stroke: #b6653d;
+}
+.route-node.boss > rect {
+  fill: #284e46;
+  stroke: #b79b50;
+}
+.route-node text {
+  font-size: 11px;
+  text-anchor: middle;
+  fill: #203c37;
+  pointer-events: none;
+}
+.route-node.boss > text {
+  fill: #fff4c8;
+}
+.route-node .map-symbol {
+  font-size: 20px;
+}
+.route-node .map-room-number {
+  font-size: 10px;
+  fill: #655e4a;
+}
+.route-node:focus-visible > rect {
+  stroke: #255f8e;
+  stroke-width: 4;
+}
+.route-node .map-team-marker {
+  fill: #285e52;
+  stroke: none;
+}
+.route-node g text {
+  fill: white;
+  font-size: 10px;
+}
+.map-legend {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.map-projector {
+  padding: 16px 24px;
+  overflow: auto;
+}
+.map-projector .shared-map-scroll {
+  max-height: none;
+}
+.map-projector .route-node text {
+  font-size: 12px;
+}
+.map-team-index {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 6px;
+  font-size: 13px;
+}
+.map-team-index > span {
+  padding: 8px;
+  background: #fffdf4;
+  border-radius: 6px;
+}
+@media (max-width: 600px) {
+  .shop-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .shop-card > .card {
+    min-height: 240px;
+  }
+  .shop-card .card-text {
+    font-size: 13px;
+  }
+  .shop-card .card-name {
+    font-size: 16px;
+  }
+  .shop-heading > button {
+    font-size: 13px;
+  }
+  .quiz-panel {
+    padding: 10px 10px 0;
+  }
+  .shop-screen {
+    padding-bottom: 10px;
+  }
+  .quiz-panel .quiz-team-grid {
+    margin-bottom: 8px;
+  }
+  .shop-removal {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .projector-question {
+    grid-template-columns: 1fr;
+  }
+  .projector-quiz .quiz-team:has(.quiz-member-chips > span:nth-child(2)) {
+    grid-column: auto;
+  }
+}
+@media (max-height: 450px) and (orientation: landscape) {
+  .quiz-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .quiz-panel > .quiz-heading,
+  .quiz-panel > h1,
+  .quiz-panel > .quiz-footer,
+  .quiz-panel > .quiz-team-grid {
+    grid-column: 1/-1;
+  }
+  .quiz-panel h1 {
+    font-size: 20px;
+  }
+  .quiz-panel .quiz-replay svg {
+    max-height: 90px;
+  }
+  .quiz-panel .quiz-options {
+    margin: 0;
+  }
+  .quiz-rule {
+    margin: 0;
+  }
+  .quiz-panel > .quiz-replay {
+    grid-column: 1;
+  }
+  .quiz-panel > .quiz-options {
+    grid-column: 2;
+  }
+  .quiz-panel > .quiz-explanation {
+    grid-column: 1/-1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quiz-replay * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Enemy anticipation is distinct from the card reveal and lasts until contact. */
+.combat-scene .enemy.action-source .combat-art,
+.board-enemies > .action-source .combat-art {
+  animation: enemy-prepare 950ms ease-in-out both;
+}
+@keyframes enemy-prepare {
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  55% {
+    transform: translateX(9px) rotate(5deg) scale(1.06);
+  }
+  85% {
+    transform: translateX(-10px) rotate(-5deg) scale(1.08);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .combat-scene .enemy.action-source .combat-art,
+  .board-enemies > .action-source .combat-art {
+    animation: none;
+  }
+}
+
+.quiz-replay .replay-actor > rect,
+.quiz-replay .replay-actor > circle {
+  fill: #376e60;
+  stroke: #264a40;
+  stroke-width: 2;
+}
+.quiz-replay .replay-object > rect,
+.quiz-replay .replay-object > circle {
+  fill: #e9cb81;
+  stroke: #947337;
+  stroke-width: 1;
+}
+.quiz-replay .replay-sensor > rect,
+.quiz-replay .replay-sensor > circle {
+  fill: #bdddd533;
+  stroke: #518875;
+  stroke-dasharray: 5 3;
+  stroke-width: 2;
+}
+.quiz-replay .replay-danger > rect,
+.quiz-replay .replay-danger > circle {
+  fill: #c97554;
+  stroke: #904831;
+}
+.quiz-replay text {
+  font-size: 12px;
+  fill: #203c37;
+  text-anchor: middle;
+}
+
+.quiz-panel > .quiz-footer,
+.shop-screen .shop-footer {
+  position: fixed;
+  left: max(10px, env(safe-area-inset-left));
+  right: max(10px, env(safe-area-inset-right));
+  bottom: 0;
+  width: auto;
+  max-width: 1090px;
+  margin: auto;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  box-shadow: 0 -2px 8px #233d2310;
+}
+.quiz-panel {
+  padding-bottom: 86px;
+}
+.shop-screen {
+  padding-bottom: 90px;
+}
+
+.projector-quiz .many-teams {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+}
+.projector-quiz .many-teams .quiz-team {
+  padding: 4px 6px;
+}
+.projector-quiz .many-teams .quiz-team header {
+  font-size: 12px;
+}
+.projector-quiz .many-teams .quiz-team header > span {
+  display: none;
+}
+.projector-quiz .many-teams .quiz-member-chips {
+  margin-top: 2px;
+}
+.projector-quiz .many-teams .quiz-member-chips > span {
+  font-size: 11px;
+  padding: 2px;
+}
+.projector-quiz .many-teams .quiz-team p {
+  font-size: 11px;
+  margin: 2px 0 0;
+}
+.projector-quiz {
+  flex: 1;
+  min-height: 0;
+}
+.live-projector > .map-projector {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.quiz-replay svg {
+  height: auto;
+  aspect-ratio: 420/110;
+}
+
+.combat-scene:has(.enemy.action-source) .combat-link path {
+  animation-duration: 950ms;
+}
+
+.projector-quiz .many-teams .quiz-team {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 0 4px;
+  padding: 3px 5px;
+}
+.projector-quiz .many-teams .quiz-team header {
+  display: contents;
+}
+.projector-quiz .many-teams .quiz-team header > strong {
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.projector-quiz .many-teams .quiz-member-chips {
+  margin: 0;
+  min-width: 0;
+}
+.projector-quiz .many-teams .quiz-member-chips > span {
+  font-size: 10px;
+  line-height: 14px;
+  padding: 1px 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.projector-quiz .many-teams .quiz-team p {
+  grid-column: 1/-1;
+  line-height: 12px;
+  font-size: 10px;
+  margin: 1px 0 0;
+}
+
+.shared-map:not(.map-projector) .shared-map-graph {
+  max-width: 560px;
+  margin: auto;
+}
+.shared-map:not(.map-projector)
+  .route-node
+  > text:not(.map-symbol):not(.map-room-number) {
+  font-size: 16px;
+}
+.shared-map:not(.map-projector) .route-node .map-room-number {
+  font-size: 14px;
+}
+.map-projector .shared-map-graph {
+  min-width: 1680px;
+}
+.map-projector .shared-map-scroll {
+  overflow: auto;
+}
+
+.projector-quiz .quiz-replay svg {
+  max-height: 120px;
+}
+.projector-quiz .quiz-team {
+  padding: 6px;
+  position: relative;
+}
+.projector-quiz .quiz-team .quiz-member-chips {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin-top: 5px;
+}
+.projector-quiz .quiz-team .quiz-member-chips > span {
+  font-size: 12px;
+  padding: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.projector-quiz .quiz-team .quiz-member-chips strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.projector-quiz .quiz-team p {
+  margin-top: 3px;
+  line-height: 15px;
+}
+.quiz-team-inspect {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  z-index: 1;
+}
+.quiz-team-inspect:hover {
+  background: #5270520a;
+}
+.quiz-team-inspect:focus-visible {
+  outline: 3px solid #286e93;
+  outline-offset: 1px;
+}
+.projector-quiz .many-teams .quiz-team {
+  min-height: 44px;
+}
+.projector-quiz .many-teams .quiz-team .quiz-member-chips {
+  display: flex;
+  margin: 0;
+  gap: 0;
+}
+.projector-quiz .many-teams .quiz-team .quiz-member-chips > span {
+  font-size: 10px;
+  line-height: 14px;
+  padding: 1px 3px;
+}
+.projector-quiz .many-teams .quiz-team p {
+  font-size: 10px;
+  line-height: 12px;
+  margin: 1px 0 0;
+}
+
+@media (max-width: 1100px) {
+  .live-projector .live-heading {
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+  .live-projector .projector-search {
+    min-width: 0;
+  }
+  .live-projector .projector-search input {
+    width: 190px;
+    min-width: 0;
+  }
+  .live-projector .live-heading > img {
+    margin-left: auto;
+  }
+}
+
+.quiz-member-answer {
+  font-style: normal;
+}
+.projector-quiz .quiz-team .quiz-member-chips > span {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.projector-quiz .quiz-team .quiz-member-chips > span > strong {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.projector-quiz .quiz-member-answer {
+  flex: none;
+  white-space: nowrap;
+}
+
+.route-node.map-dimmed {
+  opacity: 0.35;
+}
+.route-node.map-highlight > rect {
+  stroke: #ae741c;
+  stroke-width: 4;
+  fill: #fff0b4;
+}

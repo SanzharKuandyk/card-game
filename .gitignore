@@ -1,0 +1,40 @@
+# Dependencies, builds and downloaded Node runtime
+node_modules/
+dist/
+.runtime/
+*.tsbuildinfo
+
+# Local sessions, identities and SQLite sidecars
+data/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.backup
+
+# Secrets and machine configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated test output and logs (keep docs/ verification evidence)
+test-results/
+playwright-report/
+blob-report/
+coverage/
+*.log
+*.log.*
+
+# Private implementation notes and editor/OS files
+.Codex/
+notes.txt
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*.tmp

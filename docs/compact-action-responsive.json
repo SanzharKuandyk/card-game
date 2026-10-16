@@ -1,0 +1,65 @@
+[
+  {
+    "width": 388,
+    "height": 619,
+    "noOverlap": true,
+    "footerVisible": true,
+    "horizontalOverflow": false,
+    "descriptionEllipsis": "ellipsis",
+    "detailScroll": true
+  },
+  {
+    "width": 388,
+    "height": 650,
+    "noOverlap": true,
+    "footerVisible": true,
+    "horizontalOverflow": false,
+    "descriptionEllipsis": "ellipsis",
+    "detailScroll": false
+  },
+  {
+    "width": 360,
+    "height": 700,
+    "noOverlap": true,
+    "footerVisible": true,
+    "horizontalOverflow": false,
+    "descriptionEllipsis": "ellipsis",
+    "detailScroll": false
+  },
+  {
+    "width": 360,
+    "height": 800,
+    "noOverlap": true,
+    "footerVisible": true,
+    "horizontalOverflow": false,
+    "descriptionEllipsis": "clip",
+    "detailScroll": false
+  },
+  {
+    "width": 294,
+    "height": 534,
+    "noOverlap": true,
+    "footerVisible": true,
+    "horizontalOverflow": false,
+    "descriptionEllipsis": "ellipsis",
+    "detailScroll": true
+  },
+  {
+    "width": 667,
+    "height": 375,
+    "noOverlap": true,
+    "footerVisible": true,
+    "horizontalOverflow": false,
+    "descriptionEllipsis": "clip",
+    "detailScroll": false
+  },
+  {
+    "width": 1366,
+    "height": 768,
+    "noOverlap": true,
+    "footerVisible": true,
+    "horizontalOverflow": false,
+    "descriptionEllipsis": "clip",
+    "detailScroll": false
+  }
+]

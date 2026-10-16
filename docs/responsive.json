@@ -1,0 +1,657 @@
+[
+  {
+    "scene": "map",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 1492,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "map",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 1352,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "map",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 1340,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "map",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 1340,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "map",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1356,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "map",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 1356,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "fight",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "fight",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "fight",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 375,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "fight",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "fight",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "fight",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "selected-card",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "selected-card",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "selected-card",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 375,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "selected-card",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "selected-card",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "selected-card",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "keywords",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "keywords",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "keywords",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 375,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "keywords",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "keywords",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "keywords",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "full-hand-poison",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "full-hand-poison",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "full-hand-poison",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 375,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "full-hand-poison",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "full-hand-poison",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "full-hand-poison",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "empty-energy",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "empty-energy",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "empty-energy",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 375,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "empty-energy",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "empty-energy",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "empty-energy",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "deck",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "deck",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "deck",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 375,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "deck",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "deck",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "deck",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "event",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "event",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "event",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 392,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "event",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "event",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "event",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "rest",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "rest",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "rest",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 494,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "rest",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "rest",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "rest",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "reward",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 743,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "reward",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "reward",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 480,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "reward",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 480,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "reward",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "reward",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "boss",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "boss",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "boss",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 375,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "boss",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "boss",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "boss",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "projector",
+    "width": 1920,
+    "height": 1080,
+    "horizontalOverflow": false,
+    "documentHeight": 1080
+  },
+  {
+    "scene": "prediction",
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "documentHeight": 534,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "prediction",
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "documentHeight": 800,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "prediction",
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "documentHeight": 375,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "prediction",
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "documentHeight": 390,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "prediction",
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "documentHeight": 1024,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "scene": "prediction",
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "documentHeight": 768,
+    "handVisible": true,
+    "playReachable": true
+  }
+]

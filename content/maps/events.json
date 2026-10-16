@@ -1,0 +1,59 @@
+[
+  {
+    "id": "training",
+    "title": "Training",
+    "text": "A quiet room. Pick your practice.",
+    "choices": [
+      {
+        "label": "Improve a card",
+        "effect": "upgrade",
+        "amount": 1,
+        "text": "Upgrade one card."
+      },
+      {
+        "label": "Recover",
+        "effect": "heal",
+        "amount": 8,
+        "text": "Restore 8 health."
+      }
+    ]
+  },
+  {
+    "id": "archive",
+    "title": "Archive",
+    "text": "Keep something new or clear space.",
+    "choices": [
+      {
+        "label": "Take a card",
+        "effect": "card",
+        "amount": 1,
+        "text": "Choose a common card."
+      },
+      {
+        "label": "Remove a card",
+        "effect": "remove",
+        "amount": 1,
+        "text": "Remove one card. Keep at least 6."
+      }
+    ]
+  },
+  {
+    "id": "spring",
+    "title": "Spring",
+    "text": "Rest here or keep practising.",
+    "choices": [
+      {
+        "label": "Drink",
+        "effect": "heal",
+        "amount": 10,
+        "text": "Restore 10 health."
+      },
+      {
+        "label": "Practise",
+        "effect": "upgrade",
+        "amount": 1,
+        "text": "Upgrade one card."
+      }
+    ]
+  }
+]

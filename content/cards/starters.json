@@ -1,0 +1,50 @@
+{
+  "guardian": [
+    "strike",
+    "strike",
+    "strike",
+    "guard",
+    "guard",
+    "guard",
+    "brace",
+    "shield-strike",
+    "blood-spark",
+    "heavy-swing"
+  ],
+  "rogue": [
+    "strike",
+    "strike",
+    "strike",
+    "guard",
+    "guard",
+    "guard",
+    "quickstep",
+    "knifework",
+    "feint",
+    "finishing-cut"
+  ],
+  "alchemist": [
+    "strike",
+    "strike",
+    "strike",
+    "guard",
+    "guard",
+    "guard",
+    "toxic-dart",
+    "venom-coat",
+    "burn-scrap",
+    "transmute"
+  ],
+  "channeler": [
+    "strike",
+    "strike",
+    "strike",
+    "guard",
+    "guard",
+    "guard",
+    "charge",
+    "windup",
+    "relay",
+    "gift"
+  ]
+}

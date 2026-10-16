@@ -1,0 +1,295 @@
+[
+  {
+    "id": "pause-tap",
+    "title": "Pause tap",
+    "rule": "Input runs before movement. A UI button consumes the touch and sets Paused. Movement only runs while Playing.",
+    "steps": [
+      "Playing: a touch lands on Pause.",
+      "UI consumes the touch and changes state.",
+      "Movement checks the current state."
+    ],
+    "choices": [
+      "The character moves once, then pauses",
+      "No movement and no attack",
+      "No movement, but the same tap attacks"
+    ],
+    "correct": 1,
+    "explanations": [
+      "Movement checks Paused after input.",
+      "The consumed touch cannot also reach gameplay.",
+      "The UI consumed that touch."
+    ],
+    "source": {
+      "week": 5,
+      "slides": [19, 20]
+    }
+  },
+  {
+    "id": "two-phones",
+    "title": "Two phones",
+    "rule": "A moving wall advances a fixed distance on each update. Both phones run for one second, one at 30 FPS and one at 60 FPS.",
+    "steps": [
+      "Both start at the same position.",
+      "The update adds a fixed distance, not distance \u00d7 elapsed time."
+    ],
+    "choices": [
+      "The 60 FPS wall moves twice as far",
+      "Both walls move equally far",
+      "The 30 FPS wall moves twice as far"
+    ],
+    "correct": 0,
+    "explanations": [
+      "Twice as many updates produce twice the movement.",
+      "Equal movement would need elapsed-time scaling.",
+      "The 30 FPS phone runs fewer updates."
+    ],
+    "source": {
+      "week": 4,
+      "slides": [6, 7, 8]
+    }
+  },
+  {
+    "id": "coin-ownership",
+    "title": "Coin ownership",
+    "rule": "A coin sets its own collected flag before awarding points. Coin A reports three contacts, then coin B reports one.",
+    "steps": [
+      "A is uncollected: accept and mark A.",
+      "A reports two more contacts.",
+      "B is still uncollected."
+    ],
+    "choices": [
+      "Only A pays",
+      "A pays three times; B once",
+      "A and B each pay once"
+    ],
+    "correct": 2,
+    "explanations": [
+      "Each coin owns its own flag.",
+      "A is already marked after its first callback.",
+      "Duplicate A contacts do not suppress B."
+    ],
+    "source": {
+      "week": 5,
+      "slides": [23, 25, 26]
+    }
+  },
+  {
+    "id": "protection",
+    "title": "Protection window",
+    "rule": "A hit immediately starts one second of protection. Contacts arrive at 0, 0.2 and 1.1 seconds.",
+    "steps": [
+      "Contact 0 starts protection.",
+      "Contact 0.2 arrives inside it.",
+      "Contact 1.1 arrives after it."
+    ],
+    "choices": [
+      "First and third contacts hurt",
+      "Only the first contact hurts",
+      "All contacts hurt"
+    ],
+    "correct": 0,
+    "explanations": [
+      "The middle contact is protected; the last is not.",
+      "Protection lasts one second, not forever.",
+      "Contacts inside the window do not hurt."
+    ],
+    "source": {
+      "week": 5,
+      "slides": [29, 31]
+    }
+  },
+  {
+    "id": "exit-order",
+    "title": "Exit order",
+    "rule": "The update checks the exit before collecting a key. The character touches both in the same update. The exit requires the key.",
+    "steps": ["Start without the key.", "Check exit.", "Collect key."],
+    "choices": [
+      "Finish immediately",
+      "Collect the key, but need another exit check",
+      "Neither event happens"
+    ],
+    "correct": 1,
+    "explanations": [
+      "At exit check time the key was absent.",
+      "The next exit check can now succeed.",
+      "The exit check does not cancel key collection."
+    ],
+    "source": {
+      "week": 5,
+      "slides": [38, 39, 40]
+    }
+  },
+  {
+    "id": "timer-pause",
+    "title": "Paused timer",
+    "rule": "A timer uses game time. A menu animation uses real time. The game pauses for two seconds.",
+    "steps": [
+      "Both systems are running.",
+      "Game time pauses; real time continues."
+    ],
+    "choices": [
+      "Both keep advancing",
+      "Both stop",
+      "Timer stops; menu animation continues"
+    ],
+    "correct": 2,
+    "explanations": [
+      "The timer uses game time.",
+      "The menu animation uses real time.",
+      "Each system obeys its selected clock."
+    ],
+    "source": {
+      "week": 5,
+      "slides": [34, 35]
+    }
+  },
+  {
+    "id": "result-lock",
+    "title": "Finish twice",
+    "rule": "The first exit callback enters Result and awards a card. Every later callback first checks that state is Playing.",
+    "steps": [
+      "Exit callback 1 enters Result.",
+      "Exit callback 2 arrives before the next render."
+    ],
+    "choices": [
+      "Two cards are awarded",
+      "One card is awarded",
+      "Neither card is awarded until rendering"
+    ],
+    "correct": 1,
+    "explanations": [
+      "The second callback sees Result.",
+      "The state transition protects the reward.",
+      "Rendering shows data; it does not grant rewards."
+    ],
+    "source": {
+      "week": 5,
+      "slides": [43, 50, 51]
+    }
+  },
+  {
+    "id": "render-order",
+    "title": "Old display",
+    "rule": "Input changes score. Update keeps it. Render accidentally reads a saved copy from before input.",
+    "steps": [
+      "Saved copy shows zero.",
+      "Input awards a point.",
+      "Render uses the saved copy."
+    ],
+    "choices": [
+      "State and display both show one",
+      "State stays zero; display shows one",
+      "State is one; display still shows zero"
+    ],
+    "correct": 2,
+    "explanations": [
+      "Render is reading the old copy.",
+      "Input changed the actual state.",
+      "The display is stale, even though the rule succeeded."
+    ],
+    "source": {
+      "week": 5,
+      "slides": [27, 45, 46]
+    }
+  },
+  {
+    "id": "gesture-lock",
+    "title": "One gesture",
+    "rule": "After movement passes the gesture threshold, the larger axis wins and locks this gesture. Horizontal distance wins first; the finger then bends upward.",
+    "steps": [
+      "Horizontal movement crosses the threshold.",
+      "The recognizer locks to horizontal.",
+      "The same touch moves upward."
+    ],
+    "choices": [
+      "Only the horizontal action happens",
+      "Horizontal action and jump both happen",
+      "The jump replaces the horizontal action"
+    ],
+    "correct": 0,
+    "explanations": [
+      "The same gesture was already committed.",
+      "A locked gesture does not dispatch a second action.",
+      "Changing direction does not undo a committed input."
+    ],
+    "source": {
+      "week": 4,
+      "slides": [23, 28, 34]
+    }
+  },
+  {
+    "id": "heal-clamp",
+    "title": "Healing order",
+    "rule": "The player is below maximum health. A pickup heals, clamps health to maximum, marks itself consumed, then a hazard deals damage.",
+    "steps": [
+      "Healing reaches maximum.",
+      "The pickup is consumed.",
+      "The hazard damages the player."
+    ],
+    "choices": [
+      "Health stays at maximum",
+      "Health ends below maximum; pickup stays consumed",
+      "The pickup heals again after the hit"
+    ],
+    "correct": 1,
+    "explanations": [
+      "The later hit still applies.",
+      "Consumption and health are separate state changes.",
+      "A consumed pickup cannot heal again."
+    ],
+    "source": {
+      "week": 5,
+      "slides": [28, 30, 43]
+    }
+  },
+  {
+    "id": "checkpoint",
+    "title": "Checkpoint",
+    "rule": "A level checkpoints position and collected keys. A failure restores both. A key collected after the checkpoint is not saved.",
+    "steps": [
+      "Save a checkpoint without a key.",
+      "Collect key and fail.",
+      "Restore the checkpoint."
+    ],
+    "choices": [
+      "Return with the new key",
+      "Return at the start with the key",
+      "Return at the checkpoint without the new key"
+    ],
+    "correct": 2,
+    "explanations": [
+      "The new key was never checkpointed.",
+      "The checkpoint saves position too.",
+      "Both fields restore from the saved checkpoint."
+    ],
+    "source": {
+      "week": 2,
+      "slides": [17, 18]
+    }
+  },
+  {
+    "id": "held-input",
+    "title": "Held touch",
+    "rule": "Move is held while a finger touches the control. Release and app-background events both clear the held state.",
+    "steps": [
+      "Finger holds Move.",
+      "The app enters the background before release.",
+      "The app returns."
+    ],
+    "choices": [
+      "Movement remains released",
+      "Movement stays held until another tap",
+      "The app must restart the level"
+    ],
+    "correct": 0,
+    "explanations": [
+      "The background event cleared held input.",
+      "There is no held input left to resume.",
+      "Clearing input does not reset level progress."
+    ],
+    "source": {
+      "week": 2,
+      "slides": [16]
+    }
+  }
+]

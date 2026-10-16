@@ -1,0 +1,44 @@
+[
+  {
+    "width": 294,
+    "height": 534,
+    "horizontalOverflow": false,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "width": 360,
+    "height": 800,
+    "horizontalOverflow": false,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "width": 667,
+    "height": 375,
+    "horizontalOverflow": false,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "horizontalOverflow": false,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "horizontalOverflow": false,
+    "handVisible": true,
+    "playReachable": true
+  },
+  {
+    "width": 1366,
+    "height": 768,
+    "horizontalOverflow": false,
+    "handVisible": true,
+    "playReachable": true
+  }
+]

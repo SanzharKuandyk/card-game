@@ -1,0 +1,712 @@
+/* The arena and its feedback occupy separate, stable tracks. Logs never grow it. */
+.combat-shell .battle-heading {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+}
+.combat-shell .battle-heading .scene-history {
+  min-height: 44px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+.combat-scene {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 64px;
+  overflow: hidden;
+  background: #f0efe5;
+}
+.combat-shell .combat-arena {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(16px, 4vw, 64px);
+  padding: 28px 20px;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: radial-gradient(ellipse at 50% 80%, #dcded0 0%, transparent 65%);
+}
+.combat-scene .enemies {
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  gap: 20px;
+  margin: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 280px;
+  justify-self: start;
+}
+.combat-scene .crew-actors {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  width: 100%;
+  max-width: 260px;
+  min-width: 0;
+  justify-self: end;
+}
+.combat-shell .combat-scene .enemy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  max-width: none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+}
+.combat-shell .combat-scene .enemy > .combat-art {
+  width: 92px;
+  height: 98px;
+  flex: none;
+}
+.scene-enemy-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+}
+.combat-shell .combat-scene .scene-enemy-info > * {
+  grid-area: auto;
+  margin: 0;
+  max-width: 100%;
+}
+.combat-shell .combat-scene .enemy strong {
+  font-size: 18px;
+}
+.combat-shell .combat-scene .enemy-hp {
+  font-size: 14px;
+}
+.combat-shell .combat-scene .enemy .meter {
+  width: 100%;
+  height: 6px;
+}
+.combat-shell .combat-scene .intent-help {
+  display: block;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: center;
+}
+.combat-scene .status-tags:empty {
+  display: none;
+}
+.combat-shell .combat-scene .hero {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  grid-template-rows: auto auto 5px;
+  gap: 5px 10px;
+  min-height: 0;
+  width: 100%;
+  max-width: none;
+  padding: 18px 12px 10px;
+  border-radius: 12px;
+  background: #fffdf5;
+  box-shadow: 0 2px 8px #253e3714;
+  align-items: center;
+  text-align: left;
+}
+.combat-shell .combat-scene .hero.own {
+  background: #234b45;
+}
+.combat-shell .combat-scene .hero.downed {
+  background: #eaded7;
+}
+.combat-shell .combat-scene .hero.own.downed {
+  background: #59463f;
+}
+.combat-shell .combat-scene .hero > * {
+  grid-area: auto;
+}
+.combat-shell .combat-scene .hero > .combat-art {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  width: 48px;
+  height: 52px;
+}
+.combat-shell .combat-scene .hero > strong {
+  display: block;
+  grid-column: 2 / -1;
+  grid-row: 1;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+  justify-self: start;
+}
+.combat-shell .combat-scene .hero-hp {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 14px;
+  justify-self: start;
+}
+.combat-shell .combat-scene .hero > .meter.health {
+  display: block;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  width: 100%;
+  height: 5px;
+}
+.combat-shell .combat-scene .hero-block {
+  display: block;
+  grid-column: 3;
+  grid-row: 2;
+  font-size: 13px;
+  justify-self: start;
+}
+.combat-shell .combat-scene .hero > small {
+  display: none;
+  grid-column: 1 / -1;
+  grid-row: 5;
+  font-size: 12px;
+  justify-self: start;
+}
+.combat-shell .combat-scene .hero > .meter.block {
+  display: none;
+}
+.combat-shell .combat-scene .hero .you-label {
+  position: absolute;
+  inset: -9px auto auto 10px;
+  margin: 0;
+  padding: 3px 7px;
+  font-size: 10px;
+}
+.combat-shell .combat-scene .hero .incoming {
+  display: block;
+  position: absolute;
+  inset: -9px 8px auto auto;
+  font-size: 11px;
+  padding: 3px 6px;
+}
+.combat-shell .combat-scene .request {
+  grid-column: 1 / -1;
+  font-size: 11px;
+}
+.combat-scene .action-slot {
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  border-top: 1px solid #d9dccc;
+  background: #fffdf5;
+}
+.combat-scene .action-slot .combat-outcome {
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 13px;
+  overflow: auto;
+}
+.combat-scene .outcome-heading {
+  margin: 0 0 4px;
+}
+.combat-scene .combat-outcome ul {
+  margin: 0;
+  gap: 2px;
+}
+.combat-scene .played-card-stage {
+  padding: 0;
+}
+.combat-scene .played-card {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+  box-shadow: none;
+  border: 0;
+  padding: 8px 14px;
+}
+.scene-idle {
+  margin: 0;
+  padding: 16px;
+  color: #637369;
+  font-size: 13px;
+}
+.combat-scene .more-effects {
+  min-height: 28px;
+  padding: 2px 0;
+  font-size: 12px;
+}
+.combat-history-dialog {
+  width: min(620px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: var(--ink);
+  background: #fffdf5;
+}
+.combat-history-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+.combat-history-dialog::backdrop {
+  background: #172c2866;
+}
+.combat-history-dialog > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.combat-history-dialog h2 {
+  margin: 0;
+  font-size: 20px;
+}
+.history-entries {
+  overflow: auto;
+  padding: 0 16px;
+}
+.history-entries ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.history-entries li {
+  display: grid;
+  gap: 4px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.history-entries small {
+  color: #64756d;
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .combat-shell .battle-heading {
+    grid-template-columns: 1fr auto auto;
+    gap: 4px;
+  }
+  .combat-shell .battle-heading .personal-danger {
+    display: none;
+  }
+  .combat-shell .combat-arena {
+    padding: 18px 10px;
+    gap: 16px;
+  }
+  .combat-shell .combat-scene .hero {
+    grid-template-columns: 28px minmax(0, 1fr);
+    padding: 13px 8px 7px;
+    gap: 3px 5px;
+  }
+  .combat-shell .combat-scene .hero > .combat-art {
+    width: 28px;
+    height: 32px;
+  }
+  .combat-shell .combat-scene .hero > strong {
+    font-size: 12px;
+  }
+  .combat-shell .combat-scene .hero-hp {
+    font-size: 12px;
+  }
+  .combat-shell .combat-scene .hero-block {
+    font-size: 11px;
+  }
+  .combat-shell .combat-scene .enemy {
+    padding: 4px;
+    gap: 4px;
+  }
+  .combat-shell .combat-scene .enemy > .combat-art {
+    width: 52px;
+    height: 56px;
+  }
+  .combat-shell .combat-scene .enemy strong {
+    font-size: 14px;
+  }
+  .combat-shell .combat-scene .intent {
+    font-size: 12px;
+    padding: 4px 7px;
+  }
+  .combat-scene {
+    grid-template-rows: minmax(0, 1fr) 56px;
+  }
+}
+@media (max-height: 600px) {
+  .combat-shell .combat-arena {
+    padding: 12px 8px;
+    gap: 12px;
+    align-items: start;
+  }
+  .combat-scene {
+    grid-template-rows: minmax(0, 1fr) 56px;
+  }
+  .combat-scene .enemies,
+  .combat-scene .crew-actors {
+    gap: 14px;
+  }
+  .combat-shell .combat-scene .hero {
+    grid-template-columns: 24px minmax(0, 1fr);
+    grid-template-rows: auto auto 3px auto;
+    padding: 10px 6px 4px;
+    gap: 2px 4px;
+  }
+  .combat-shell .combat-scene .hero > .combat-art {
+    width: 24px;
+    height: 28px;
+  }
+  .combat-shell .combat-scene .hero > strong,
+  .combat-shell .combat-scene .hero-hp {
+    font-size: 11px;
+  }
+  .combat-shell .combat-scene .hero-block {
+    font-size: 11px;
+  }
+  .combat-shell .combat-scene .hero > small {
+    display: none;
+  }
+  .combat-shell .combat-scene .hero > .meter.health {
+    height: 3px;
+  }
+  .combat-shell .combat-scene .enemy {
+    padding: 0;
+    gap: 3px;
+  }
+  .combat-shell .combat-scene .enemy > .combat-art {
+    width: 32px;
+    height: 34px;
+  }
+  .combat-shell .combat-scene .enemy strong {
+    font-size: 13px;
+  }
+  .combat-shell .combat-scene .enemy-hp {
+    font-size: 12px;
+  }
+  .combat-shell .combat-scene .intent {
+    padding: 2px 5px;
+    font-size: 11px;
+  }
+  .combat-shell .combat-scene .intent-help {
+    font-size: 11px;
+  }
+  .scene-enemy-info {
+    gap: 2px;
+  }
+  .combat-scene .action-slot .combat-outcome {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+  .combat-scene .played-card {
+    padding: 5px 8px;
+  }
+  .combat-shell .battle-heading .personal-danger {
+    display: none;
+  }
+  .combat-shell .battle-heading {
+    grid-template-columns: 1fr auto auto;
+  }
+}
+
+/* Keep the selection text together, rather than stretching its rows apart. */
+.combat-shell .action-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .combat-shell .battle-fit:not(.prediction-active) {
+    grid-template-rows: auto minmax(0, 1fr) min(54dvh, 380px);
+  }
+  .combat-shell .play-area {
+    max-height: none;
+  }
+  .combat-shell .action-details {
+    max-height: none;
+    min-height: 0;
+  }
+}
+@media (max-height: 600px) and (orientation: portrait) {
+  .combat-scene {
+    grid-template-rows: minmax(0, 1fr) 48px;
+  }
+  .combat-shell .combat-arena {
+    padding: 12px 6px 4px;
+    gap: 8px;
+  }
+  .combat-shell .combat-scene .enemy .intent {
+    display: none;
+  }
+  .combat-scene .action-slot {
+    overflow: visible;
+    z-index: 5;
+  }
+  .combat-shell .battle-fit:not(.prediction-active) {
+    grid-template-rows: auto minmax(0, 1fr) min(56dvh, 300px);
+  }
+  .combat-scene .played-card-stage {
+    height: 100%;
+  }
+  .combat-scene .played-card {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+    gap: 2px 6px;
+    padding: 4px 8px;
+  }
+  .combat-scene .played-card > .card-art {
+    width: 24px;
+    height: 28px;
+    grid-row: 1 / 3;
+  }
+  .combat-scene .played-card > .rich-card-text {
+    display: none;
+  }
+  .combat-scene .played-card > strong {
+    font-size: 13px;
+  }
+  .combat-scene .played-cost {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+
+  .combat-scene .action-slot .combat-outcome {
+    overflow: auto;
+  }
+  .combat-scene .scene-idle {
+    padding: 8px;
+    font-size: 11px;
+  }
+}
+/* Highlight selectors deliberately follow the base actor surface. */
+.combat-scene .hero.action-source {
+  box-shadow: inset 0 0 0 2px #bc953d;
+}
+.combat-scene .hero.action-target {
+  box-shadow: inset 0 0 0 2px #bf653d;
+}
+.combat-scene .hero.own.action-source {
+  box-shadow: inset 0 0 0 2px #ffe0a0;
+}
+.combat-scene .hero.own.action-target {
+  box-shadow: inset 0 0 0 2px #ffb58d;
+}
+
+.combat-scene.large-crew .crew-actors {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: none;
+}
+.combat-scene.large-crew .hero {
+  grid-template-columns: 28px minmax(0, 1fr);
+}
+.combat-shell .combat-scene.large-crew .hero > .combat-art {
+  width: 28px;
+  height: 32px;
+}
+.combat-shell .combat-scene.large-crew .hero > strong {
+  font-size: 12px;
+}
+.combat-shell .combat-scene.large-crew .hero-hp {
+  font-size: 12px;
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .combat-shell .combat-scene.large-crew .combat-arena {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-content: start;
+    gap: 16px;
+    padding: 6px 10px;
+  }
+  .combat-scene.large-crew .enemies {
+    grid-column: 1;
+    grid-row: 1;
+    max-width: none;
+  }
+  .combat-scene.large-crew .crew-actors {
+    grid-column: 1;
+    grid-row: 2;
+    gap: 14px 8px;
+  }
+  .combat-shell .combat-scene.large-crew .enemy {
+    flex-direction: row;
+  }
+  .combat-shell .combat-scene.large-crew .hero > small {
+    display: none;
+  }
+}
+@media (max-height: 600px) {
+  .combat-scene.large-crew .crew-actors {
+    gap: 14px 6px;
+  }
+  .combat-shell .combat-scene.large-crew .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+    padding: 8px 5px 4px;
+  }
+  .combat-shell .combat-scene.large-crew .hero > .combat-art {
+    display: none;
+  }
+  .combat-shell .combat-scene.large-crew .hero > strong {
+    grid-column: 1;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .combat-shell .combat-scene.large-crew .hero-hp {
+    grid-column: 1;
+    font-size: 11px;
+  }
+  .combat-shell .combat-scene.large-crew .hero .health-unit {
+    display: none;
+  }
+}
+@media (max-height: 600px) and (orientation: portrait) {
+  .combat-shell .combat-scene.large-crew .combat-arena {
+    align-content: start;
+    padding: 4px 6px;
+    gap: 9px;
+  }
+  .combat-scene.large-crew .crew-actors {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .combat-shell .combat-scene.large-crew .hero > .you-label,
+  .combat-shell .combat-scene.large-crew .hero > .incoming {
+    display: none;
+  }
+  .combat-shell .combat-scene.large-crew .hero.own > strong::before {
+    content: "You · ";
+  }
+  .combat-shell .combat-scene.large-crew .enemy > .combat-art {
+    width: 26px;
+    height: 28px;
+  }
+  .combat-shell .combat-scene.large-crew .scene-enemy-info {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 8px;
+    text-align: left;
+  }
+  .combat-shell .combat-scene.large-crew .enemy .meter {
+    grid-column: 1 / -1;
+  }
+  .combat-shell .combat-scene.large-crew .intent-help {
+    grid-column: 1 / -1;
+    font-size: 10px;
+  }
+}
+
+.combat-shell .combat-scene .hero-hp {
+  white-space: nowrap;
+}
+.combat-shell .combat-scene.large-crew .hero {
+  grid-template-columns: 28px minmax(0, 1fr);
+}
+@media (max-height: 600px) {
+  .combat-shell .combat-scene.large-crew .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .combat-shell .combat-scene.large-crew .you-label {
+    left: 4px;
+    padding: 2px 4px;
+    font-size: 9px;
+  }
+  .combat-shell .combat-scene.large-crew .incoming {
+    right: 0;
+    padding: 2px 4px;
+    font-size: 10px;
+  }
+}
+
+.combat-shell .combat-scene .hero.own > .you-label {
+  position: absolute;
+  inset: -9px auto auto 10px;
+}
+.combat-shell .combat-scene .hero.own > .incoming {
+  position: absolute;
+  inset: -9px 8px auto auto;
+}
+
+.combat-shell .combat-scene .hero.own > .you-label,
+.combat-shell .combat-scene .hero.own > .incoming {
+  grid-area: auto;
+}
+
+.combat-shell .battle-heading .personal-danger {
+  display: none;
+}
+.combat-shell .combat-scene .hero {
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+}
+.combat-shell .combat-scene .hero > .combat-art {
+  width: 32px;
+  height: 36px;
+}
+.combat-shell .combat-scene .hero .hero-block {
+  white-space: nowrap;
+}
+.combat-shell .combat-scene.large-crew .hero {
+  grid-template-columns: 24px minmax(0, 1fr);
+}
+.combat-shell .combat-scene.large-crew .hero > .hero-block {
+  grid-column: 1 / -1;
+  grid-row: 4;
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .combat-shell .combat-scene.large-crew .hero {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+    grid-template-rows: auto auto 4px;
+    padding: 11px 7px 5px;
+  }
+  .combat-shell .combat-scene.large-crew .hero > .hero-block {
+    grid-column: 3;
+    grid-row: 2;
+    font-size: 10px;
+  }
+  .combat-shell .combat-scene.large-crew .hero > strong {
+    grid-column: 2 / -1;
+  }
+  .combat-shell .combat-scene.large-crew .hero > .combat-art {
+    width: 24px;
+    height: 28px;
+  }
+  .combat-shell .combat-scene.large-crew .hero > .meter.health {
+    height: 4px;
+  }
+  .combat-shell .combat-scene.large-crew .hero-hp {
+    font-size: 11px;
+  }
+  .combat-shell .combat-scene.large-crew .hero .health-unit {
+    display: none;
+  }
+  .combat-shell .combat-scene.large-crew .scene-enemy-info {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3px 8px;
+    text-align: left;
+  }
+  .combat-shell .combat-scene.large-crew .enemy .meter,
+  .combat-shell .combat-scene.large-crew .intent-help,
+  .combat-shell .combat-scene.large-crew .status-tags {
+    grid-column: 1 / -1;
+  }
+  .combat-shell .combat-scene.large-crew .enemy .intent {
+    display: none;
+  }
+  .combat-shell .combat-scene.large-crew .combat-arena {
+    gap: 14px;
+  }
+}
+@media (max-height: 600px) {
+  .combat-shell .combat-scene.large-crew .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .combat-shell .combat-scene.large-crew .hero > strong {
+    grid-column: 1;
+  }
+  .combat-shell .combat-scene.large-crew .hero > .hero-block {
+    grid-column: 1;
+    grid-row: 4;
+  }
+}

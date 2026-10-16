@@ -1,0 +1,26 @@
+[
+  {
+    "week": 2,
+    "slideCount": 23,
+    "file": "MGD_2_week.pptx",
+    "reference": "physical slide number"
+  },
+  {
+    "week": 4,
+    "slideCount": 53,
+    "file": "MGD_4_week.pptx",
+    "reference": "physical slide number"
+  },
+  {
+    "week": 5,
+    "slideCount": 55,
+    "file": "MGD_5_week.pptx",
+    "reference": "physical slide number"
+  },
+  {
+    "week": 6,
+    "file": "MGD_6_week.pptx",
+    "reference": "physical slide number",
+    "slideCount": 77
+  }
+]

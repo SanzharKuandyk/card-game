@@ -1,0 +1,284 @@
+.playback-queue {
+  min-width: 0;
+}
+.queue-cards {
+  display: flex;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+}
+.queue-card {
+  min-width: 0;
+  flex: 1;
+  min-height: 44px;
+  padding: 4px 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  border: 1px solid #9d8d65;
+  border-top: 3px solid #9d8d65;
+  border-radius: 5px;
+  background: #fbf2d9;
+  box-shadow: 0 2px 0 #cbbd9a;
+  text-align: left;
+}
+.queue-card small,
+.queue-card strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.queue-card small {
+  font-size: 11px;
+  font-weight: 400;
+}
+.queue-card strong {
+  font-size: 12px;
+}
+.queue-label {
+  font-size: 11px;
+  font-weight: 700;
+}
+.queue-count {
+  min-width: 30px;
+  min-height: 44px;
+  padding: 4px;
+  font-size: 13px;
+}
+.queue-card-move {
+  transition: transform 250ms ease;
+}
+.queue-card-enter-active {
+  transition:
+    opacity 200ms,
+    transform 200ms;
+}
+.queue-card-enter-from {
+  opacity: 0;
+  transform: translateX(15px);
+}
+.queue-card-leave-active {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.live-projector .board-playback {
+  grid-template-rows: 46px minmax(0, 1fr);
+  gap: 10px 12px;
+  margin: 4px 0;
+}
+.live-projector .board-playback > .playback-queue {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  height: 46px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  position: relative;
+}
+.live-projector .board-play-card {
+  grid-row: 2;
+  height: 190px;
+  gap: 4px;
+}
+.live-projector .board-play-card > .card-art {
+  height: 44px;
+}
+.live-projector .board-card-rule,
+.live-projector .board-outcomes {
+  grid-row: 2;
+}
+.live-projector .board-playback.is-revealing .board-play-card {
+  animation: queued-card-forward 280ms ease-out both;
+}
+.live-projector .board-playback.is-exiting .board-play-card {
+  animation: queued-card-away 250ms ease-in both;
+}
+.live-projector .board-playback .board-fight-result {
+  top: auto;
+  bottom: 0;
+}
+.board-last-play {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  height: 100%;
+  text-align: center;
+  color: #52675b;
+}
+.board-last-play strong {
+  font-size: 18px;
+}
+.board-last-play small,
+.board-last-play span {
+  font-size: 12px;
+}
+.live-projector .board-idle {
+  grid-row: 2;
+}
+@keyframes queued-card-forward {
+  from {
+    opacity: 0.3;
+    transform: translate(55px, -55px) scale(0.6) rotate(-5deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes queued-card-away {
+  to {
+    opacity: 0;
+    transform: translate(80px, -95px) scale(0.35) rotate(10deg);
+  }
+}
+/* Keep the phone feedback track and hand dimensions unchanged. */
+.combat-scene .has-play-queue {
+  position: relative;
+  padding-right: 106px;
+}
+.combat-scene .has-play-queue > .playback-queue {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+  width: 98px;
+  z-index: 8;
+}
+.queue-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  min-height: 44px;
+  padding: 5px 7px;
+  border: 1px solid #d1bd86;
+  border-radius: 7px;
+  background: #faf0d4;
+  text-align: left;
+}
+.queue-summary strong {
+  font-size: 12px;
+}
+.queue-summary > span {
+  font-size: 11px;
+  line-height: 1.15;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.combat-scene .has-play-queue .played-card-stage {
+  right: 106px;
+}
+.combat-scene .has-play-queue .played-card {
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 2px 5px;
+  padding: 5px 8px;
+  animation: phone-card-forward 280ms ease-out both;
+}
+.combat-scene .has-play-queue .played-card > .card-art {
+  width: 28px;
+  height: 32px;
+}
+.combat-scene .has-play-queue .played-card > strong {
+  font-size: 13px;
+}
+.combat-scene .has-play-queue .played-by {
+  font-size: 11px;
+}
+.combat-scene .has-play-queue .played-cost {
+  padding: 3px 4px;
+  font-size: 10px;
+}
+.combat-scene .has-play-queue .played-target {
+  display: none;
+}
+.combat-scene .has-play-queue .played-card > .rich-card-text {
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+.combat-scene .has-play-queue .card-impact .played-card {
+  animation: phone-card-away 250ms ease-in both;
+}
+.combat-scene .has-play-queue .card-exit .played-card {
+  visibility: hidden;
+}
+.combat-scene .has-play-queue .combat-outcome {
+  padding: 5px 8px;
+  font-size: 11px;
+}
+.combat-scene .has-play-queue .outcome-heading {
+  gap: 3px;
+}
+@keyframes phone-card-forward {
+  from {
+    opacity: 0.3;
+    transform: translateX(25px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes phone-card-away {
+  to {
+    opacity: 0;
+    transform: translateX(40px) scale(0.65);
+  }
+}
+@media (max-width: 1000px) and (min-width: 701px) {
+  .live-projector .board-playback {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 46px 190px minmax(0, 1fr);
+    gap: 6px;
+  }
+  .live-projector .board-play-card {
+    justify-self: center;
+  }
+  .live-projector .board-outcomes,
+  .live-projector .board-card-rule {
+    grid-column: 1;
+    grid-row: 3;
+  }
+}
+@media (max-width: 700px) {
+  .live-projector .board-playback {
+    grid-template-rows: 46px minmax(0, 1fr);
+  }
+  .live-projector .board-play-card {
+    height: 170px;
+  }
+}
+@media (max-height: 600px) and (orientation: portrait) {
+  .combat-scene {
+    grid-template-rows: minmax(0, 1fr) 48px;
+  }
+  .combat-scene .has-play-queue > .playback-queue {
+    top: 1px;
+    bottom: 1px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-projector .board-playback .board-play-card,
+  .combat-scene .has-play-queue .played-card,
+  .queue-card-enter-active,
+  .queue-card-leave-active,
+  .queue-card-move {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+  .combat-scene .has-play-queue .card-impact .played-card {
+    visibility: hidden;
+  }
+}

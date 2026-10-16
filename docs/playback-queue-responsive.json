@@ -1,0 +1,50 @@
+[
+  {
+    "width": 388,
+    "height": 619,
+    "overflow": false,
+    "reachableActions": true,
+    "reachableQueue": true,
+    "queueFitsTrack": true
+  },
+  {
+    "width": 360,
+    "height": 800,
+    "overflow": false,
+    "reachableActions": true,
+    "reachableQueue": true,
+    "queueFitsTrack": true
+  },
+  {
+    "width": 294,
+    "height": 534,
+    "overflow": false,
+    "reachableActions": true,
+    "reachableQueue": true,
+    "queueFitsTrack": true
+  },
+  {
+    "width": 667,
+    "height": 375,
+    "overflow": false,
+    "reachableActions": true,
+    "reachableQueue": true,
+    "queueFitsTrack": true
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "reachableActions": true,
+    "reachableQueue": true,
+    "queueFitsTrack": true
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "reachableActions": true,
+    "reachableQueue": true,
+    "queueFitsTrack": true
+  }
+]

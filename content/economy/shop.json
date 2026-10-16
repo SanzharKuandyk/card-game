@@ -1,0 +1,17 @@
+{
+  "starting": 50,
+  "battle": 20,
+  "elite": 35,
+  "boss": 30,
+  "cards": {
+    "common": 20,
+    "uncommon": 35,
+    "rare": 65
+  },
+  "relics": {
+    "common": 70,
+    "rare": 100
+  },
+  "removal": 30,
+  "removalIncrease": 15
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "width": 294,
+    "height": 534,
+    "overflow": false,
+    "footerVisible": true
+  },
+  {
+    "width": 360,
+    "height": 800,
+    "overflow": false,
+    "footerVisible": true
+  },
+  {
+    "width": 388,
+    "height": 619,
+    "overflow": false,
+    "footerVisible": true
+  },
+  {
+    "width": 667,
+    "height": 375,
+    "overflow": false,
+    "footerVisible": true
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "footerVisible": true
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "overflow": false,
+    "footerVisible": true
+  },
+  {
+    "width": 1366,
+    "height": 768,
+    "overflow": false,
+    "footerVisible": true
+  }
+]
