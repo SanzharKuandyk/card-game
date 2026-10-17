@@ -4,6 +4,7 @@ import type {
   RelicEffect,
   EncounterRelics,
 } from "../shared/relic-types.ts";
+import { lootTeamSize } from "./loot.ts";
 import { shuffle, seedFrom } from "./random.ts";
 export function encounterRelics(hero: Hero, content: Content): EncounterRelics {
   const activeRelicIds = hero.relics?.map((r) => r.relicId) ?? [];
@@ -29,18 +30,21 @@ export function takeRelic(
   a.relicState.turnUses[r.id] = 1;
   return r;
 }
+export function eligibleRelics(s: Session, hero: Hero): RelicDefinition[] {
+  return s.content.relics.filter(
+    (r) =>
+      [hero.character, "shared"].includes(r.character) &&
+      !hero.relics.some((o) => o.relicId === r.id) &&
+      (!s.content.depth || !r.requiresTeam || lootTeamSize(s, hero) > 1),
+  );
+}
 export function grantRelicReward(s: Session, id: string, source: string): void {
   const rid = `relic:${source}:${id}`;
   if (s.relicRewards.some((r) => r.id === rid)) return;
   const h = s.members[id]!.hero;
-  const pool = shuffle(
-    s.content.relics.filter(
-      (r) =>
-        [h.character, "shared"].includes(r.character) &&
-        !h.relics.some((o) => o.relicId === r.id),
-    ),
-    { rng: seedFrom(`${s.seed}:${rid}`) },
-  );
+  const pool = shuffle(eligibleRelics(s, h), {
+    rng: seedFrom(`${s.seed}:${rid}`),
+  });
   s.relicRewards.push({
     id: rid,
     memberId: id,

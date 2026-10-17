@@ -1,0 +1,307 @@
+/* Portraits own the stage; the hand and its action tracks keep their sizes. */
+.combat-shell .combat-scene.has-portraits .combat-arena {
+  grid-template-columns: minmax(82px, 0.5fr) minmax(0, 1.5fr);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 16px;
+  padding: 10px 12px;
+  align-items: safe center;
+}
+.combat-shell .combat-scene.has-portraits .enemies {
+  grid-column: 2;
+  grid-row: 1;
+  grid-template-columns: repeat(var(--enemy-count, 1), minmax(0, 1fr));
+  gap: 12px;
+  height: 100%;
+  max-width: none;
+  min-height: 0;
+  align-self: start;
+  align-items: stretch;
+}
+.combat-shell .combat-scene.has-portraits .enemies .enemy-unit {
+  display: grid;
+  grid-template-rows: 44px minmax(76px, 1fr) 48px;
+  align-content: stretch;
+  min-width: 0;
+  gap: 3px;
+  height: 100%;
+}
+.combat-shell .combat-scene.has-portraits .enemy-intention {
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 3px 5px;
+  font-size: 12px;
+  line-height: 1.15;
+  overflow: hidden;
+}
+.combat-shell .combat-scene.has-portraits .enemies .enemy-unit > .enemy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  place-items: center;
+  padding: 0;
+  min-width: 0;
+  min-height: 76px;
+  height: 100%;
+  overflow: visible;
+  background: transparent;
+  position: relative;
+}
+.combat-shell
+  .combat-scene.has-portraits
+  .enemies
+  .enemy-unit
+  > .enemy
+  > .combat-art {
+  width: 100%;
+  height: 100%;
+  max-width: 280px;
+  max-height: 300px;
+  min-height: 76px;
+  border-radius: 10px;
+  grid-column: 1;
+  grid-row: 1;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+}
+.enemy-readout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  align-items: center;
+  gap: 2px 4px;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 3px 2px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.1;
+}
+.enemy-readout strong,
+.enemy-readout small {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.enemy-readout .meter,
+.enemy-readout small {
+  grid-column: 1 / -1;
+}
+.enemy-readout .meter {
+  height: 4px;
+  width: 100%;
+}
+.enemy-readout small {
+  font-size: 11px;
+  color: #36667b;
+}
+.combat-shell .combat-scene.has-portraits .crew-actors {
+  grid-column: 1;
+  grid-row: 1;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: 200px;
+  gap: 12px;
+}
+@media (max-width: 700px) and (orientation: portrait),
+  (max-height: 500px) and (orientation: landscape) {
+  .combat-shell .combat-scene.has-portraits .combat-arena {
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 8px;
+    padding: 4px 6px;
+  }
+  .combat-shell .combat-scene.has-portraits .enemies {
+    gap: 6px;
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors {
+    gap: 4px;
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto 3px;
+    padding: 4px;
+    gap: 2px;
+    min-height: 44px;
+    border-radius: 7px;
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero > .combat-art {
+    display: none;
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero > strong {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 11px;
+    line-height: 1.1;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero > .incoming {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    padding: 1px 2px;
+    font-size: 10px;
+    line-height: 1.1;
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero > .you-label {
+    display: none;
+  }
+  .combat-shell
+    .combat-scene.has-portraits
+    .crew-actors
+    .hero.own
+    > strong::before {
+    content: "You · ";
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero > .hero-hp {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 11px;
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero > .hero-block {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 10px;
+  }
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero .health-unit,
+  .combat-shell .combat-scene.has-portraits .crew-actors .hero .no-block {
+    display: none;
+  }
+  .combat-shell .combat-scene.has-portraits .enemy-intention {
+    font-size: 11px;
+  }
+  .enemy-readout {
+    font-size: 11px;
+  }
+  .combat-shell .combat-scene.has-portraits.large-crew .combat-arena {
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 6px;
+  }
+  .combat-shell .combat-scene.has-portraits.large-crew .crew-actors {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 5px;
+  }
+  .combat-shell
+    .combat-scene.has-portraits.large-crew
+    .crew-actors
+    .hero
+    > .incoming {
+    display: block;
+    position: absolute;
+    inset: -7px 1px auto auto;
+    grid-area: auto;
+  }
+  .combat-shell
+    .combat-scene.has-portraits.large-crew
+    .crew-actors
+    .hero
+    > strong,
+  .combat-shell
+    .combat-scene.has-portraits.large-crew
+    .crew-actors
+    .hero
+    > .hero-hp {
+    grid-column: 1 / -1;
+  }
+  .combat-shell
+    .combat-scene.has-portraits.large-crew
+    .crew-actors
+    .hero.own
+    > strong {
+    font-size: 0;
+  }
+  .combat-shell
+    .combat-scene.has-portraits.large-crew
+    .crew-actors
+    .hero.own
+    > strong::before {
+    content: "You";
+    font-size: 11px;
+  }
+  .combat-shell
+    .combat-scene.has-portraits.large-crew
+    .crew-actors
+    .hero
+    > .hero-block {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+}
+@media (max-width: 320px) and (orientation: portrait) {
+  .combat-shell .combat-scene.has-portraits .combat-arena {
+    grid-template-columns: 66px minmax(0, 1fr);
+    gap: 5px;
+  }
+  .combat-shell .combat-scene.has-portraits.large-crew .combat-arena {
+    grid-template-columns: 98px minmax(0, 1fr);
+  }
+}
+/* Keep row height and scroll position. Share a line for name/HP, spend it on art. */
+@media (min-width: 1100px) {
+  .live-projector .team-board:has(.enemy-photo) {
+    grid-template-columns: minmax(0, 0.9fr) 330px minmax(0, 1.3fr);
+  }
+  .live-projector .board-enemies > div:has(.enemy-photo) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 34px minmax(0, 1fr) auto 6px auto;
+    width: 100%;
+    max-width: 280px;
+    gap: 4px;
+    height: 240px;
+  }
+  .live-projector .board-enemies > div:has(.enemy-photo) .board-enemy-intent {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .live-projector .board-enemies > div:has(.enemy-photo) .enemy-photo {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    height: 100%;
+    max-height: 160px;
+  }
+  .live-projector .board-enemies > div:has(.enemy-photo) > strong {
+    grid-column: 1;
+    grid-row: 3;
+    font-size: 18px;
+    text-align: left;
+  }
+  .live-projector .board-enemies > div:has(.enemy-photo) > .board-enemy-hp {
+    grid-column: 2;
+    grid-row: 3;
+    font-size: 14px;
+  }
+  .live-projector .board-enemies > div:has(.enemy-photo) > .meter {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+  .live-projector .board-enemies > div:has(.enemy-photo) > .board-status {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    min-height: 20px;
+  }
+}
+
+@media (max-height: 600px) and (orientation: portrait) {
+  .combat-shell .combat-scene.has-portraits .enemies .enemy-unit {
+    grid-template-rows: 44px minmax(64px, 1fr) 44px;
+    gap: 2px;
+  }
+  .combat-shell .combat-scene.has-portraits .enemies .enemy-unit > .enemy,
+  .combat-shell
+    .combat-scene.has-portraits
+    .enemies
+    .enemy-unit
+    > .enemy
+    > .combat-art {
+    min-height: 64px;
+  }
+}

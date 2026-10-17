@@ -3,7 +3,7 @@ import { computed, ref, watch } from "vue";
 import { useGame } from "../stores/game.ts";
 import CardTile from "./CardTile.vue";
 import HeroBadge from "./HeroBadge.vue";
-import CombatArt from "./CombatArt.vue";
+import EnemyArt from "./EnemyArt.vue";
 import EnergyDisplay from "./EnergyDisplay.vue";
 import CardText from "./CardText.vue";
 import KeywordGuide from "./KeywordGuide.vue";
@@ -51,6 +51,10 @@ const selected = ref<string | null>(null),
 const logOpen = ref(false);
 const keywordsOpen = ref(false);
 const inspectedIntent = ref<string | null>(null);
+const inspectedEnemy = ref<string | null>(null);
+const enemyDetail = computed(() =>
+  b.value.enemies.find((e) => e.id === inspectedEnemy.value),
+);
 const intention = computed(() =>
   b.value.intents.find((i) => i.enemyId === inspectedIntent.value),
 );
@@ -59,6 +63,7 @@ const intentLines = computed(() => {
   if (!i) return [];
   return [
     intentHint(i.enemyId),
+    ...(i.detail ? [i.detail] : []),
     ...i.targets.map(
       (t) =>
         `${b.value.actors.find((a) => a.memberId === t.memberId)?.name ?? "Player"}: ${t.damage} damage before Block.`,
@@ -307,6 +312,17 @@ watch(
     }"
   >
     <EffectDetails
+      v-if="enemyDetail"
+      :title="`${enemyDetail.name} · Effects`"
+      :lines="[
+        `${enemyDetail.hp}/${enemyDetail.maxHp} health · ${enemyDetail.block} Block`,
+        ...enemyStatuses(enemyDetail).map(
+          (effect) => `${effect.label}: ${effect.text}`,
+        ),
+      ]"
+      @close="inspectedEnemy = null"
+    />
+    <EffectDetails
       v-if="intention"
       :title="`${b.enemies.find((e) => e.id === intention?.enemyId)?.name} · ${intention.label}`"
       :lines="intentLines"
@@ -405,7 +421,10 @@ watch(
     <template v-else
       ><div
         class="combat-scene"
-        :class="{ 'large-crew': teammates.length > 2 }"
+        :class="{
+          'large-crew': teammates.length > 2,
+          'has-portraits': b.enemies.some((e) => !!e.portrait),
+        }"
       >
         <div class="combat-arena">
           <CombatLink
@@ -414,7 +433,10 @@ watch(
             :active="!!beat && stage === 'windup'"
             :effect-key="beat?.key"
           />
-          <div class="enemies">
+          <div
+            class="enemies"
+            :style="{ '--enemy-count': Math.min(2, b.enemies.length) }"
+          >
             <div v-for="enemy in b.enemies" :key="enemy.id" class="enemy-unit">
               <button
                 v-if="enemy.hp > 0"
@@ -456,15 +478,16 @@ watch(
                   :impact="impact(enemy.id)"
                   :effect-key="beat?.key"
                 />
-                <CombatArt
+                <EnemyArt
                   :key="beat?.key"
                   :kind="enemy.pattern"
+                  :portrait="enemy.portrait"
                   :class="{
                     'source-strike':
                       beat?.sourceId === enemy.id && stage === 'windup',
                   }"
                 />
-                <div class="scene-enemy-info">
+                <div v-if="!enemy.portrait" class="scene-enemy-info">
                   <strong>{{ enemy.name }}</strong
                   ><span class="enemy-hp">{{ enemy.hp }}/{{ enemy.maxHp }}</span
                   ><span class="meter health"
@@ -482,7 +505,35 @@ watch(
                   ><span v-if="enemy.block">{{ enemy.block }} Block</span>
                 </div>
               </button>
+              <button
+                v-if="enemy.portrait"
+                class="enemy-readout"
+                :aria-label="`${enemy.name} effects`"
+                @click="inspectedEnemy = enemy.id"
+              >
+                <strong>{{ enemy.name }}</strong
+                ><span>{{ enemy.hp }}/{{ enemy.maxHp }}</span>
+                <span class="meter health"
+                  ><span
+                    v-if="(stage === 'impact' || stage === 'exit') && beat"
+                    :key="beat.key"
+                    class="health-trail"
+                    :style="{
+                      width: `${((beat.before.enemies.find((e) => e.id === enemy.id)?.hp ?? enemy.hp) / enemy.maxHp) * 100}%`,
+                    }" /><span
+                    :style="{ width: `${(enemy.hp / enemy.maxHp) * 100}%` }"
+                /></span>
+                <small v-if="enemy.block || enemyStatuses(enemy).length">{{
+                  [
+                    enemy.block ? `${enemy.block} Block` : "",
+                    ...enemyStatuses(enemy).map((e) => e.label),
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")
+                }}</small>
+              </button>
               <StatusEffects
+                v-else
                 :effects="enemyStatuses(enemy)"
                 :owner="enemy.name"
               />

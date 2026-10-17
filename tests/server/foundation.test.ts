@@ -57,6 +57,7 @@ test("real sockets: early start, duplicate receipt, ownership, reconnect and res
     encounterId: null,
     command,
   });
+  let savedEnemies: unknown;
   try {
     const team = env("team", {
       kind: "team",
@@ -98,6 +99,11 @@ test("real sockets: early start, duplicate receipt, ownership, reconnect and res
       .progress.combat!;
     assert.equal(combat.actors[player.memberId]!.hand.length, 5);
     assert.equal(combat.openingRoom, true);
+    savedEnemies = combat.enemies.map(({ name, portrait }) => ({
+      name,
+      portrait,
+    }));
+    assert(combat.enemies[0]!.portrait);
     await server.app.advance(4000);
     assert.equal(
       combat.deadline - server.app.sessions.get(session.id)!.activeMs,
@@ -109,6 +115,12 @@ test("real sockets: early start, duplicate receipt, ownership, reconnect and res
       server.app.view(session.id, { role: "player", memberId: player.memberId })
         .combat!.id,
       combat.id,
+    );
+    assert.deepEqual(
+      server.app
+        .view(session.id, { role: "player", memberId: player.memberId })
+        .combat!.enemies.map(({ name, portrait }) => ({ name, portrait })),
+      savedEnemies,
     );
   } finally {
     host.disconnect();
@@ -123,6 +135,13 @@ test("real sockets: early start, duplicate receipt, ownership, reconnect and res
     const s = restored.app.sessions.get(session.id)!;
     assert.equal(s.status, "paused");
     assert.equal(s.crews["team-1"]!.progress.combat!.openingRoom, true);
+    assert.deepEqual(
+      s.crews["team-1"]!.progress.combat!.enemies.map(({ name, portrait }) => ({
+        name,
+        portrait,
+      })),
+      savedEnemies,
+    );
     assert.equal(
       s.crews["team-1"]!.progress.combat!.deadline - s.activeMs,
       86000,

@@ -1,3 +1,5 @@
+import { eligibleRelics } from "./relics.ts";
+import { lootPool, rollOffers } from "./loot.ts";
 import type { Session, Crew, Command } from "../shared/model.ts";
 import type { PlayerShop } from "../shared/shop-types.ts";
 import { seedFrom, shuffle } from "./random.ts";
@@ -7,30 +9,29 @@ export function openShop(s: Session, crew: Crew): void {
     const hero = s.members[id]!.hero;
     const shopId = `${s.id}:${crew.id}:${crew.progress.nodeId}:${id}`;
     const rng = { rng: seedFrom(shopId) };
-    const cards = s.content.cards.filter(
-      (c) =>
-        [hero.character, "shared"].includes(c.character) &&
-        !["strike", "guard"].includes(c.id),
-    );
-    const picks = [
-      ...shuffle(
-        cards.filter((c) => c.rarity === "common"),
-        rng,
-      ).slice(0, 2),
-      ...shuffle(
-        cards.filter((c) => c.rarity === "uncommon"),
-        rng,
-      ).slice(0, 2),
-      ...shuffle(
-        cards.filter((c) => c.rarity === "rare"),
-        rng,
-      ).slice(0, 1),
-    ];
-    const relics = s.content.relics.filter(
-      (r) =>
-        [hero.character, "shared"].includes(r.character) &&
-        !hero.relics.some((o) => o.relicId === r.id),
-    );
+    const cards = lootPool(s, hero);
+    const picks = s.content.depth
+      ? rollOffers(
+          s,
+          hero,
+          ["common", "common", "uncommon", "uncommon", "rare"],
+          rng,
+        )
+      : [
+          ...shuffle(
+            cards.filter((c) => c.rarity === "common"),
+            rng,
+          ).slice(0, 2),
+          ...shuffle(
+            cards.filter((c) => c.rarity === "uncommon"),
+            rng,
+          ).slice(0, 2),
+          ...shuffle(
+            cards.filter((c) => c.rarity === "rare"),
+            rng,
+          ).slice(0, 1),
+        ];
+    const relics = eligibleRelics(s, hero);
     crew.progress.shops[id] = {
       id: shopId,
       memberId: id,

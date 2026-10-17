@@ -15,6 +15,7 @@ import "./styles/projector.css";
 import "./styles/playback-queue.css";
 import "./styles/expansion.css";
 import "./styles/onboarding.css";
+import "./styles/enemy-stage.css";
 const router = createRouter({
   history: createWebHistory(),
   routes: [

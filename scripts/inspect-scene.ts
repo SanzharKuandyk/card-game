@@ -197,9 +197,7 @@ try {
   await capture("scene-effects");
   await page.setViewportSize({ width: 360, height: 800 });
   await page.getByRole("button", { name: /^Poison 5/ }).click();
-  await page
-    .getByRole("dialog", { name: /Raider · (Poison 5|Effects)/ })
-    .waitFor();
+  await page.getByRole("dialog", { name: / · (Poison 5|Effects)/ }).waitFor();
   await page.screenshot({ path: "docs/screenshots/effect-explanation.png" });
   await page.keyboard.press("Escape");
   for (const profile of [

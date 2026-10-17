@@ -92,11 +92,12 @@ export const relicsSchema = z
         "shared",
       ]),
       effect: z.enum(Object.values(RelicEffect)),
+      requiresTeam: z.boolean().optional(),
       amount: z.number().int().positive().max(10),
       tags: z.array(z.string()).min(1),
     }),
   )
-  .length(12)
+  .min(12)
   .refine(
     (rs) => new Set(rs.map((r) => r.id)).size === rs.length,
     "Duplicate relic ID",

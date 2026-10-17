@@ -39,7 +39,7 @@ export function createSession(
   const s: Session = {
     id,
     code,
-    map: generateMap(seed),
+    map: generateMap(seed, content.depth?.fixedEncounters),
     economyGrants: {},
     relicRewards: [],
     rulesVersion: "cards-v2",
@@ -187,6 +187,7 @@ function enterNode(
       s.activeMs,
       s.content,
       {
+        encounterId: node.encounterId,
         openingRoom:
           node.row === 1 && s.content.timing.openingTurn !== undefined,
       },

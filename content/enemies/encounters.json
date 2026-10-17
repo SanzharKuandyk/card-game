@@ -1,32 +1,127 @@
 [
   {
     "id": "raider",
-    "name": "Raider",
+    "name": "Doge",
     "pattern": "raider",
-    "weight": 1
+    "weight": 1,
+    "portrait": "doge",
+    "portraitPool": [
+      "grumpycat",
+      "persian",
+      "boat",
+      "banana-cat",
+      "thumbs-up-cat",
+      "polite-cat",
+      "pop-cat",
+      "side-eye-cat",
+      "crunchy-cat",
+      "crying-cat",
+      "screaming-cat",
+      "doge",
+      "cheems"
+    ]
   },
   {
     "id": "guard",
-    "name": "Guard",
+    "name": "Grumpy Cat",
     "pattern": "guard",
-    "weight": 1
+    "weight": 1,
+    "portrait": "grumpycat",
+    "portraitPool": [
+      "grumpycat",
+      "persian",
+      "boat",
+      "banana-cat",
+      "thumbs-up-cat",
+      "polite-cat",
+      "pop-cat",
+      "side-eye-cat",
+      "crunchy-cat",
+      "crying-cat",
+      "screaming-cat",
+      "doge",
+      "cheems"
+    ]
   },
   {
     "id": "support",
-    "name": "Signal Keeper",
+    "name": "Cheems",
     "pattern": "support",
-    "weight": 0.3
+    "weight": 0.3,
+    "portrait": "cheems",
+    "portraitPool": [
+      "grumpycat",
+      "persian",
+      "boat",
+      "banana-cat",
+      "thumbs-up-cat",
+      "polite-cat",
+      "pop-cat",
+      "side-eye-cat",
+      "crunchy-cat",
+      "crying-cat",
+      "screaming-cat",
+      "doge",
+      "cheems"
+    ]
   },
   {
     "id": "colossus",
-    "name": "Colossus",
+    "name": "Room Guardian",
     "pattern": "colossus",
-    "weight": 1
+    "weight": 1,
+    "portrait": "persian",
+    "portraitPool": [
+      "persian",
+      "grumpycat",
+      "banana-cat",
+      "screaming-cat",
+      "pop-cat",
+      "crunchy-cat"
+    ]
   },
   {
     "id": "sentinel",
-    "name": "Sentinel",
+    "name": "Big Cheems",
     "pattern": "sentinel",
-    "weight": 1
+    "weight": 1,
+    "portrait": "cheems",
+    "portraitPool": [
+      "persian",
+      "grumpycat",
+      "banana-cat",
+      "screaming-cat",
+      "pop-cat",
+      "crunchy-cat"
+    ]
+  },
+  {
+    "id": "healer",
+    "name": "Business Cat",
+    "pattern": "healer",
+    "weight": 0.3,
+    "portrait": "boat",
+    "portraitPool": [
+      "grumpycat",
+      "persian",
+      "boat",
+      "banana-cat",
+      "thumbs-up-cat",
+      "polite-cat",
+      "pop-cat",
+      "side-eye-cat",
+      "crunchy-cat",
+      "crying-cat",
+      "screaming-cat",
+      "doge",
+      "cheems"
+    ]
+  },
+  {
+    "id": "milk-cat",
+    "name": "Milk Cat",
+    "pattern": "guard",
+    "weight": 1,
+    "portrait": "milk-cat"
   }
 ]

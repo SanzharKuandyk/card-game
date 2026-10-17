@@ -6,6 +6,7 @@ import { enemyStatuses, heroStatuses } from "../combat-status.ts";
 import StatusEffects from "./StatusEffects.vue";
 import EffectDetails from "./EffectDetails.vue";
 import CombatArt from "./CombatArt.vue";
+import EnemyArt from "./EnemyArt.vue";
 import ImpactBurst from "./ImpactBurst.vue";
 import CardArt from "./CardArt.vue";
 import CardText from "./CardText.vue";
@@ -95,12 +96,15 @@ function inspectIntent(enemyId: string) {
   if (!intent) return;
   explanation.value = {
     title: `${name(enemyId)} · ${intent.label}`,
-    lines: intent.targets.length
-      ? intent.targets.map(
-          (target) =>
-            `${name(target.memberId)}: ${target.damage} incoming damage before Block.`,
-        )
-      : [intent.label],
+    lines: [
+      ...(intent.detail ? [intent.detail] : []),
+      ...(intent.targets.length
+        ? intent.targets.map(
+            (target) =>
+              `${name(target.memberId)}: ${target.damage} incoming damage before Block.`,
+          )
+        : [intent.label]),
+    ],
   };
 }
 </script>
@@ -188,8 +192,9 @@ function inspectIntent(enemyId: string) {
             >
           </button>
           <ImpactBurst :impact="impact(enemy.id)" :effect-key="active?.key" />
-          <CombatArt
+          <EnemyArt
             :kind="enemy.pattern"
+            :portrait="enemy.portrait"
             :class="{
               'source-strike':
                 active?.sourceId === enemy.id && stage === 'windup',

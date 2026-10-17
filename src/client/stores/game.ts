@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { shallowRef, ref } from "vue";
+import { computed, shallowRef, ref } from "vue";
 import { io } from "socket.io-client";
 import type { Socket } from "socket.io-client";
 import { requestId } from "../connection.ts";
@@ -14,7 +14,14 @@ export const useGame = defineStore("game", () => {
   const view = shallowRef<Snapshot | null>(null);
   const connected = ref(false);
   const busy = ref(false);
-  const error = ref("");
+  const actionError = ref("");
+  const connectionError = ref("");
+  const error = computed({
+    get: () => actionError.value || connectionError.value,
+    set: (value: string) => {
+      actionError.value = value;
+    },
+  });
   const message = ref("");
   let socket: Socket | null = null;
   const clientId = requestId();
@@ -70,7 +77,7 @@ export const useGame = defineStore("game", () => {
       try {
         void send(JSON.parse(pending) as Envelope);
       } catch {
-        error.value = "Saved action could not be read. Reload this page.";
+        actionError.value = "Saved action could not be read. Reload this page.";
       }
     }
   }
@@ -93,6 +100,8 @@ export const useGame = defineStore("game", () => {
     clearTimeout(wakeTimer);
     clearTimeout(snapshotTimer);
     lastKey = key;
+    actionError.value = "";
+    connectionError.value = "";
     view.value = null;
     connected.value = false;
     needsJoin.value = false;
@@ -115,7 +124,7 @@ export const useGame = defineStore("game", () => {
       // An open transport is not yet a restored hand. Enable controls only
       // after receiving the authoritative snapshot.
       connected.value = false;
-      error.value = "";
+      connectionError.value = "";
       needsJoin.value = false;
       awaitSnapshot();
       socket?.emit("resync");
@@ -127,10 +136,8 @@ export const useGame = defineStore("game", () => {
       clearTimeout(snapshotTimer);
       const restored = !connected.value;
       connected.value = true;
-      if (restored) {
-        error.value = "";
-        flushPending();
-      }
+      connectionError.value = "";
+      if (restored) flushPending();
     });
     socket.on("disconnect", () => {
       connected.value = false;
@@ -140,7 +147,7 @@ export const useGame = defineStore("game", () => {
       needsJoin.value = /Join again|Not authenticated|Session not found/.test(
         e.message,
       );
-      error.value = needsJoin.value
+      connectionError.value = needsJoin.value
         ? "This game needs your player sign-in again."
         : "Reconnecting…";
       connected.value = false;
@@ -199,13 +206,15 @@ export const useGame = defineStore("game", () => {
           busy.value = false;
           if (result.accepted) {
             message.value = result.message;
-            error.value = "";
-          } else error.value = result.message;
+            actionError.value = "";
+            connectionError.value = "";
+          } else actionError.value = result.message;
         }
         return result;
       } catch {
         if (lastKey !== activeKey) break;
-        error.value = "Connection interrupted. Checking saved action.";
+        connectionError.value =
+          "Connection interrupted. Checking saved action.";
         activeSocket.emit("resync");
         if (!durable || !activeSocket.connected) break;
       }

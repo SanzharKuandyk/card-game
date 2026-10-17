@@ -404,14 +404,16 @@ test("four-player fight, rotation, reward and reconnect", async ({
   await expect(page.getByRole("button", { name: /^Play ·/ })).toBeEnabled();
   const logLength = server.app.sessions.get(h.id)!.crews["team-1"]!.progress
     .combat!.log.length;
-  const peer = [...server.io.sockets.sockets.values()].find(
-    (socket) => socket.data.identity?.identity.memberId === playerView.memberId,
-  )!;
+  const dispatch = server.app.command.bind(server.app);
   let rejectNextPlay = true;
-  peer.use((packet, next) => {
+  let resolveRejection = () => {};
+  const rejectedReceipt = new Promise<void>((resolve) => {
+    resolveRejection = resolve;
+  });
+  server.app.command = async (socketId, envelope) => {
     if (
-      packet[0] === "command" &&
-      packet[1]?.command?.kind === "play" &&
+      envelope.command.kind === "play" &&
+      envelope.command.cardUid === basic.uid &&
       rejectNextPlay
     ) {
       rejectNextPlay = false;
@@ -419,9 +421,22 @@ test("four-player fight, rotation, reward and reconnect", async ({
         playerView.memberId!
       ]!.energy = 0;
     }
-    next();
-  });
+    const result = await dispatch(socketId, envelope);
+    if (!result.accepted && result.message === "Not enough energy")
+      resolveRejection();
+    return result;
+  };
   await page.getByRole("button", { name: /^Play ·/ }).click();
+  await rejectedReceipt;
+  expect(rejectNextPlay).toBe(false);
+  await expect(page.locator(".error")).toContainText("Not enough energy");
+  await page.getByRole("button", { name: "Help", exact: true }).click();
+  await page.keyboard.press("Escape");
+  // A fresh snapshot must clear transport errors without hiding a rejected play.
+  await page.evaluate(() => window.dispatchEvent(new Event("online")));
+  await expect(
+    page.getByRole("button", { name: "End turn", exact: true }),
+  ).toBeEnabled();
   await expect(page.locator(".error")).toContainText("Not enough energy");
   expect(
     server.app.sessions.get(h.id)!.crews["team-1"]!.progress.combat!.log.length,
@@ -561,22 +576,25 @@ test("card reveal, damage impact, reduced motion and finishing blow", async ({
   const session = server.app.sessions.get(h.id)!;
   const fight = Object.values(session.crews)[0]!.progress.combat!;
   const actor = Object.values(fight.actors)[0]!;
+  const enemyName = fight.enemies[0]!.name;
   // Reviewed fixed hand, then real UI commands and server outcomes.
   const intentionButton = p.page.getByRole("button", {
-    name: /^Raider intention:/,
+    name: new RegExp(`^${enemyName} intention:`),
   });
   await intentionButton.click();
   await expect(
-    p.page.getByRole("dialog", { name: "Raider · Sweep" }),
+    p.page.getByRole("dialog", { name: `${enemyName} · Sweep` }),
   ).toContainText("Alex: 6 damage before Block");
   await p.page.keyboard.press("Escape");
   await expect(intentionButton).toBeFocused();
   fight.enemies[0]!.poison = 3;
   actor.powers["keep-block"] = 1;
   server.app.onPublish(h.id);
-  await p.page.getByRole("button", { name: "Poison 3", exact: true }).click();
+  await p.page
+    .getByRole("button", { name: `${enemyName} effects`, exact: true })
+    .click();
   await expect(
-    p.page.getByRole("dialog", { name: "Raider · Poison 3" }),
+    p.page.getByRole("dialog", { name: `${enemyName} · Effects` }),
   ).toContainText("ignoring Block");
   await p.page.keyboard.press("Escape");
   await p.page.getByRole("button", { name: "Keep Block", exact: true }).click();

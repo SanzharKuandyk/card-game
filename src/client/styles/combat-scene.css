@@ -22,7 +22,7 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
+  align-items: safe center;
   gap: clamp(16px, 4vw, 64px);
   padding: 28px 20px;
   min-width: 0;

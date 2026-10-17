@@ -62,7 +62,11 @@ export type EffectOp =
   | "charge"
   | "heal"
   | "all-block"
-  | "all-energy";
+  | "all-energy"
+  | "self-block"
+  | "strip-block"
+  | "consume-poison"
+  | "spend-charge";
 export interface Effect {
   op: EffectOp;
   amount: number;
@@ -77,6 +81,8 @@ export interface Effect {
     | "lost-hp"
     | "other-attacks";
   all?: boolean;
+  limit?: number;
+  pool?: number;
   hits?: number;
   factor?: number;
 }
@@ -99,7 +105,9 @@ export interface CardDefinition extends CardVersion {
   choose?: "hand" | "discard";
   crossTeam?: boolean;
   discardEffect?: Effect[];
+  exhaustOnDiscard?: boolean;
   nonCopyable?: boolean;
+  requiresTeam?: boolean;
 }
 export interface CardInstance {
   uid: string;
@@ -141,6 +149,23 @@ export interface BattleActor {
   blockSources: { sourceId: string; remaining: number }[];
   energySources: { sourceId: string; remaining: number }[];
 }
+export interface EnemyPortrait {
+  id: string;
+  enemyName?: string;
+  path: string;
+  alt: string;
+  position: string;
+  fit?: "cover" | "contain";
+  download?: string;
+  rightsStatus?: "verified" | "unverified";
+  title: string;
+  author: string;
+  license: string;
+  licenseUrl: string;
+  source: string;
+  checkedAt: string;
+  changes: string;
+}
 export interface Enemy {
   id: string;
   name: string;
@@ -152,7 +177,14 @@ export interface Enemy {
   vulnerable: number;
   strength: number;
   pattern: string;
-  repeat: { donorId: string; amount: number } | null;
+  repeat: { donorId: string; amount: number; allowSelf?: boolean } | null;
+  portrait?: Pick<EnemyPortrait, "id" | "path" | "alt" | "position" | "fit">;
+  tactics?: {
+    version: 1;
+    damageThisTurn: number;
+    interruptedTurn?: number;
+    brokenTurn?: number;
+  };
 }
 export interface Intent {
   enemyId: string;
@@ -160,6 +192,7 @@ export interface Intent {
   kind: "attack" | "guard" | "summon" | "charge";
   targets: { memberId: string; damage: number }[];
   block: number;
+  detail?: string;
 }
 export interface CombatEvent {
   id: number;
@@ -182,6 +215,7 @@ export interface Contribution {
   helped: string[];
 }
 export interface Combat {
+  depthVersion?: 1;
   openingRoom?: boolean;
   id: string;
   kind: "route" | "boss";
@@ -208,6 +242,7 @@ export interface MapNode {
   lane: number;
   kind: Room;
   next: string[];
+  encounterId?: string;
   risk?: "standard" | "dangerous" | "severe";
   pressure?: number;
 }
@@ -222,6 +257,8 @@ export interface Prediction {
   source: { week: number; slides: number[] };
 }
 export interface EnemyTemplate {
+  portrait?: string;
+  portraitPool?: string[];
   id: string;
   name: string;
   pattern: string;
@@ -239,6 +276,13 @@ export interface EventDefinition {
   }[];
 }
 export interface Content {
+  portraits?: EnemyPortrait[];
+  depth?: {
+    version: 1;
+    cards: number;
+    relics: number;
+    fixedEncounters?: Record<string, string>;
+  };
   version: string;
   hash: string;
   cards: CardDefinition[];

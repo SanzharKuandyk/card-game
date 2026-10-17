@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { loadContent } from "../../src/server/content/load.ts";
 test("authored catalogue, starters, map gates and predictions are complete", async () => {
   const c = await loadContent();
-  assert.equal(c.cards.filter((c) => c.rarity !== "token").length, 80);
+  assert.equal(c.cards.filter((c) => c.rarity !== "token").length, 120);
   for (const deck of Object.values(c.starters)) assert.equal(deck.length, 10);
   for (let r = 1; r <= 15; r++) assert(c.map.some((n) => n.row === r));
   assert.deepEqual(

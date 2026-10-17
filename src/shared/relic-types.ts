@@ -1,4 +1,16 @@
 export const RelicEffect = {
+  BlockCarry: "block-carry",
+  HealthBlock: "health-block",
+  DiscardSpark: "discard-spark",
+  ZeroBlock: "zero-block",
+  PoisonSpread: "poison-spread",
+  ExhaustEnergy: "exhaust-energy",
+  ChargeBlock: "charge-block",
+  RetainedDraw: "retained-draw",
+  TurnDraw: "turn-draw",
+  EmptyEnergy: "empty-energy",
+  HelpBlock: "help-block",
+  LowHealthBlock: "low-health-block",
   FirstBlock: "first-block",
   HealthEnergy: "health-energy",
   ThirdAttack: "third-attack",
@@ -20,6 +32,7 @@ export interface RelicDefinition {
   rarity: "common" | "rare";
   character: "guardian" | "rogue" | "alchemist" | "channeler" | "shared";
   effect: RelicEffect;
+  requiresTeam?: boolean;
   amount: number;
   tags: string[];
 }

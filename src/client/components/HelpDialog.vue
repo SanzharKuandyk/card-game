@@ -39,6 +39,11 @@ onUnmounted(() => {
       <button @click="close">Close</button>
     </header>
     <div class="help-reference">
+      <p>
+        <a href="/photo-credits.html" target="_blank" rel="noopener"
+          >Image sources</a
+        >
+      </p>
       <dl>
         <dt>Play</dt>
         <dd>

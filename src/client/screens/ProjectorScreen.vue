@@ -8,7 +8,7 @@ import QRCode from "qrcode";
 import { useGame } from "../stores/game.ts";
 import TurnClock from "../components/TurnClock.vue";
 import TeamBoard from "../components/TeamBoard.vue";
-import CombatArt from "../components/CombatArt.vue";
+import EnemyArt from "../components/EnemyArt.vue";
 import { beatTiming } from "../combat-feedback.ts";
 const game = useGame(),
   route = useRoute();
@@ -168,9 +168,10 @@ onUnmounted(() => game.close());
       class="live-boss"
       aria-label="Shared boss"
     >
-      <CombatArt
+      <EnemyArt
         v-if="bossScene"
         :kind="bossScene.enemies[0]?.pattern ?? 'boss'"
+        :portrait="bossScene.enemies[0]?.portrait"
       />
       <div class="shared-boss-health">
         <strong>{{ bossScene?.enemies[0]?.name ?? "Boss" }}</strong

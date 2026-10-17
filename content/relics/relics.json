@@ -67,7 +67,8 @@
     "character": "channeler",
     "effect": "help-draw",
     "amount": 1,
-    "tags": ["help-draw"]
+    "tags": ["help-draw"],
+    "requiresTeam": true
   },
   {
     "id": "capacitor",
@@ -118,5 +119,126 @@
     "effect": "opening-energy",
     "amount": 1,
     "tags": ["opening-energy"]
+  },
+  {
+    "id": "shield-spool",
+    "name": "Shield Spool",
+    "character": "guardian",
+    "rarity": "rare",
+    "effect": "block-carry",
+    "amount": 6,
+    "tags": ["fortress"],
+    "text": "Keep up to 6 Block when your turn starts. Combines with Bastion using the higher limit."
+  },
+  {
+    "id": "red-thread",
+    "name": "Red Thread",
+    "character": "guardian",
+    "rarity": "common",
+    "effect": "health-block",
+    "amount": 5,
+    "tags": ["blood"],
+    "text": "The first card that spends your health each turn gives 5 Block."
+  },
+  {
+    "id": "pocket-flint",
+    "name": "Pocket Flint",
+    "character": "rogue",
+    "rarity": "rare",
+    "effect": "discard-spark",
+    "amount": 2,
+    "tags": ["discard", "flurry"],
+    "text": "Your first deliberate discard each turn creates 2 free Sparks. Once per turn."
+  },
+  {
+    "id": "silver-needle",
+    "name": "Silver Needle",
+    "character": "rogue",
+    "rarity": "common",
+    "effect": "zero-block",
+    "amount": 2,
+    "tags": ["flurry"],
+    "text": "Your first zero-cost Attack each turn gives 2 Block."
+  },
+  {
+    "id": "sealed-vial",
+    "name": "Sealed Vial",
+    "character": "alchemist",
+    "rarity": "rare",
+    "effect": "poison-spread",
+    "amount": 2,
+    "tags": ["poison"],
+    "text": "Your first card applying Poison each turn also applies 2 Poison to every other standing enemy."
+  },
+  {
+    "id": "scrap-furnace",
+    "name": "Scrap Furnace",
+    "character": "alchemist",
+    "rarity": "common",
+    "effect": "exhaust-energy",
+    "amount": 1,
+    "tags": ["exhaust"],
+    "text": "Your first Exhaust each turn gives 1 energy. Once per turn."
+  },
+  {
+    "id": "tuning-fork",
+    "name": "Tuning Fork",
+    "character": "channeler",
+    "rarity": "common",
+    "effect": "charge-block",
+    "amount": 4,
+    "tags": ["charge"],
+    "text": "The first time a card gives you Charge each turn, gain 4 Block."
+  },
+  {
+    "id": "long-memory",
+    "name": "Long Memory",
+    "character": "channeler",
+    "rarity": "rare",
+    "effect": "retained-draw",
+    "amount": 1,
+    "tags": ["charge"],
+    "text": "After your first Attack kept across turns, draw 1. Once per turn."
+  },
+  {
+    "id": "spare-page",
+    "name": "Spare Page",
+    "character": "shared",
+    "rarity": "common",
+    "effect": "turn-draw",
+    "amount": 1,
+    "tags": ["general"],
+    "text": "From turn 2 onward, draw 1 extra card each turn."
+  },
+  {
+    "id": "empty-flask",
+    "name": "Empty Flask",
+    "character": "shared",
+    "rarity": "rare",
+    "effect": "empty-energy",
+    "amount": 1,
+    "tags": ["general"],
+    "text": "The first time you spend your last energy each turn, gain 1 energy. Once per turn."
+  },
+  {
+    "id": "team-ribbon",
+    "name": "Team Ribbon",
+    "character": "shared",
+    "rarity": "common",
+    "effect": "help-block",
+    "amount": 4,
+    "tags": ["team"],
+    "text": "The first card that gives another player Block, health, energy or cards each turn gives you 4 Block.",
+    "requiresTeam": true
+  },
+  {
+    "id": "soft-landing",
+    "name": "Soft Landing",
+    "character": "shared",
+    "rarity": "rare",
+    "effect": "low-health-block",
+    "amount": 6,
+    "tags": ["general"],
+    "text": "Start each turn at half health or less with 6 extra Block. Does not revive you."
   }
 ]

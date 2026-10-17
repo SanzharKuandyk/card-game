@@ -23,11 +23,38 @@ export function enemyStatuses(enemy: Enemy): StatusBadge[] {
     result.push({
       id: "repeat",
       label: "Repeat",
-      text: "The next attack from a teammate of the player who applied this effect repeats its damage and enemy status effects. The player who set it up cannot trigger it. Used once.",
+      text: enemy.repeat.allowSelf
+        ? `Your next Attack repeats its original damage and enemy status values ${enemy.repeat.amount} time(s). Other effects and resource costs do not repeat.`
+        : `The next teammate Attack repeats its original damage and enemy status values ${enemy.repeat.amount} time(s). The player who set it up cannot trigger it. Other effects and resource costs do not repeat.`,
     });
   return result;
 }
 const powers: Record<string, [string, (n: number) => string]> = {
+  "block-bank": [
+    "Stored Block",
+    (n) =>
+      `Keep up to ${n} Block at turn start. Uses the higher limit when combined with Shield Spool.`,
+  ],
+  "blood-block": [
+    "Blood Block",
+    (n) => `The first health-spending card each turn gives ${n} Block.`,
+  ],
+  "discard-energy": [
+    "Discard energy",
+    (n) => `Your first deliberate discard each turn gives ${n} energy.`,
+  ],
+  "exhaust-energy": [
+    "Exhaust energy",
+    (n) => `Your first Exhaust each turn gives ${n} energy.`,
+  ],
+  "start-block": [
+    "Turn Block",
+    (n) => `Gain ${n} Block at the start of your next turns.`,
+  ],
+  "energy-debt": [
+    "Energy owed",
+    (n) => `Start your next turn with ${n} less energy, then this clears.`,
+  ],
   strength: [
     "Strength",
     (n) => `Each damage hit gains ${n} damage for this fight.`,

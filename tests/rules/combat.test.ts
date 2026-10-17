@@ -51,8 +51,8 @@ test("played-card feedback preserves actual cost, upgrades, absorption and group
   enemyPhase(b, 0, content);
   const enemyBeats = combatBeats(after, { ...after, log: b.log }, cursor);
   assert.equal(enemyBeats.length, 1, "sweep is one beat for all targets");
-  assert.match(impactFor(enemyBeats[0]!, "p0").label, /−2 HP · 4 blocked/);
-  assert.match(impactFor(enemyBeats[0]!, "p1").label, /−6 HP/);
+  assert.match(impactFor(enemyBeats[0]!, "p0").label, /−3 HP · 4 blocked/);
+  assert.match(impactFor(enemyBeats[0]!, "p1").label, /−7 HP/);
 });
 test("batched enemy attacks preserve per-action health and Block checkpoints", () => {
   const b = fixture(2);
@@ -74,8 +74,8 @@ test("batched enemy attacks preserve per-action health and Block checkpoints", (
   assert.deepEqual(
     beats.map((beat) => [p0(beat.before).hp, p0(beat.after).hp]),
     [
-      [40, 38],
-      [38, 32],
+      [40, 37],
+      [37, 30],
     ],
   );
   assert.equal(p0(beats[0]!.before).block, 4);
@@ -85,7 +85,7 @@ test("batched enemy attacks preserve per-action health and Block checkpoints", (
     40,
     "presentation never mutates received snapshots",
   );
-  assert.equal(p0(after).hp, 32);
+  assert.equal(p0(after).hp, 30);
   for (const reduced of [false, true]) {
     assert(
       beatTiming(20, reduced).card >= 800,
@@ -134,7 +134,7 @@ test("crew sizes 1–4 have personal decks, deterministic draws and conserved da
     assert.deepEqual(a.actors, b.actors);
     assert.equal(
       a.intents[0]!.targets.reduce((s, t) => s + t.damage, 0),
-      6 * n,
+      7 * n,
     );
   }
 });
@@ -275,7 +275,7 @@ test("enemy attacks visibly consume source Block; health budgets require more th
   playCard(b, "p0", "p0-0", "p1", undefined, content);
   enemyPhase(b, 0, content);
   assert.equal(b.actors.p1!.hp, 40);
-  assert.equal(b.contributions.p0!.protection, 6);
+  assert.equal(b.contributions.p0!.protection, 7);
   assert(
     b.log.some((e) => e.kind === "enemy-hit" && e.text.includes("blocked")),
   );
@@ -330,10 +330,10 @@ test("enemy attacks visibly consume source Block; health budgets require more th
   beginTurn(elite, 0, content);
   enemyPhase(elite, 0, content);
   beginTurn(elite, 0, content);
-  assert.equal(elite.enemies[0]!.block, 6);
+  assert.equal(elite.enemies[0]!.block, 8);
   hand(elite, "p0", ["strike"]);
   const beforeBlock = elite.enemies[0]!.hp;
   playCard(elite, "p0", "p0-0", "main", undefined, content);
   assert.equal(elite.enemies[0]!.hp, beforeBlock);
-  assert.equal(elite.enemies[0]!.block, 0);
+  assert.equal(elite.enemies[0]!.block, 2);
 });

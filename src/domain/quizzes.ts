@@ -1,3 +1,4 @@
+import { lootPool, rollOffers } from "./loot.ts";
 import type { Session, BossRecord, Reward } from "../shared/model.ts";
 import type { QuizEvent, QuizView } from "../shared/quiz-types.ts";
 import { seedFrom, shuffle } from "./random.ts";
@@ -89,19 +90,17 @@ function settle(s: Session, q: QuizEvent) {
       if (!s.rewards.some((r) => r.id === rid)) {
         const hero = s.members[id]!.hero;
         const rng = { rng: seedFrom(`${s.seed}:${rid}`) };
-        const pool = s.content.cards.filter(
-          (c) =>
-            [hero.character, "shared"].includes(c.character) &&
-            !["strike", "guard"].includes(c.id),
-        );
+        const pool = lootPool(s, hero);
         const rarities =
           tier === "rare"
             ? ["uncommon", "uncommon", "rare"]
             : tier === "uncommon"
               ? ["uncommon", "uncommon", "uncommon"]
               : ["common", "common", "uncommon"];
-        const picked: string[] = [];
-        for (const rarity of rarities) {
+        const picked: string[] = s.content.depth
+          ? rollOffers(s, hero, rarities, rng).map((c) => c.id)
+          : [];
+        for (const rarity of s.content.depth ? [] : rarities) {
           const candidates = shuffle(
             pool.filter((c) => c.rarity === rarity && !picked.includes(c.id)),
             rng,

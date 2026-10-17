@@ -3,7 +3,10 @@ import { nextRandom, seedFrom } from "./random.ts";
 export const BossGates = [8, 15] as const;
 export const MAP_ROWS = 15;
 // One graph per session. Edge constraints create alternate routes without dead ends.
-export function generateMap(seed: number): MapNode[] {
+export function generateMap(
+  seed: number,
+  fixedEncounters: Record<string, string> = {},
+): MapNode[] {
   const rng = { rng: seedFrom(`${seed}:shared-map-v2`) };
   const nodes: MapNode[] = [];
   for (let row = 1; row <= MAP_ROWS; row++) {
@@ -47,6 +50,9 @@ export function generateMap(seed: number): MapNode[] {
             : 1;
       nodes.push({
         id: `r${row}-${lane}`,
+        ...(fixedEncounters[String(row)]
+          ? { encounterId: fixedEncounters[String(row)] }
+          : {}),
         row,
         lane: count === 1 ? 2 : lane,
         kind,

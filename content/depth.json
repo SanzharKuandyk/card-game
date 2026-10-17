@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "cards": 120,
+  "relics": 24,
+  "fixedEncounters": {
+    "4": "milk-cat"
+  }
+}

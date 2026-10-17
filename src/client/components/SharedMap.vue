@@ -56,13 +56,15 @@ const icons: Record<string, string> = {
   shop: "◆",
 };
 const title = (n: MapNode) =>
-  n.kind === "boss"
-    ? n.row === rows.value
-      ? "Final boss"
-      : "Boss"
-    : n.kind === "battle"
-      ? "Battle"
-      : n.kind[0]!.toUpperCase() + n.kind.slice(1);
+  n.encounterId === "milk-cat"
+    ? "Milk Cat"
+    : n.kind === "boss"
+      ? n.row === rows.value
+        ? "Final boss"
+        : "Boss"
+      : n.kind === "battle"
+        ? "Battle"
+        : n.kind[0]!.toUpperCase() + n.kind.slice(1);
 </script>
 <template>
   <section class="shared-map" :class="{ 'map-projector': projector }">
