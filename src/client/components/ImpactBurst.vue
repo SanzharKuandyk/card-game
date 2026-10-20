@@ -13,7 +13,10 @@ defineProps<{
   >
     <template v-if="impact.lost && impact.blocked">
       <b>−{{ impact.lost }} HP</b
-      ><span class="impact-absorption"> · {{ impact.blocked }} blocked</span>
+      ><span class="impact-absorption"
+        ><span class="impact-separator"> · </span
+        >{{ impact.blocked }} blocked</span
+      >
     </template>
     <template v-else>{{ impact.label }}</template>
   </span>

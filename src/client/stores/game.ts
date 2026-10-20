@@ -28,6 +28,7 @@ export const useGame = defineStore("game", () => {
   let lifecycleAttached = false;
   let hiddenAt = 0;
   const needsJoin = ref(false);
+  const removed = ref(false);
   let wakeTimer: ReturnType<typeof setTimeout> | undefined;
   let snapshotTimer: ReturnType<typeof setTimeout> | undefined;
   function awaitSnapshot() {
@@ -105,6 +106,7 @@ export const useGame = defineStore("game", () => {
     view.value = null;
     connected.value = false;
     needsJoin.value = false;
+    removed.value = false;
     if (!lifecycleAttached) {
       document.addEventListener("visibilitychange", visibility);
       window.addEventListener("online", recover);
@@ -138,6 +140,18 @@ export const useGame = defineStore("game", () => {
       connected.value = true;
       connectionError.value = "";
       if (restored) flushPending();
+    });
+    socket.on("removed", () => {
+      removed.value = true;
+      needsJoin.value = true;
+      connected.value = false;
+      busy.value = false;
+      clearTimeout(snapshotTimer);
+      clearTimeout(retryTimer);
+      clearTimeout(wakeTimer);
+      sessionStorage.removeItem(`pending:${id}:${role}`);
+      socket?.disconnect();
+      view.value = null;
     });
     socket.on("disconnect", () => {
       connected.value = false;
@@ -289,5 +303,6 @@ export const useGame = defineStore("game", () => {
     close,
     recover,
     needsJoin,
+    removed,
   };
 });

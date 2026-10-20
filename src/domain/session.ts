@@ -1,3 +1,4 @@
+import { changeTeam, applyTeamChanges } from "./teams.ts";
 import { grantReward } from "./rewards.ts";
 export { grantReward, eligibleCards } from "./rewards.ts";
 import { generateMap, MAP_ROWS, BossGates } from "./map.ts";
@@ -98,7 +99,8 @@ export function makeHero(id: string, character: Character, s: Session): Hero {
   };
 }
 export function addMember(s: Session, id: string, name: string): void {
-  if (Object.keys(s.members).length >= 80) throw new Error("Session is full");
+  if (Object.values(s.members).filter((m) => !m.removed).length >= 80)
+    throw new Error("Session is full");
   if (s.status === "finished") throw new Error("Session has ended");
   s.members[id] = {
     id,
@@ -117,11 +119,12 @@ export function currentCombat(s: Session, memberId?: string): Combat | null {
     ? (s.crews[m.crewId]?.progress.combat ?? null)
     : null;
 }
-function required(ids: string[], context: DomainContext): string[] {
+function required(s: Session, ids: string[], context: DomainContext): string[] {
   return ids.filter(
     (id) =>
-      context.presence.online.includes(id) ||
-      (context.presence.absentFor[id] ?? Infinity) < 15000,
+      !s.members[id]?.removed &&
+      (context.presence.online.includes(id) ||
+        (context.presence.absentFor[id] ?? Infinity) < 15000),
   );
 }
 function syncHealth(s: Session, b: Combat): void {
@@ -130,7 +133,7 @@ function syncHealth(s: Session, b: Combat): void {
 }
 function crewRoster(s: Session, crew: Crew, context: DomainContext): string[] {
   return crew.members.filter(
-    (id) => !s.members[id]!.removed && required([id], context).length > 0,
+    (id) => !s.members[id]!.removed && required(s, [id], context).length > 0,
   );
 }
 function enterNode(
@@ -259,7 +262,9 @@ export function triggerBoss(
   )
     throw new Error("Finish the middle boss first");
   const enrolled = Object.values(s.members)
-    .filter((m) => m.crewId && !m.removed && required([m.id], context).length)
+    .filter(
+      (m) => m.crewId && !m.removed && required(s, [m.id], context).length,
+    )
     .map((m) => m.id);
   if (!enrolled.length) throw new Error("No teams are connected");
   const suspended = Object.fromEntries(
@@ -424,47 +429,17 @@ export function applyCommand(
   if (cmd.kind === "team") {
     if (s.activeBossGate !== null)
       throw new Error("Choose a team after the boss");
-    if (m.crewId) throw new Error("Already in a team");
-    let crew = cmd.crewId ? s.crews[cmd.crewId] : undefined;
-    if (cmd.crewId && !crew) throw new Error("Team not found");
-    if (crew && crew.members.length >= 4) throw new Error("Team is full");
-    if (!crew) {
-      const n = Object.keys(s.crews).length;
-      const id = `team-${n + 1}`;
-      crew = {
-        id,
-        name: cmd.name ?? `Team ${n + 1}`,
-        colour: [
-          "#ca613c",
-          "#397b72",
-          "#685baf",
-          "#bd861f",
-          "#ae4d77",
-          "#4179ae",
-        ][n % 6]!,
-        symbol: ["◆", "●", "▲", "■"][n % 4]!,
-        members: [],
-        progress: {
-          nodeId: null,
-          row: 0,
-          phase: "map",
-          roster: [],
-          votes: {},
-          voteDeadline: null,
-          visited: [],
-          choices: {},
-          combat: null,
-          defeats: 0,
-          eventId: null,
-        },
-      };
-      s.crews[id] = crew;
-    }
-    m.crewId = crew.id;
+    if (m.crewId) return { message: changeTeam(s, m, cmd) };
+    const message = changeTeam(s, m, cmd);
     m.hero = makeHero(m.id, cmd.character, s);
-    crew.members.push(m.id);
-    return { message: "Joined team" };
+    return { message };
   }
+  if (cmd.kind === "team:change") return { message: changeTeam(s, m, cmd) };
+  if (cmd.kind === "team:cancel") {
+    delete m.pendingTeam;
+    return { message: "Team change cancelled" };
+  }
+
   if (
     s.status !== "running" &&
     !(["reward", "relic:claim"].includes(cmd.kind) && s.status === "finished")
@@ -607,7 +582,8 @@ export function applyCommand(
   if (cmd.kind === "retry") {
     if (s.activeBossGate !== null || crew.progress.phase !== "defeat")
       throw new Error("Retry is not available");
-    for (const id of crew.progress.roster) s.members[id]!.hero.hp = 40;
+    for (const id of crew.members.filter((id) => !s.members[id]!.removed))
+      s.members[id]!.hero.hp = 40;
     enterNode(s, crew, crew.progress.nodeId!, context);
     return { message: "Retry" };
   }
@@ -674,7 +650,7 @@ function resolveVote(
   const votes = c.progress.votes;
   const participants = [
     ...new Set([
-      ...required(c.progress.roster, context),
+      ...required(s, c.progress.roster, context),
       ...Object.keys(votes),
     ]),
   ];
@@ -707,6 +683,7 @@ export function tick(
   if (
     s.activeBossGate !== null &&
     !required(
+      s,
       s.bosses.find((b) => b.gate === s.activeBossGate)!.enrolled,
       context,
     ).length
@@ -724,7 +701,7 @@ export function tick(
     const boss = s.bosses.find((b) => b.gate === s.activeBossGate)!;
     if (!boss.combat) {
       advanceQuiz(s, boss);
-      const waiting = required(boss.enrolled, context);
+      const waiting = required(s, boss.enrolled, context);
       if (
         boss.quiz.stage === "reward" &&
         s.activeMs - boss.quiz.startedAt >= 8000 &&
@@ -762,12 +739,15 @@ export function tick(
     }
     advanceCombat(s, boss.combat, context);
     syncHealth(s, boss.combat);
-    if (boss.combat.result) settleBoss(s, boss);
+    if (boss.combat.result) {
+      settleBoss(s, boss);
+      settleImmediate(s);
+    }
     return;
   }
   for (const crew of Object.values(s.crews)) {
     const p = crew.progress;
-    if (!required(crew.members, context).length) {
+    if (!required(s, crew.members, context).length) {
       if (p.combat) p.combat.deadline += elapsed;
       if (p.voteDeadline !== null) p.voteDeadline += elapsed;
       continue;
@@ -782,19 +762,19 @@ export function tick(
     if (
       p.phase === "battle" &&
       p.combat &&
-      required(Object.keys(p.combat.actors), context).length
+      required(s, Object.keys(p.combat.actors), context).length
     ) {
       advanceCombat(s, p.combat, context);
       syncHealth(s, p.combat);
       if (p.combat.result) settleRoute(s, crew);
     }
     if (p.phase === "shop") {
-      const waiting = required(p.roster, context);
+      const waiting = required(s, p.roster, context);
       if (waiting.length && waiting.every((id) => p.shops?.[id]?.ready))
         finishRoom(crew);
     }
     if (["reward", "rest", "event"].includes(p.phase)) {
-      const waiting = required(p.roster, context);
+      const waiting = required(s, p.roster, context);
       if (
         waiting.length &&
         waiting.every((id) =>
@@ -817,10 +797,11 @@ export function tick(
         finishRoom(crew);
     }
   }
+  applyTeamChanges(s);
 }
 function advanceCombat(s: Session, b: Combat, context: DomainContext): void {
   if (b.result) return;
-  const online = required(Object.keys(b.actors), context);
+  const online = required(s, Object.keys(b.actors), context);
   if (!online.length) return;
   if (b.phase === "player") {
     if (online.every((id) => b.actors[id]!.ended) || s.activeMs >= b.deadline)
@@ -919,7 +900,49 @@ function hostCommand(
     const m = s.members[cmd.memberId ?? ""];
     if (!m) throw new Error("Player not found");
     m.removed = true;
+    m.hero.hp = 0;
+    delete m.pendingTeam;
+    if (m.crewId) {
+      const crew = s.crews[m.crewId]!;
+      crew.members = crew.members.filter((id) => id !== m.id);
+      delete crew.progress.votes[m.id];
+    }
+    const fights = [
+      ...Object.values(s.crews).map((c) => c.progress.combat),
+      ...s.bosses
+        .filter((b) => !b.settled)
+        .flatMap((b) => [
+          b.combat,
+          ...Object.values(b.suspended).map((p) => p.combat),
+        ]),
+    ];
+    for (const fight of fights) {
+      const actor = fight?.actors[m.id];
+      if (actor) {
+        actor.hp = 0;
+        actor.ended = true;
+        if (
+          !fight!.result &&
+          Object.keys(fight!.actors).every((id) => s.members[id]?.removed)
+        ) {
+          fight!.result = "defeat";
+          fight!.phase = "result";
+        }
+      }
+    }
+    if (m.crewId) {
+      const crew = s.crews[m.crewId]!;
+      if (
+        !crew.members.length &&
+        ["rest", "event", "reward", "shop"].includes(crew.progress.phase)
+      )
+        finishRoom(crew);
+    }
     s.notice = `${m.name} removed`;
+  } else if (cmd.action === "move") {
+    const m = s.members[cmd.memberId ?? ""];
+    if (!m || m.removed) throw new Error("Player not found");
+    s.notice = `${m.name}: ${changeTeam(s, m, cmd)}`;
   } else if (cmd.action === "end") {
     if (s.activeBossGate !== null) {
       const boss = s.bosses.find((b) => b.gate === s.activeBossGate)!;
@@ -937,10 +960,12 @@ export function settleImmediate(s: Session): void {
   if (s.activeBossGate !== null) {
     const boss = s.bosses.find((b) => b.gate === s.activeBossGate)!;
     if (boss.combat?.result) settleBoss(s, boss);
-  } else
+  }
+  if (s.activeBossGate === null)
     for (const c of Object.values(s.crews))
       if (c.progress.phase === "battle" && c.progress.combat?.result)
         settleRoute(s, c);
+  applyTeamChanges(s);
 }
 export function availableReward(
   s: Session,

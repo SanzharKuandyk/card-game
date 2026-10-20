@@ -12,6 +12,7 @@ import RewardPanel from "../components/RewardPanel.vue";
 import DeckDialog from "../components/DeckDialog.vue";
 import CombatArt from "../components/CombatArt.vue";
 import HelpDialog from "../components/HelpDialog.vue";
+import TeamDialog from "../components/TeamDialog.vue";
 import { combinations } from "../onboarding/hints.ts";
 import { useCombatFeedback } from "../use-combat-feedback.ts";
 const game = useGame(),
@@ -58,7 +59,19 @@ const showDeck = ref(false);
 const deckAction = ref<"upgrade" | "remove" | null>(null);
 const eventChoice = ref<number | null>(null);
 const showHelp = ref(false);
+const showTeam = ref(false);
 const v = computed(() => game.view);
+const waitingForRoom = computed(
+  () =>
+    !!v.value?.crewId &&
+    v.value.status !== "lobby" &&
+    (v.value.combat
+      ? !v.value.combat.actors.some((a) => a.memberId === v.value?.memberId)
+      : !v.value.boss &&
+        !!v.value.progress &&
+            !["map", "finished", "defeat"].includes(v.value.progress.phase) &&
+        !v.value.progress.roster.includes(v.value.memberId!)),
+);
 const {
   active: beat,
   last,
@@ -75,7 +88,8 @@ const {
 const combatActive = computed(
   () =>
     (!!held.value || (!!v.value?.combat && !v.value.rewards.length)) &&
-    !v.value?.quiz,
+    !v.value?.quiz &&
+    !waitingForRoom.value,
 );
 const crew = computed(() =>
   v.value?.crews.find((c) => c.id === v.value?.crewId),
@@ -124,10 +138,16 @@ function eventSelect(index: number) {
     class="player-shell"
     :class="{
       'combat-shell':
-        (!!held || (!!v?.combat && !v.rewards.length)) && !v?.quiz,
+        (!!held || (!!v?.combat && !v.rewards.length)) &&
+        !v?.quiz &&
+        !waitingForRoom,
     }"
   >
-    <fieldset class="player-controls" aria-label="Player screen">
+    <section v-if="game.removed" class="decision-panel">
+      <h1>Removed from game</h1>
+      <a href="/">Join</a>
+    </section>
+    <fieldset v-else class="player-controls" aria-label="Player screen">
       <header v-show="!combatActive && !v?.quiz" class="app-header">
         <strong :style="{ color: crew?.colour }">{{
           crew?.name ?? "Player"
@@ -136,6 +156,12 @@ function eventSelect(index: number) {
           game.connected ? "Connected" : "Reconnecting"
         }}</span
         ><button class="quiet" @click="showHelp = true">Help</button
+        ><button
+          v-if="v?.crewId && v.status !== 'finished'"
+          class="quiet"
+          @click="showTeam = true"
+        >
+          Team</button
         ><button
           v-if="v?.hero"
           class="quiet"
@@ -215,6 +241,11 @@ function eventSelect(index: number) {
         >
           Join team
         </button>
+      </section>
+      <section v-else-if="waitingForRoom" class="decision-panel">
+        <h1>{{ crew?.name }}</h1>
+        <p>You join the next room. Your team is finishing this one.</p>
+        <button @click="showTeam = true">Change team</button>
       </section>
       <QuizPanel v-else-if="v.quiz" />
       <BattlePanel
@@ -404,7 +435,15 @@ function eventSelect(index: number) {
         @select="selectCard"
       />
       <RelicsDialog v-if="showRelics" @close="showRelics = false" />
-      <HelpDialog v-if="showHelp && v" @close="showHelp = false" />
+      <HelpDialog
+        v-if="showHelp && v"
+        @close="showHelp = false"
+        @team="
+          showHelp = false;
+          showTeam = true;
+        "
+      />
+      <TeamDialog v-if="showTeam && v" @close="showTeam = false" />
     </fieldset>
   </main>
 </template>

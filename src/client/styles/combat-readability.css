@@ -186,7 +186,7 @@
   grid-row: 2;
   font-size: 13px;
 }
-.board-enemies > div > span:not(.meter) {
+.board-enemies > div > .board-enemy-hp {
   grid-column: 3;
   grid-row: 2;
   font-size: 11px;

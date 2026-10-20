@@ -835,3 +835,104 @@ test("projector keeps two team plays and impacts in their own tiles", async ({
   await sam.context.close();
   await h.context.close();
 });
+
+test("players change teams, host moves and removes players without ghost actors", async ({
+  browser,
+}) => {
+  const h = await host(browser);
+  const alex = await player(browser, h.code, "Alex");
+  const sam = await player(browser, h.code, "Sam");
+  const original = (await view(alex.context, h.id)).hero;
+  await alex.page.getByRole("button", { name: "Team", exact: true }).click();
+  const dialog = alex.page.getByRole("dialog", { name: "Change team" });
+  await dialog.getByLabel("Choose team").selectOption("team-2");
+  await dialog
+    .getByRole("button", { name: "Change team", exact: true })
+    .click();
+  await expect
+    .poll(async () => (await view(alex.context, h.id)).crewId)
+    .toBe("team-2");
+  await dialog.getByRole("button", { name: "Close", exact: true }).click();
+  await h.page
+    .getByLabel("Team for Alex", { exact: true })
+    .selectOption("team-1");
+  await expect
+    .poll(async () => (await view(alex.context, h.id)).crewId)
+    .toBe("team-1");
+  expect((await view(alex.context, h.id)).hero).toEqual(original);
+  await h.page.getByRole("button", { name: "Start", exact: true }).click();
+  for (const p of [alex, sam])
+    await p.page.locator(".route-node.available").first().click();
+  await alex.page.getByRole("button", { name: "Help", exact: true }).click();
+  await alex.page
+    .getByRole("dialog", { name: "Help" })
+    .getByRole("button", { name: "Change team", exact: true })
+    .click();
+  await dialog.getByLabel("Choose team").selectOption("team-2");
+  await dialog
+    .getByRole("button", { name: "Change team", exact: true })
+    .click();
+  await expect(dialog).toContainText("After this room: Sam team");
+  expect((await view(alex.context, h.id)).crewId).toBe("team-1");
+  await dialog
+    .getByRole("button", { name: "Cancel change", exact: true })
+    .click();
+  await expect(
+    dialog.getByRole("button", { name: "Cancel change" }),
+  ).toHaveCount(0);
+  await dialog
+    .getByRole("button", { name: "Change team", exact: true })
+    .click();
+  await expect(dialog).toContainText("After this room: Sam team");
+  await dialog.getByRole("button", { name: "Close", exact: true }).click();
+  const projector = await browser.newPage({
+    viewport: { width: 1366, height: 768 },
+  });
+  await projector.goto(
+    (await h.page
+      .getByRole("link", { name: "Projector", exact: true })
+      .getAttribute("href"))!,
+  );
+  await expect(projector.locator(".board-member")).toHaveCount(2);
+  // Finish Red's room while Blue remains in its fight: the newcomer waits safely.
+  const s = server.app.sessions.get(h.id)!;
+  s.crews["team-1"]!.progress.phase = "map";
+  s.crews["team-1"]!.progress.combat = null;
+  await server.app.advance(1);
+  await expect(
+    alex.page.getByText(
+      "You join the next room. Your team is finishing this one.",
+    ),
+  ).toBeVisible();
+  expect((await view(alex.context, h.id)).hero).toEqual(original);
+  await h.page.getByRole("button", { name: "Remove Sam", exact: true }).click();
+  await expect(
+    sam.page.getByRole("heading", { name: "Removed from game" }),
+  ).toBeVisible();
+  await expect(
+    h.page.getByRole("button", { name: "Remove Sam", exact: true }),
+  ).toHaveCount(0);
+  await expect(projector.locator(".board-member")).toHaveCount(1);
+  const blue = projector.getByRole("article", {
+    name: "Sam team board",
+    exact: true,
+  });
+  await blue
+    .getByRole("button", { name: "Inspect Sam team", exact: true })
+    .click();
+  await expect(
+    blue.getByRole("dialog").getByRole("heading", { level: 3, name: /^Sam ·/ }),
+  ).toHaveCount(0);
+  await projector.keyboard.press("Escape");
+  await expect(
+    alex.page.getByRole("button", { name: "Retry", exact: true }),
+  ).toBeVisible();
+  await alex.page.getByRole("button", { name: "Retry", exact: true }).click();
+  await expect(
+    alex.page.getByRole("button", { name: "End turn", exact: true }),
+  ).toBeVisible();
+  await projector.close();
+  await alex.context.close();
+  await sam.context.close();
+  await h.context.close();
+});

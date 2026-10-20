@@ -221,12 +221,18 @@ export async function createServer(
       sessionId: string;
       identity: ActorIdentity;
     };
-    app.connect(
-      socket.id,
-      auth.sessionId,
-      auth.identity,
-      socket.data.clientId as string | undefined,
-    );
+    try {
+      app.connect(
+        socket.id,
+        auth.sessionId,
+        auth.identity,
+        socket.data.clientId as string | undefined,
+      );
+    } catch {
+      socket.emit("removed");
+      socket.disconnect(true);
+      return;
+    }
     clients.set(socket.id, { ...auth, lastProjector: 0 });
     socket.emit("snapshot", {
       ...app.view(auth.sessionId, auth.identity),
@@ -270,6 +276,19 @@ export async function createServer(
       app.disconnect(socket.id);
     });
   });
+  app.onRemove = (sessionId, memberId) => {
+    for (const [id, client] of clients) {
+      if (
+        client.sessionId !== sessionId ||
+        client.identity.memberId !== memberId
+      )
+        continue;
+      const socket = io.sockets.sockets.get(id);
+      clients.delete(id);
+      socket?.emit("removed");
+      socket?.disconnect(true);
+    }
+  };
   const publishTimer = setInterval(() => {
     const deferred = new Set<string>();
     for (const [socketId, c] of clients) {

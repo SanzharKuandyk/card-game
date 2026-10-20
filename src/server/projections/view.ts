@@ -85,22 +85,24 @@ function combatView(
     phase: b.phase,
     enemies: structuredClone(b.enemies),
     intents: structuredClone(b.intents),
-    actors: Object.values(b.actors).map((a) => ({
-      relicState:
-        memberId === a.memberId ? structuredClone(a.relicState) : undefined,
-      memberId: a.memberId,
-      crewId: a.crewId,
-      name: s.members[a.memberId]!.name,
-      character: s.members[a.memberId]!.hero.character,
-      hp: a.hp,
-      maxHp: a.maxHp,
-      block: a.block,
-      energy: a.energy,
-      ended: a.ended,
-      recovery: a.recovery,
-      request: a.request,
-      powers: { ...a.powers, "shelter-used": a.counters.shelter ?? 0 },
-    })),
+    actors: Object.values(b.actors)
+      .filter((a) => !s.members[a.memberId]?.removed)
+      .map((a) => ({
+        relicState:
+          memberId === a.memberId ? structuredClone(a.relicState) : undefined,
+        memberId: a.memberId,
+        crewId: a.crewId,
+        name: s.members[a.memberId]!.name,
+        character: s.members[a.memberId]!.hero.character,
+        hp: a.hp,
+        maxHp: a.maxHp,
+        block: a.block,
+        energy: a.energy,
+        ended: a.ended,
+        recovery: a.recovery,
+        request: a.request,
+        powers: { ...a.powers, "shelter-used": a.counters.shelter ?? 0 },
+      })),
     hand: a ? a.hand.map(card) : [],
     handRevision: a?.handRevision ?? 0,
     choices: a ? [...a.hand, ...a.discard].map(card) : [],
@@ -173,9 +175,12 @@ export function project(
     role: identity.role,
     memberId,
     crewId: m?.crewId ?? null,
+    pendingTeam: m?.pendingTeam ? { ...m.pendingTeam } : undefined,
     crews: Object.values(s.crews).map((c) => {
       const fight = boss ? boss.combat : c.progress.combat;
-      const members = new Set(c.members);
+      const members = new Set(
+        c.members.filter((id) => !s.members[id]?.removed),
+      );
       const projectBoard = (fight: Combat | null | undefined) =>
         fight &&
         (identity.role === "host" || identity.role === "projector") &&
@@ -195,7 +200,12 @@ export function project(
                   .map((target) => ({ ...target })),
               })),
               actors: Object.values(fight.actors)
-                .filter((a) => a.crewId === c.id)
+                .filter(
+                  (a) =>
+                    a.crewId === c.id &&
+                    !s.members[a.memberId]?.removed &&
+                    members.has(a.memberId),
+                )
                 .map((a) => ({
                   memberId: a.memberId,
                   crewId: c.id,
@@ -235,6 +245,9 @@ export function project(
             hp: s.members[id]!.hero.hp,
             maxHp: 40,
             character: s.members[id]!.hero.character,
+            pendingTeam: s.members[id]!.pendingTeam
+              ? { ...s.members[id]!.pendingTeam }
+              : undefined,
           })),
         votes: c.progress.votes,
         ...(identity.role === "projector" || identity.role === "host"

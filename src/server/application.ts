@@ -43,6 +43,7 @@ export class Application {
   private lastTick = performance.now();
   private lastSaved = performance.now();
   onPublish: (sessionId: string) => void = () => {};
+  onRemove: (sessionId: string, memberId: string) => void = () => {};
   commandDurations: number[] = [];
   executionDurations: number[] = [];
   storageFailure: string | null = null;
@@ -115,6 +116,15 @@ export class Application {
   ): Promise<{ sessionId: string; identity: ActorIdentity } | null> {
     if (!token) return null;
     const c = await this.repository.auth(hash(token));
+    if (c) {
+      const identity = JSON.parse(c.identity) as ActorIdentity;
+      if (
+        identity.role === "player" &&
+        this.sessions.get(c.session_id)?.members[identity.memberId ?? ""]
+          ?.removed
+      )
+        return null;
+    }
     return c
       ? {
           sessionId: c.session_id,
@@ -128,6 +138,11 @@ export class Application {
     identity: ActorIdentity,
     clientId?: string,
   ): boolean {
+    if (
+      identity.memberId &&
+      this.sessions.get(sessionId)?.members[identity.memberId]?.removed
+    )
+      throw new Error("Player removed");
     const previous = [...this.connections.values()].find(
       (c) =>
         c.sessionId === sessionId &&
@@ -279,6 +294,18 @@ export class Application {
       }
       this.sessions.set(saved.id, saved);
       this.storageFailure = null;
+      if (
+        accepted &&
+        envelope.command.kind === "host" &&
+        envelope.command.action === "remove" &&
+        envelope.command.memberId
+      ) {
+        const memberId = envelope.command.memberId;
+        for (const [id, c] of this.connections)
+          if (c.sessionId === saved.id && c.identity.memberId === memberId)
+            this.disconnect(id);
+        this.onRemove(saved.id, memberId);
+      }
       if (
         accepted &&
         envelope.command.kind === "takeover" &&

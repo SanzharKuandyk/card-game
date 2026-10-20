@@ -36,6 +36,12 @@ export const commandSchema = z.discriminatedUnion("kind", [
   }),
   z.object({ kind: z.literal("travel"), nodeId: id }),
   z.object({
+    kind: z.literal("team:change"),
+    crewId: id.optional(),
+    name: z.string().trim().min(1).max(24).optional(),
+  }),
+  z.object({ kind: z.literal("team:cancel") }),
+  z.object({
     kind: z.literal("play"),
     cardUid: id,
     handRevision: z.number().int().nonnegative(),
@@ -81,12 +87,15 @@ export const commandSchema = z.discriminatedUnion("kind", [
       "skip",
       "end",
       "remove",
+      "move",
     ]),
     gate: z.union([z.literal(8), z.literal(15)]).optional(),
     quizId: id.optional(),
     phaseRevision: z.number().int().nonnegative().optional(),
     scope: z.enum(["quiz", "boss"]).optional(),
     memberId: id.optional(),
+    crewId: id.optional(),
+    name: z.string().trim().min(1).max(24).optional(),
   }),
 ]);
 export const envelopeSchema = z.object({

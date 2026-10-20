@@ -325,6 +325,7 @@ export interface Member {
   hero: Hero;
   removed: boolean;
   joinedAt: number;
+  pendingTeam?: { crewId?: string; name?: string };
 }
 export interface Reward {
   id: string;
@@ -428,6 +429,8 @@ export type Command =
   | { kind: "shop:ready"; shopId: string; ready: boolean }
   | { kind: "relic:claim"; rewardId: string; relicId: string | null }
   | { kind: "team"; name?: string; crewId?: string; character: Character }
+  | { kind: "team:change"; name?: string; crewId?: string }
+  | { kind: "team:cancel" }
   | { kind: "travel"; nodeId: string }
   | {
       kind: "play";
@@ -455,12 +458,15 @@ export type Command =
         | "boss"
         | "skip"
         | "end"
-        | "remove";
+        | "remove"
+        | "move";
       gate?: number;
       quizId?: string;
       phaseRevision?: number;
       scope?: "quiz" | "boss";
       memberId?: string;
+      crewId?: string;
+      name?: string;
     };
 export interface Envelope {
   requestId: string;
@@ -548,6 +554,7 @@ export interface CrewView {
     hp: number;
     maxHp: number;
     character: Character;
+    pendingTeam?: { crewId?: string; name?: string };
   }[];
   votes: Record<string, string>;
 }
@@ -565,6 +572,7 @@ export interface SessionView {
   role: ActorIdentity["role"];
   memberId: string | null;
   crewId: string | null;
+  pendingTeam?: { crewId?: string; name?: string };
   crews: CrewView[];
   unassigned: { id: string; name: string }[];
   map: MapNode[];

@@ -4,7 +4,13 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { chromium, expect } from "@playwright/test";
 import { createServer } from "../src/server/main.ts";
-import { createCombat, beginTurn, enemyPhase } from "../src/domain/combat.ts";
+import {
+  createCombat,
+  beginTurn,
+  enemyPhase,
+  playCard,
+  makeIntents,
+} from "../src/domain/combat.ts";
 import type { Character, Command } from "../src/shared/model.ts";
 
 const dir = await mkdtemp(join(tmpdir(), "cards-depth-inspect-"));
@@ -242,11 +248,95 @@ try {
     path: "docs/screenshots/depth-map.png",
     fullPage: true,
   });
+  await projector.getByRole("button", { name: "Battles", exact: true }).click();
+  await projector.emulateMedia({ reducedMotion: "reduce" });
+  const impacts: object[] = [];
+  const red = projector.getByRole("article", {
+    name: "Red board",
+    exact: true,
+  });
+  const assertImpacts = async (kind: string, width: number) => {
+    const result = await red.locator(".effect-burst").evaluateAll((elements) =>
+      elements.map((element) => {
+        const r = element.getBoundingClientRect();
+        const parent = element.parentElement!.getBoundingClientRect();
+        return {
+          text: element.textContent,
+          gridColumn: getComputedStyle(element).gridColumn,
+          fits:
+            r.left >= parent.left - 1 &&
+            r.right <= parent.right + 1 &&
+            r.top >= parent.top - 1 &&
+            r.bottom <= parent.bottom + 1 &&
+            element.scrollWidth <= element.clientWidth + 1 &&
+            element.scrollHeight <= element.clientHeight + 1,
+        };
+      }),
+    );
+    assert(
+      result.length && result.every((e) => e.fits && e.gridColumn === "auto"),
+      JSON.stringify({ width, kind, result }),
+    );
+    impacts.push({ width, kind, result });
+    await projector.screenshot({
+      path: `docs/screenshots/depth-impact-${kind}-${width}.png`,
+      fullPage: true,
+    });
+  };
+  for (const width of [1920, 1366, 768]) {
+    await projector.setViewportSize({
+      width,
+      height: width === 1920 ? 1080 : 768,
+    });
+    await expect(projector.locator(".board-playback.is-playing")).toHaveCount(
+      0,
+    );
+    const live = server.app.sessions.get(session.id)!;
+    const fight = live.crews["team-1"]!.progress.combat!;
+    const actor = fight.actors[players[0]!.memberId]!;
+    fight.phase = "player";
+    fight.result = null;
+    for (const hero of Object.values(fight.actors)) {
+      hero.hp = 40;
+      hero.ended = false;
+      hero.recovery = false;
+      hero.block = 3;
+      hero.blockSources = [{ sourceId: hero.memberId, remaining: 3 }];
+    }
+    fight.enemies[0]!.block = 5;
+    actor.hand = [{ uid: "impact", cardId: "strike", upgraded: false }];
+    actor.energy = 3;
+    server.app.onPublish(session.id);
+    await expect(red.locator(".board-enemy-hp").first()).toContainText(
+      `${fight.enemies[0]!.hp}/`,
+    );
+    // Publish a real accepted effect sequence, then inspect during its impact.
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    playCard(fight, actor.memberId, "impact", "main", undefined, live.content);
+    server.app.onPublish(session.id);
+    await expect(red.locator(".board-enemies .effect-burst")).toContainText(
+      "blocked",
+    );
+    await assertImpacts("enemy", width);
+    await expect(projector.locator(".board-playback.is-playing")).toHaveCount(
+      0,
+    );
+    fight.enemies[0]!.strength = 15;
+    fight.intents = makeIntents(fight);
+    enemyPhase(fight, live.activeMs, live.content);
+    server.app.onPublish(session.id);
+    await expect(red.locator(".board-member .effect-burst")).toHaveCount(4);
+    await assertImpacts("heroes", width);
+    await expect(projector.locator(".board-playback.is-playing")).toHaveCount(
+      0,
+    );
+  }
   await writeFile(
     "docs/depth-responsive.json",
     JSON.stringify(
       {
         reports,
+        impacts,
         projectorWidths: [1366, 1920],
         fallback: true,
         localAssets: s.content.portraits!.length,

@@ -3,7 +3,7 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useGame } from "../stores/game.ts";
 import { useLearningProgress } from "../onboarding/use-onboarding.ts";
 import { combinations } from "../onboarding/hints.ts";
-const emit = defineEmits<{ close: [] }>();
+const emit = defineEmits<{ close: []; team: [] }>();
 const game = useGame();
 const dialog = ref<HTMLDialogElement>();
 const previous = document.activeElement as HTMLElement | null;
@@ -39,6 +39,12 @@ onUnmounted(() => {
       <button @click="close">Close</button>
     </header>
     <div class="help-reference">
+      <button
+        v-if="game.view?.crewId && game.view.status !== 'finished'"
+        @click="emit('team')"
+      >
+        Change team
+      </button>
       <p>
         <a href="/photo-credits.html" target="_blank" rel="noopener"
           >Image sources</a

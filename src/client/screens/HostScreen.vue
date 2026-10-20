@@ -28,6 +28,15 @@ const crews = computed(
       c.name.toLowerCase().includes(filter.value.toLowerCase()),
     ) ?? [],
 );
+function movePlayer(memberId: string, event: Event) {
+  const crewId = (event.target as HTMLSelectElement).value;
+  void game.command({
+    kind: "host",
+    action: "move",
+    memberId,
+    ...(crewId ? { crewId } : {}),
+  });
+}
 onMounted(async () => {
   game.connect(String(route.params.id), "host");
   const r = await fetch(`/api/session/${route.params.id}/projector`, {
@@ -192,9 +201,39 @@ async function newGame() {
           ><span>{{ v.unassigned.length }} unassigned</span
           ><span>{{ Math.floor(v.activeMs / 60000) }} minutes</span>
         </div>
-        <p v-if="v.unassigned.length">
-          Unassigned: {{ v.unassigned.map((m) => m.name).join(", ") }}
-        </p>
+        <section v-if="v.unassigned.length" aria-label="Unassigned players">
+          <h2>Unassigned</h2>
+          <div v-for="m in v.unassigned" :key="m.id" class="host-member">
+            <span>{{ m.name }}</span>
+            <select
+              :aria-label="`Team for ${m.name}`"
+              value="unassigned"
+              :disabled="game.busy"
+              @change="movePlayer(m.id, $event)"
+            >
+              <option value="unassigned" disabled>Choose team</option>
+              <option value="">New team</option>
+              <option
+                v-for="team in v.crews"
+                :key="team.id"
+                :value="team.id"
+                :disabled="team.members.length >= 4"
+              >
+                {{ team.name }} · {{ team.members.length }}/4
+              </option>
+            </select>
+            <button
+              class="quiet"
+              :disabled="game.busy"
+              :aria-label="`Remove ${m.name}`"
+              @click="
+                game.command({ kind: 'host', action: 'remove', memberId: m.id })
+              "
+            >
+              Remove
+            </button>
+          </div>
+        </section>
         <label class="team-search"
           >Teams<input v-model="filter" type="search" placeholder="Find team"
         /></label>
@@ -212,9 +251,27 @@ async function newGame() {
             <div v-for="m in crew.members" :key="m.id" class="host-member">
               <span :class="{ muted: !m.online }"
                 >{{ m.name }}{{ m.online ? "" : " · offline" }}</span
-              ><span>{{ m.hp }}/40</span
+              ><span>{{ m.hp }}/40</span>
+              <select
+                :aria-label="`Team for ${m.name}`"
+                :value="m.pendingTeam ? (m.pendingTeam.crewId ?? '') : crew.id"
+                :disabled="game.busy"
+                @change="movePlayer(m.id, $event)"
+              >
+                <option value="">New team</option>
+                <option
+                  v-for="team in v.crews"
+                  :key="team.id"
+                  :value="team.id"
+                  :disabled="team.members.length >= 4 && team.id !== crew.id"
+                >
+                  {{ team.name }} · {{ team.members.length }}/4
+                </option>
+              </select>
+              <small v-if="m.pendingTeam">After this room</small
               ><button
                 class="quiet"
+                :disabled="game.busy"
                 :aria-label="`Remove ${m.name}`"
                 @click="
                   game.command({
@@ -224,7 +281,7 @@ async function newGame() {
                   })
                 "
               >
-                ×
+                Remove
               </button>
             </div>
           </article>

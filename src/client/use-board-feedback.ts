@@ -29,6 +29,22 @@ export function useBoardFeedback(
     getCrew,
     (crew) => {
       const current = crew.board ?? null;
+      if (
+        previous?.id === current?.id &&
+        previous &&
+        current &&
+        previous.actors.map((a) => a.memberId).join() !==
+          current.actors.map((a) => a.memberId).join()
+      ) {
+        clear();
+        last.value = null;
+        previous = current;
+        seen.set(
+          current.id,
+          Math.max(0, ...current.log.map((event) => event.id)),
+        );
+        return;
+      }
       if (reset || document.hidden) {
         clear();
         previous = current;

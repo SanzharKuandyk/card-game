@@ -6,6 +6,7 @@ import CardTile from "../components/CardTile.vue";
 import DeckDialog from "../components/DeckDialog.vue";
 import EffectDetails from "../components/EffectDetails.vue";
 import RelicsDialog from "../components/RelicsDialog.vue";
+import TeamDialog from "../components/TeamDialog.vue";
 import QuizPanel from "../components/QuizPanel.vue";
 import RewardPanel from "../components/RewardPanel.vue";
 import RelicOfferPanel from "../components/RelicOfferPanel.vue";
@@ -13,8 +14,15 @@ const game = useGame(),
   route = useRoute(),
   router = useRouter();
 const v = computed(() => game.view);
+watch(
+  () => game.removed,
+  (removed) => {
+    if (removed) void router.replace(`/play/${route.params.id}`);
+  },
+);
 const shop = computed(() => v.value?.shop);
 const pendingRemove = ref("");
+const showTeam = ref(false);
 const remove = ref(false),
   owned = ref(false),
   details = ref<{ title: string; lines: string[] } | null>(null);
@@ -87,6 +95,7 @@ async function removeCard(uid: string) {
     <template v-else-if="shop && v?.hero"
       ><header class="shop-heading">
         <h1>Shop</h1>
+        <button @click="showTeam = true">Team</button>
         <strong class="gold-display">● {{ v.hero.gold }} gold</strong
         ><button @click="owned = true">
           Relics · {{ v.hero.relics.length }}
@@ -246,5 +255,6 @@ async function removeCard(uid: string) {
       </button></EffectDetails
     >
     <RelicsDialog v-if="owned" @close="owned = false" />
+    <TeamDialog v-if="showTeam && v" @close="showTeam = false" />
   </main>
 </template>

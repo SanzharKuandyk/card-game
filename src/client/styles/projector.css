@@ -162,7 +162,7 @@
 .live-projector .board-enemies strong {
   font-size: 19px;
 }
-.live-projector .board-enemies > div > span:not(.meter) {
+.live-projector .board-enemies > div > .board-enemy-hp {
   font-size: 16px;
 }
 .live-projector .board-enemies .meter {
@@ -291,6 +291,30 @@
 .live-projector .team-board .effect-burst {
   font-size: 20px;
   z-index: 3;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 90%;
+  min-width: 0;
+  height: auto;
+  padding: 6px 8px;
+  overflow-wrap: anywhere;
+  grid-column: auto;
+  grid-row: auto;
+  display: block;
+  text-align: center;
+  line-height: 1.2;
+}
+.live-projector .team-board .effect-burst .impact-absorption {
+  display: block;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.live-projector .effect-burst .impact-separator {
+  display: none;
+}
+.live-projector .team-board .effect-burst > b {
+  display: block;
+  font-size: 1em;
 }
 .live-projector .board-collapsed {
   height: 50px;
