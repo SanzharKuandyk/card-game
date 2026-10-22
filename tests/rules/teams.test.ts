@@ -12,6 +12,118 @@ import { project } from "../../src/server/projections/view.ts";
 import type { Command } from "../../src/shared/model.ts";
 const content = await loadContent();
 
+test("lobby team removal releases players, hides empty teams and never reuses their IDs", () => {
+  const s = createSession("lobby-teams", "JOIN", 42, content);
+  const context = {
+    presence: { online: ["a", "b", "c"], absentFor: {}, hostOnline: true },
+  };
+  const send = (id: string, command: Command) => {
+    applyCommand(
+      s,
+      id === "host" ? { role: "host" } : { role: "player", memberId: id },
+      {
+        requestId: crypto.randomUUID(),
+        sessionId: s.id,
+        encounterId: null,
+        command,
+      },
+      context,
+    );
+    settleImmediate(s);
+  };
+  for (const id of ["a", "b", "c"]) addMember(s, id, id);
+  send("a", { kind: "team", character: "guardian", name: "Red" });
+  send("b", { kind: "team", character: "rogue", name: "Blue" });
+  send("c", { kind: "team", character: "alchemist", crewId: "team-1" });
+  const heroes = Object.fromEntries(
+    Object.values(s.members).map((m) => [m.id, structuredClone(m.hero)]),
+  );
+  send("a", { kind: "team:change", crewId: "team-2" });
+  send("c", { kind: "team:change", crewId: "team-2" });
+  for (const role of ["host", "player", "projector"] as const) {
+    const v = project(
+      s,
+      { role, ...(role === "player" ? { memberId: "a" } : {}) },
+      context,
+    );
+    assert.deepEqual(
+      v.crews.map((c) => c.id),
+      ["team-2"],
+    );
+    assert.equal(v.crewNames?.["team-1"], "Red");
+  }
+  assert.throws(
+    () => send("a", { kind: "team:change", crewId: "team-1" }),
+    /not found/,
+  );
+  assert.throws(
+    () => send("a", { kind: "host", action: "remove-team", crewId: "team-2" }),
+    /Host only/,
+  );
+  send("host", { kind: "host", action: "remove-team", crewId: "team-2" });
+  assert.equal(project(s, { role: "host" }, context).crews.length, 0);
+  assert.equal(project(s, { role: "host" }, context).unassigned.length, 3);
+  for (const m of Object.values(s.members)) {
+    assert.equal(m.crewId, null);
+    assert.equal(m.removed, false);
+    assert.deepEqual(m.hero, heroes[m.id]);
+  }
+  assert.throws(
+    () =>
+      send("host", { kind: "host", action: "remove-team", crewId: "team-2" }),
+    /not found/,
+  );
+  send("host", { kind: "host", action: "remove", memberId: "c" });
+  assert.deepEqual(
+    project(s, { role: "host" }, context).unassigned.map((m) => m.id),
+    ["a", "b"],
+  );
+  send("a", { kind: "team", character: "guardian", name: "Fresh" });
+  assert.equal(s.members.a!.crewId, "team-3");
+  send("host", { kind: "host", action: "start" });
+  assert.throws(
+    () =>
+      send("host", { kind: "host", action: "remove-team", crewId: "team-3" }),
+    /only be removed in the lobby/,
+  );
+});
+
+test("queued moves cancel safely when the destination loses its last player", () => {
+  const s = createSession("empty-destination", "JOIN", 42, content);
+  const context = {
+    presence: { online: ["a", "b"], absentFor: {}, hostOnline: true },
+  };
+  const send = (id: string, command: Command) => {
+    applyCommand(
+      s,
+      id === "host" ? { role: "host" } : { role: "player", memberId: id },
+      {
+        requestId: crypto.randomUUID(),
+        sessionId: s.id,
+        encounterId: null,
+        command,
+      },
+      context,
+    );
+    settleImmediate(s);
+  };
+  for (const id of ["a", "b"]) addMember(s, id, id);
+  send("a", { kind: "team", character: "guardian", name: "Red" });
+  send("b", { kind: "team", character: "rogue", name: "Blue" });
+  send("host", { kind: "host", action: "start" });
+  send("a", { kind: "travel", nodeId: "r1-0" });
+  send("a", { kind: "team:change", crewId: "team-2" });
+  assert.deepEqual(s.members.a!.pendingTeam, { crewId: "team-2" });
+  send("host", { kind: "host", action: "remove", memberId: "b" });
+  assert.equal(s.members.a!.pendingTeam, undefined);
+  assert.equal(s.members.a!.crewId, "team-1");
+  assert.deepEqual(
+    project(s, { role: "host" }, context).crews.map((c) => c.id),
+    ["team-1"],
+  );
+  assert.doesNotThrow(() => tick(s, 1, context));
+});
+
 test("team changes preserve builds, reserve capacity, wait for rooms and respect ownership", () => {
   const s = createSession("teams", "JOIN", 42, content);
   const context = {
@@ -39,6 +151,7 @@ test("team changes preserve builds, reserve capacity, wait for rooms and respect
   for (const id of context.presence.online) addMember(s, id, id);
   send("a", { kind: "team", character: "guardian", name: "Red" });
   send("b", { kind: "team", character: "rogue", name: "Blue" });
+  send("f", { kind: "team", character: "guardian", crewId: "team-1" });
   s.members.a!.hero.hp = 17;
   s.members.a!.hero.deck[0]!.upgraded = true;
   const hero = structuredClone(s.members.a!.hero);
@@ -53,6 +166,7 @@ test("team changes preserve builds, reserve capacity, wait for rooms and respect
   });
   send("host", { kind: "host", action: "start" });
   send("a", { kind: "travel", nodeId: "r1-0" });
+  send("f", { kind: "travel", nodeId: "r1-0" });
   const before = structuredClone(s.crews["team-1"]!.progress.combat);
   send("a", { kind: "team:change", crewId: "team-2" });
   assert.equal(s.members.a!.crewId, "team-1");
@@ -146,8 +260,5 @@ test("removed players disappear from live actors, free seats and never block the
   assert.equal(fight.phase, "enemy");
   send("host", { kind: "host", action: "remove", memberId: "a" });
   assert.equal(s.crews["team-1"]!.progress.phase, "defeat");
-  assert.equal(
-    project(s, { role: "projector" }, context).crews[0]!.board!.actors.length,
-    0,
-  );
+  assert.equal(project(s, { role: "projector" }, context).crews.length, 0);
 });

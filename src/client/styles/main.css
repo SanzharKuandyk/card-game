@@ -1083,9 +1083,6 @@ svg {
 .invite-panel > a {
   text-align: center;
 }
-.invite-panel > label {
-  margin-top: 12px;
-}
 .host-controls {
   display: flex;
   gap: 10px;
@@ -1100,9 +1097,9 @@ svg {
   gap: 22px;
   flex-wrap: wrap;
   font-size: 14px;
-  background: #e1e7d9;
-  padding: 16px;
-  border-radius: 10px;
+  color: var(--muted);
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
 }
 .team-search {
   max-width: 300px;
@@ -1121,6 +1118,7 @@ svg {
 }
 .crew-card header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: start;
   gap: 10px;

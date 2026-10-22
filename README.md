@@ -5,7 +5,11 @@ npm ci
 npm start
 ```
 
-Node 24.22 LTS. Open the printed address.
+Node 26.12.1. Commands use your active Node installation. Open the printed address.
+
+Click **Host** for a fresh lobby. **New game** starts another lobby with a new invite code, without entering anything. Existing saves stay intact. The host page has no resume chooser. Reloading the current host page keeps that game.
+
+Before Start, students can use **Change team**. **Remove team** returns its students to team selection; **Remove** beside a player disconnects that player. Empty teams disappear automatically. During play, team changes wait for the current room to finish.
 
 ```powershell
 cloudflared tunnel --url http://localhost:47833

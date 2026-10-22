@@ -1,6 +1,6 @@
 # Architecture
 
-One Node 24 process serves Vue and Socket.IO. A worker owns synchronous SQLite calls. `npm start` validates authored content and rebuilds the frontend before starting; `npm run dev` uses Node watch and Vite middleware.
+One Node 26 process serves Vue and Socket.IO. A worker owns synchronous SQLite calls. `npm start` validates authored content and rebuilds the frontend before starting; `npm run dev` uses Node watch and Vite middleware.
 
 `shared` defines command/view contracts and boundary schemas. `domain` changes working state deterministically without I/O. `server` authenticates, serializes, persists and publishes. `client` displays projections and owns only local selection. ESLint rejects UI, transport and Node imports in shared/domain files.
 
@@ -14,7 +14,7 @@ Combat events append to `combat_events` in the same transaction as the decision.
 
 Credentials are random and hashed in SQLite. Host/player cookies are independent, HttpOnly and SameSite Lax; HTTPS origins receive Secure cookies. New game creates a fresh lobby and issues its host cookie without requiring a code. Codes admit players to existing games. The projector has a distinct read-only credential. Socket and HTTP origin checks compare the actual request origin/host; forwarded headers do not select invite addresses.
 
-Any browser can create its own new game. Controlling or resuming an existing game requires that game's host cookie. New game keeps the previous save. Host cookies last 30 days; player cookies last 12 hours. The printed address opens the Host screen directly; there is no separate hosting code.
+Any browser can create its own new game. Host on the entry screen immediately creates a fresh lobby; New game on the host dashboard does the same. Neither action asks for a code or presents a resume chooser. Controlling an existing game by reopening its host URL requires that game's host cookie. New game keeps the previous save. Host cookies last 30 days; player cookies last 12 hours. The printed address opens the Host entry directly. Teacher controls show only actions relevant to the current game state; player tutorials and hint overlays remain unchanged.
 
 Each player has one controlling connection. Further connections are read-only until Take control. A host can keep host and player pages open together. Missing host pauses after ten seconds; disconnected teams suspend their room clocks. Shared bosses suspend when no enrolled player is online.
 
@@ -28,7 +28,7 @@ Phones start with polling and may upgrade to WebSocket. Transport fallback and s
 
 The browser retains an unacknowledged durable envelope and retries its original request ID. It blocks another commitment until that receipt is checked. Preview selections are disposable; stale preview replies cannot overwrite a newer selection. An optional server-construction seed is used by browser fixtures; normal sessions receive random persisted seeds.
 
-The supported runtime is pinned in `.node-version`; Windows can use `CARD_GAME_NODE` or the project-local official runtime through `scripts/run.mjs`. TypeScript is stripped natively for server execution. Vue/type checking uses the official TypeScript development dependency; no `tsx`, `ts-node` or `tsc` npm package.
+The supported runtime is Node 26.12.1, declared in `package.json` under `engines.node`. npm scripts use the active Node installation and standard npm executable resolution without a project-local runtime or custom launcher. TypeScript is stripped natively for server execution. Vue/type checking uses the official TypeScript development dependency; no `tsx`, `ts-node` or `tsc` npm package.
 
 The shared boss is shown in each fixed team row using one common health presentation.
 
@@ -61,5 +61,7 @@ Enemy templates optionally author `portraitPool`; portraits optionally author a 
 ## Team changes and removal
 
 `domain/teams.ts` owns destination validation, four-seat reservations, immediate membership changes and deferred `Member.pendingTeam` application. All movement commands preserve Hero state. Deferred changes apply after room completion through the existing immediate/tick settlement paths; shared encounters freeze membership until restoration. Optional pending fields keep existing saves compatible. `team:change`/`team:cancel` are authenticated player commands; host `move`/`remove` use the existing receipt and persistence queue.
+
+Host `remove-team` is a lobby-only command. It releases the team's students to selection without removing their identities. Empty teams are absent from live projections and cannot receive new joins or queued moves. Canonical team records remain for stable IDs and historical combat references; `crewNames` preserves result attribution independently of the active team list. Pending moves to an emptied team cancel safely. Individual player removal remains available during play and revokes that identity's existing connections.
 
 After a successful removal is durably saved, Application drops the player's runtime connections and invokes the transport removal hook. Socket.IO sends a terminal removed event and disconnects all that identity's tabs. Credential authentication checks the persisted removal flag, so reconnect and HTTP snapshots are rejected. The client clears reconnect/pending timers and shows Removed from game. Canonical historical actor records remain; live projections and playback filter departed/removed members. Projector HP layout targets `.board-enemy-hp` specifically so absolute impact popups do not inherit an HP grid cell.

@@ -1,4 +1,4 @@
-import { changeTeam, applyTeamChanges } from "./teams.ts";
+import { changeTeam, applyTeamChanges, removeTeam } from "./teams.ts";
 import { grantReward } from "./rewards.ts";
 export { grantReward, eligibleCards } from "./rewards.ts";
 import { generateMap, MAP_ROWS, BossGates } from "./map.ts";
@@ -896,6 +896,8 @@ function hostCommand(
           finishRoom(c);
       s.notice = "Room skipped";
     }
+  } else if (cmd.action === "remove-team") {
+    removeTeam(s, cmd.crewId ?? "");
   } else if (cmd.action === "remove") {
     const m = s.members[cmd.memberId ?? ""];
     if (!m) throw new Error("Player not found");

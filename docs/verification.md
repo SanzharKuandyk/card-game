@@ -79,7 +79,7 @@ Teacher machine: Windows, Intel Core i7-14650HX, 24 logical CPUs, 16 GB RAM; nat
 
 The under-100-ms server latency target is **not met**. Quoting only the 18-ms execution time would conceal queueing. The serialized full-state persistence path needs optimization before declaring 80-player classroom performance accepted. This run checks integrity under a short burst; it is not a 40-minute soak or tunnel/Wi-Fi measurement.
 
-Raw evidence: `capacity.json`, `responsive.json`, and `screenshots/`. Commands: `npm run lint`, `npm run check`, `npm run build`, `npm test`, `npm run test:e2e`, `npm run smoke`, and `node scripts/run.mjs scripts/inspect.ts`.
+Raw evidence: `capacity.json`, `responsive.json`, and `screenshots/`. Commands: `npm run lint`, `npm run check`, `npm run build`, `npm test`, `npm run test:e2e`, `npm run smoke`, and `node scripts/inspect.ts`.
 
 ## Pending acceptance
 
@@ -115,7 +115,7 @@ The player scene now has separate arena and reserved playback tracks. History is
 
 Validation: production build, lint and type checks pass. Three focused Chromium journeys passed: four-player fight/rotation/reward/reconnect; ordered card/enemy feedback including reduced motion and finishing blow; independent projector team feedback. The feedback journey additionally checks History content, Escape and focus restoration; final rerun passed (16 seconds). No rule changes; no general rule-suite rerun needed.
 
-`node scripts/run.mjs scripts/inspect-scene.ts` inspects four-player scenes with initial/full ten-card hands and selected cards at 294×534, 360×800, 667×375, 844×390, 768×1024 and 1366×768. All 18 samples: no horizontal overflow or arena scroll, History/hand/Play reachable. Screenshots manually inspected at narrow portrait, phone portrait, landscape and desktop. `inspect-feedback.ts` also exercised solo card reveal/impact and enemy response at the same six sizes. Oversized multi-enemy/status content may scroll inside the arena; new combat outcomes never resize it. Full history scrolls only within its dialog.
+`node scripts/inspect-scene.ts` inspects four-player scenes with initial/full ten-card hands and selected cards at 294×534, 360×800, 667×375, 844×390, 768×1024 and 1366×768. All 18 samples: no horizontal overflow or arena scroll, History/hand/Play reachable. Screenshots manually inspected at narrow portrait, phone portrait, landscape and desktop. `inspect-feedback.ts` also exercised solo card reveal/impact and enemy response at the same six sizes. Oversized multi-enemy/status content may scroll inside the arena; new combat outcomes never resize it. Full history scrolls only within its dialog.
 
 Reports: `scene-responsive.json`, `feedback-responsive.json`; images under `screenshots/scene-*` and `screenshots/play-*`. Emulation only; no physical-device claim. Test servers use temporary data and shut down. The existing classroom server was not restarted.
 

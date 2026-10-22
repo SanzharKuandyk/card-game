@@ -19,7 +19,7 @@ const browser = await chromium.launch();
 try {
   const host = await browser.newPage();
   await host.goto(`${base}/#host`);
-  await host.getByRole("button", { name: "New game", exact: true }).click();
+  await host.getByRole("button", { name: "Host", exact: true }).click();
   await expect(host).toHaveURL(/\/host\/[\da-f-]+$/);
   const id = host.url().split("/host/")[1]!;
   const code = server.app.sessions.get(id)!.code;

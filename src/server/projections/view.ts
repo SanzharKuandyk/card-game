@@ -153,6 +153,9 @@ export function project(
     ["map", "reward", "rest", "event", "shop", "finished", "defeat"].includes(
       crew.progress.phase,
     );
+  const liveCrews = Object.values(s.crews).filter((c) =>
+    c.members.some((id) => s.members[id] && !s.members[id]!.removed),
+  );
   return {
     quiz: boss && !boss.combat ? projectQuiz(s, boss.quiz, memberId) : null,
     shop:
@@ -176,7 +179,10 @@ export function project(
     memberId,
     crewId: m?.crewId ?? null,
     pendingTeam: m?.pendingTeam ? { ...m.pendingTeam } : undefined,
-    crews: Object.values(s.crews).map((c) => {
+    crewNames: Object.fromEntries(
+      Object.values(s.crews).map((c) => [c.id, c.name]),
+    ),
+    crews: liveCrews.map((c) => {
       const fight = boss ? boss.combat : c.progress.combat;
       const members = new Set(
         c.members.filter((id) => !s.members[id]?.removed),

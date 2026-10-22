@@ -4,18 +4,18 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=24.22 <25"
+    "node": "26.12.1"
   },
   "scripts": {
-    "start": "npm run build && node scripts/run.mjs src/server/main.ts",
-    "dev": "node scripts/run.mjs --watch src/server/main.ts --dev",
-    "build": "node scripts/run.mjs scripts/validate-content.ts && node scripts/run.mjs node_modules/vite/bin/vite.js build",
-    "check": "node scripts/run.mjs node_modules/vue-tsc/bin/vue-tsc.js --noEmit",
-    "lint": "node scripts/run.mjs node_modules/eslint/bin/eslint.js .",
-    "test": "node scripts/run.mjs --test tests/rules/*.test.ts tests/server/*.test.ts",
-    "test:e2e": "node scripts/run.mjs node_modules/@playwright/test/cli.js test",
-    "smoke": "node scripts/run.mjs scripts/smoke.ts",
-    "format": "node scripts/run.mjs node_modules/prettier/bin/prettier.cjs --write src content tests scripts docs *.json *.ts *.js"
+    "start": "npm run build && node src/server/main.ts",
+    "dev": "node --watch src/server/main.ts --dev",
+    "build": "node scripts/validate-content.ts && vite build",
+    "check": "vue-tsc --noEmit",
+    "lint": "eslint .",
+    "test": "node --test tests/rules/*.test.ts tests/server/*.test.ts",
+    "test:e2e": "playwright test",
+    "smoke": "node scripts/smoke.ts",
+    "format": "prettier --write src content tests scripts docs *.json *.ts *.js"
   },
   "dependencies": {
     "@fastify/cookie": "11.0.2",

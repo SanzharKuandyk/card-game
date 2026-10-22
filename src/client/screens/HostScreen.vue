@@ -7,7 +7,6 @@ const game = useGame(),
   route = useRoute();
 const qr = ref(""),
   projectorUrl = ref(""),
-  testName = ref("Teacher"),
   filter = ref("");
 const creating = ref(false);
 const v = computed(() => game.view);
@@ -52,7 +51,7 @@ async function testPlayer() {
   const r = await fetch("/api/join", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ code: v.value!.code, name: testName.value }),
+    body: JSON.stringify({ code: v.value!.code, name: "Teacher" }),
   });
   if (r.ok) {
     const url = `/play/${v.value!.id}`;
@@ -85,9 +84,8 @@ async function newGame() {
   <main class="host-shell">
     <header class="host-heading">
       <h1>Host</h1>
-      <span>{{ v?.code }}</span
-      ><span>{{ v?.status }}</span
-      ><span>{{ game.connected ? "Connected" : "Reconnecting" }}</span>
+      <span>{{ v?.status }}</span>
+      <span v-if="!game.connected">Reconnecting</span>
     </header>
     <p v-if="game.error" class="error" role="alert">{{ game.error }}</p>
     <div v-if="v" class="host-layout">
@@ -113,7 +111,6 @@ async function newGame() {
           target="_blank"
           class="button-link"
           >Map</a
-        ><label>Player name<input v-model="testName" maxlength="24" /></label
         ><button @click="testPlayer">Join as player</button>
       </aside>
       <section>
@@ -131,6 +128,7 @@ async function newGame() {
           ><button
             v-else-if="v.status !== 'finished'"
             class="primary"
+            :disabled="game.busy"
             @click="
               game.command({
                 kind: 'host',
@@ -140,7 +138,8 @@ async function newGame() {
           >
             {{ v.status === "paused" ? "Resume" : "Pause" }}</button
           ><button
-            :disabled="v.status === 'finished'"
+            v-if="v.status !== 'lobby' && v.status !== 'finished'"
+            :disabled="game.busy"
             @click="
               game.command({
                 kind: 'host',
@@ -152,12 +151,14 @@ async function newGame() {
           >
             +30 seconds</button
           ><button
-            :disabled="v.status !== 'running' || !!v.boss"
+            v-if="v.status !== 'lobby' && v.status !== 'finished'"
+            :disabled="v.status !== 'running' || !!v.boss || game.busy"
             @click="game.command({ kind: 'host', action: 'boss' })"
           >
             Call boss</button
           ><button
-            :disabled="v.status === 'finished'"
+            v-if="v.status !== 'lobby' && v.status !== 'finished'"
+            :disabled="game.busy"
             @click="
               game.command({
                 kind: 'host',
@@ -170,7 +171,8 @@ async function newGame() {
           >
             Skip</button
           ><button
-            :disabled="v.status === 'finished'"
+            v-if="v.status !== 'lobby' && v.status !== 'finished'"
+            :disabled="game.busy"
             @click="game.command({ kind: 'host', action: 'end' })"
           >
             End
@@ -190,7 +192,9 @@ async function newGame() {
         >
           Skip questions
         </button>
-        <p class="host-notice" aria-live="polite">{{ v.notice }}</p>
+        <p v-if="v.notice" class="host-notice" aria-live="polite">
+          {{ v.notice }}
+        </p>
         <div class="host-stats">
           <strong
             >{{
@@ -198,7 +202,8 @@ async function newGame() {
             }}
             connected</strong
           ><span>{{ v.crews.length }} teams</span
-          ><span>{{ v.unassigned.length }} unassigned</span
+          ><span v-if="v.unassigned.length"
+            >{{ v.unassigned.length }} unassigned</span
           ><span>{{ Math.floor(v.activeMs / 60000) }} minutes</span>
         </div>
         <section v-if="v.unassigned.length" aria-label="Unassigned players">
@@ -234,7 +239,7 @@ async function newGame() {
             </button>
           </div>
         </section>
-        <label class="team-search"
+        <label v-if="v.crews.length" class="team-search"
           >Teams<input v-model="filter" type="search" placeholder="Find team"
         /></label>
         <div class="host-crew-grid">
@@ -247,6 +252,21 @@ async function newGame() {
             <header>
               <strong>{{ crew.symbol }} {{ crew.name }}</strong
               ><span>{{ crew.row }}/15 · {{ crew.phase }}</span>
+              <button
+                v-if="v.status === 'lobby'"
+                class="quiet"
+                :disabled="game.busy"
+                :aria-label="`Remove team ${crew.name}`"
+                @click="
+                  game.command({
+                    kind: 'host',
+                    action: 'remove-team',
+                    crewId: crew.id,
+                  })
+                "
+              >
+                Remove team
+              </button>
             </header>
             <div v-for="m in crew.members" :key="m.id" class="host-member">
               <span :class="{ muted: !m.online }"
@@ -296,7 +316,11 @@ async function newGame() {
             {{ award.name }}:
             {{
               award.crewIds
-                .map((id) => v?.crews.find((c) => c.id === id)?.name)
+                .map(
+                  (id) =>
+                    v?.crewNames?.[id] ??
+                    v?.crews.find((c) => c.id === id)?.name,
+                )
                 .join(", ")
             }}
           </p>

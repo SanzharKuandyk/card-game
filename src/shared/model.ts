@@ -459,6 +459,7 @@ export type Command =
         | "skip"
         | "end"
         | "remove"
+        | "remove-team"
         | "move";
       gate?: number;
       quizId?: string;
@@ -574,6 +575,7 @@ export interface SessionView {
   crewId: string | null;
   pendingTeam?: { crewId?: string; name?: string };
   crews: CrewView[];
+  crewNames?: Record<string, string>;
   unassigned: { id: string; name: string }[];
   map: MapNode[];
   progress: CrewProgress | null;

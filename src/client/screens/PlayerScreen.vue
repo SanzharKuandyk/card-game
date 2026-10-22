@@ -69,7 +69,7 @@ const waitingForRoom = computed(
       ? !v.value.combat.actors.some((a) => a.memberId === v.value?.memberId)
       : !v.value.boss &&
         !!v.value.progress &&
-            !["map", "finished", "defeat"].includes(v.value.progress.phase) &&
+        !["map", "finished", "defeat"].includes(v.value.progress.phase) &&
         !v.value.progress.roster.includes(v.value.memberId!)),
 );
 const {
@@ -161,7 +161,7 @@ function eventSelect(index: number) {
           class="quiet"
           @click="showTeam = true"
         >
-          Team</button
+          Change team</button
         ><button
           v-if="v?.hero"
           class="quiet"
@@ -280,13 +280,21 @@ function eventSelect(index: number) {
             {{ boss.result }}
           </h2>
           <p v-if="boss.firstCrewId">
-            First: {{ v?.crews.find((c) => c.id === boss.firstCrewId)?.name }}
+            First:
+            {{
+              v?.crewNames?.[boss.firstCrewId] ??
+              v?.crews.find((c) => c.id === boss.firstCrewId)?.name
+            }}
           </p>
           <p v-for="award in boss.awards" :key="award.name">
             <strong>{{ award.name }}</strong>
             {{
               award.crewIds
-                .map((id) => v?.crews.find((c) => c.id === id)?.name)
+                .map(
+                  (id) =>
+                    v?.crewNames?.[id] ??
+                    v?.crews.find((c) => c.id === id)?.name,
+                )
                 .join(", ")
             }}
           </p>

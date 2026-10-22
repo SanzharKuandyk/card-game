@@ -246,7 +246,10 @@ onUnmounted(() => game.close());
           · {{ award.name }}:
           {{
             award.crewIds
-              .map((id) => v?.crews.find((c) => c.id === id)?.name)
+              .map(
+                (id) =>
+                  v?.crewNames?.[id] ?? v?.crews.find((c) => c.id === id)?.name,
+              )
               .join(", ")
           }}</span
         ></span

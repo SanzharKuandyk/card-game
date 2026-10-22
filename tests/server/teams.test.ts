@@ -7,6 +7,77 @@ import { io } from "socket.io-client";
 import { createServer } from "../../src/server/main.ts";
 import type { Command, Envelope } from "../../src/shared/model.ts";
 
+test("disbanding a lobby team persists without removing its students", async () => {
+  const dataDir = await mkdtemp(join(tmpdir(), "cards-disband-"));
+  const server = await createServer({ dataDir, automaticTicks: false });
+  const { session } = await server.app.create();
+  const a = await server.app.join(session.code, "Alex");
+  const b = await server.app.join(session.code, "Sam");
+  const envelope = (command: Command): Envelope => ({
+    requestId: crypto.randomUUID(),
+    sessionId: session.id,
+    encounterId: null,
+    command,
+  });
+  server.app.connect("host", session.id, { role: "host" });
+  server.app.connect("a", session.id, { role: "player", memberId: a.memberId });
+  server.app.connect("b", session.id, { role: "player", memberId: b.memberId });
+  try {
+    for (const [connection, command] of [
+      ["a", { kind: "team", character: "guardian", name: "Red" }],
+      ["b", { kind: "team", character: "rogue", crewId: "team-1" }],
+    ] as const) {
+      const receipt = await server.app.command(connection, envelope(command));
+      assert(receipt.accepted, receipt.message);
+    }
+    const removal = envelope({
+      kind: "host",
+      action: "remove-team",
+      crewId: "team-1",
+    });
+    const receipt = await server.app.command("host", removal);
+    assert(receipt.accepted, receipt.message);
+    assert.deepEqual(await server.app.command("host", removal), receipt);
+    assert.equal(server.app.view(session.id, { role: "host" }).crews.length, 0);
+    assert(await server.app.authenticate(a.token));
+    assert(await server.app.authenticate(b.token));
+    assert(server.app.controller("a"));
+  } finally {
+    await server.http.close();
+  }
+  const restored = await createServer({ dataDir, automaticTicks: false });
+  try {
+    const v = restored.app.view(session.id, { role: "host" });
+    assert.equal(v.crews.length, 0);
+    assert.equal(v.unassigned.length, 2);
+    assert.equal(
+      restored.app.sessions.get(session.id)!.members[a.memberId]!.removed,
+      false,
+    );
+    restored.app.connect("a", session.id, {
+      role: "player",
+      memberId: a.memberId,
+    });
+    const stale = await restored.app.command(
+      "a",
+      envelope({ kind: "team", character: "guardian", crewId: "team-1" }),
+    );
+    assert.equal(stale.accepted, false);
+    const joined = await restored.app.command(
+      "a",
+      envelope({ kind: "team", character: "guardian", name: "Fresh" }),
+    );
+    assert(joined.accepted, joined.message);
+    assert.equal(
+      restored.app.sessions.get(session.id)!.members[a.memberId]!.crewId,
+      "team-2",
+    );
+  } finally {
+    await restored.http.close();
+    await rm(dataDir, { recursive: true, force: true });
+  }
+});
+
 test("host removal ejects every tab, revokes reconnect, and queued moves survive restart", async () => {
   const dataDir = await mkdtemp(join(tmpdir(), "cards-teams-"));
   const server = await createServer({ dataDir, automaticTicks: false });

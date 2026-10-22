@@ -87,6 +87,7 @@ export const commandSchema = z.discriminatedUnion("kind", [
       "skip",
       "end",
       "remove",
+      "remove-team",
       "move",
     ]),
     gate: z.union([z.literal(8), z.literal(15)]).optional(),

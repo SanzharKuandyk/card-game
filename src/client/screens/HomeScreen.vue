@@ -12,7 +12,6 @@ const creating = ref(false);
 const hosting = computed(
   () => showHost.value || (!route.params.code && canHost.value),
 );
-const sessions = ref<{ id: string; code: string; status: string }[]>([]);
 async function post(path: string, body: object) {
   const r = await fetch(path, {
     method: "POST",
@@ -37,6 +36,7 @@ async function join() {
 async function create() {
   if (creating.value) return;
   creating.value = true;
+  error.value = "";
   try {
     const result = await post("/api/session", {});
     await router.push(`/host/${result.id}`);
@@ -44,14 +44,6 @@ async function create() {
     error.value = e instanceof Error ? e.message : "Cannot start";
   } finally {
     creating.value = false;
-  }
-}
-async function recover(id: string) {
-  try {
-    await post("/api/recover", { sessionId: id });
-    await router.push(`/host/${id}`);
-  } catch (e) {
-    error.value = e instanceof Error ? e.message : "Cannot recover";
   }
 }
 onMounted(async () => {
@@ -62,10 +54,12 @@ onMounted(async () => {
     history.replaceState(null, "", location.pathname);
     showHost.value = true;
   }
-  const r = await fetch("/api/hosting");
-  const access = await r.json();
-  canHost.value = access.canHost;
-  if (access.session) sessions.value = [access.session];
+  try {
+    const r = await fetch("/api/hosting");
+    if (r.ok) canHost.value = (await r.json()).canHost;
+  } catch {
+    // Hosting a fresh game does not depend on discovering an existing one.
+  }
 });
 </script>
 <template>
@@ -90,13 +84,12 @@ onMounted(async () => {
       ><button class="primary" type="submit">Join</button>
     </form>
     <p v-if="error" role="alert" class="error">{{ error }}</p>
-    <button v-if="!hosting" class="quiet" @click="showHost = true">Host</button>
-    <section v-if="hosting" class="host-entry">
-      <button class="primary" :disabled="creating" @click="create">
-        New game</button
-      ><button v-for="s in sessions" :key="s.id" @click="recover(s.id)">
-        Resume {{ s.code }}
-      </button>
-    </section>
+    <button
+      :class="hosting ? 'primary' : 'quiet'"
+      :disabled="creating"
+      @click="create"
+    >
+      Host
+    </button>
   </main>
 </template>

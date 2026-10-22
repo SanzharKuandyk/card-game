@@ -28,7 +28,7 @@ async function host(browser: Browser) {
   const page = await context.newPage();
   await page.goto(`${base}/#host`);
   await expect(page.getByLabel("Host code", { exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "New game", exact: true }).click();
+  await page.getByRole("button", { name: "Host", exact: true }).click();
   await expect(page).toHaveURL(/\/host\/[\da-f-]+$/);
   await expect(
     page.getByRole("heading", { name: "Host", exact: true }),
@@ -108,6 +108,74 @@ async function playAvailable(page: Page, context: BrowserContext, id: string) {
   }
   return false;
 }
+
+test("one-click hosting and fresh restart without a resume chooser", async ({
+  browser,
+}, testInfo) => {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+  });
+  const page = await context.newPage();
+  await page.goto(base);
+  await page.getByRole("button", { name: "Host", exact: true }).click();
+  await expect(page).toHaveURL(/\/host\/[\da-f-]+$/);
+  await expect(
+    page.getByRole("heading", { name: "Host", exact: true }),
+  ).toBeVisible();
+  const originalId = page.url().split("/host/")[1]!;
+  const original = server.app.sessions.get(originalId)!;
+  const p = await player(browser, original.code, "Player");
+  await page.getByRole("button", { name: "Start", exact: true }).click();
+  await expect
+    .poll(() => server.app.sessions.get(originalId)?.status)
+    .toBe("running");
+
+  await page.getByRole("button", { name: "New game", exact: true }).click();
+  await expect(page).not.toHaveURL(new RegExp(`/host/${originalId}$`));
+  await expect(page.locator(".invite-panel img")).toBeVisible();
+  const freshId = page.url().split("/host/")[1]!;
+  const fresh = server.app.sessions.get(freshId)!;
+  expect(fresh.status).toBe("lobby");
+  expect(fresh.code).not.toBe(original.code);
+  expect(Object.keys(fresh.members)).toHaveLength(0);
+  expect(server.app.sessions.get(originalId)?.status).toBe("running");
+  expect(
+    Object.keys(server.app.sessions.get(originalId)!.members),
+  ).toHaveLength(1);
+  await expect(page.getByLabel("Player name", { exact: true })).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Call boss", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Skip", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Resume", exact: true }),
+  ).toHaveCount(0);
+  await page.screenshot({
+    path: testInfo.outputPath("teacher-host.png"),
+    fullPage: true,
+  });
+
+  await page.goto(`${base}/#host`);
+  await expect(page.getByRole("button", { name: /^Resume/ })).toHaveCount(0);
+  await expect(page.locator("input")).toHaveCount(0);
+  await page.screenshot({
+    path: testInfo.outputPath("teacher-entry.png"),
+    fullPage: true,
+  });
+  await page.getByRole("button", { name: "Host", exact: true }).click();
+  await expect(page).toHaveURL(/\/host\/[\da-f-]+$/);
+  await expect(page).not.toHaveURL(new RegExp(`/host/${freshId}$`));
+  const nextId = page.url().split("/host/")[1]!;
+  expect(Object.keys(server.app.sessions.get(nextId)!.members)).toHaveLength(0);
+  await expect(page.locator(".invite-panel img")).toBeVisible();
+  await page.reload();
+  await expect(page.locator(".invite-panel img")).toBeVisible();
+  await expect(page).toHaveURL(new RegExp(`/host/${nextId}$`));
+  await p.context.close();
+  await context.close();
+});
 
 test("phone fallback, opening guidance and foreground recovery in WebKit", async ({
   browser,
@@ -546,7 +614,7 @@ test("four-player fight, rotation, reward and reconnect", async ({
     h.page.getByRole("heading", { name: "Host", exact: true }),
   ).toBeVisible();
   await expect(h.page.getByLabel("Host code", { exact: true })).toHaveCount(0);
-  await h.page.getByRole("button", { name: "New game", exact: true }).click();
+  await h.page.getByRole("button", { name: "Host", exact: true }).click();
   await expect(h.page).toHaveURL(/\/host\/[\da-f-]+$/);
   await expect(h.page).not.toHaveURL(new RegExp(`/host/${h.id}$`));
   await expect(
@@ -836,14 +904,16 @@ test("projector keeps two team plays and impacts in their own tiles", async ({
   await h.context.close();
 });
 
-test("players change teams, host moves and removes players without ghost actors", async ({
+test("lobby team switching, automatic empty cleanup and teacher team removal", async ({
   browser,
-}) => {
+}, testInfo) => {
   const h = await host(browser);
   const alex = await player(browser, h.code, "Alex");
   const sam = await player(browser, h.code, "Sam");
-  const original = (await view(alex.context, h.id)).hero;
-  await alex.page.getByRole("button", { name: "Team", exact: true }).click();
+  await expect(h.page.locator(".crew-card")).toHaveCount(2);
+  await alex.page
+    .getByRole("button", { name: "Change team", exact: true })
+    .click();
   const dialog = alex.page.getByRole("dialog", { name: "Change team" });
   await dialog.getByLabel("Choose team").selectOption("team-2");
   await dialog
@@ -853,12 +923,79 @@ test("players change teams, host moves and removes players without ghost actors"
     .poll(async () => (await view(alex.context, h.id)).crewId)
     .toBe("team-2");
   await dialog.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(h.page.locator(".crew-card")).toHaveCount(1);
+  await expect(h.page.getByLabel("Team for Alex")).toHaveValue("team-2");
+  await expect(h.page.locator(".crew-card")).not.toContainText("Alex team");
+  await h.page.screenshot({
+    path: testInfo.outputPath("lobby-team-controls.png"),
+    fullPage: true,
+  });
   await h.page
-    .getByLabel("Team for Alex", { exact: true })
-    .selectOption("team-1");
+    .getByRole("button", { name: "Remove team Sam team", exact: true })
+    .click();
+  await expect(h.page.locator(".crew-card")).toHaveCount(0);
+  for (const p of [alex, sam]) {
+    await expect(
+      p.page.getByRole("heading", { name: "Team", exact: true }),
+    ).toBeVisible();
+    await expect(
+      p.page.getByRole("heading", { name: "Removed from game" }),
+    ).toHaveCount(0);
+  }
+  await expect(
+    h.page.getByRole("region", { name: "Unassigned players" }),
+  ).toContainText("Alex");
+  await h.page.getByRole("button", { name: "Remove Sam", exact: true }).click();
+  await expect(
+    sam.page.getByRole("heading", { name: "Removed from game" }),
+  ).toBeVisible();
+  await sam.page.reload();
+  await expect(sam.page.locator(".loading")).toContainText("sign-in again");
+  expect(
+    (await sam.context.request.get(`${base}/api/session/${h.id}`)).status(),
+  ).toBe(401);
+  await alex.page
+    .getByRole("button", { name: "Join team", exact: true })
+    .click();
+  await expect(
+    alex.page.getByText("Waiting to start", { exact: true }),
+  ).toBeVisible();
+  await expect(h.page.locator(".crew-card")).toHaveCount(1);
+  await h.page
+    .getByRole("button", { name: "Remove Alex", exact: true })
+    .click();
+  await expect(h.page.locator(".crew-card")).toHaveCount(0);
+  await expect(
+    h.page.getByRole("button", { name: "Start", exact: true }),
+  ).toBeDisabled();
+  await alex.context.close();
+  await sam.context.close();
+  await h.context.close();
+});
+
+test("players change teams, host moves and removes players without ghost actors", async ({
+  browser,
+}) => {
+  const h = await host(browser);
+  const alex = await player(browser, h.code, "Alex");
+  const sam = await player(browser, h.code, "Sam");
+  const original = (await view(alex.context, h.id)).hero;
+  await alex.page
+    .getByRole("button", { name: "Change team", exact: true })
+    .click();
+  const dialog = alex.page.getByRole("dialog", { name: "Change team" });
+  await dialog.getByLabel("Choose team").selectOption("team-2");
+  await dialog
+    .getByRole("button", { name: "Change team", exact: true })
+    .click();
   await expect
     .poll(async () => (await view(alex.context, h.id)).crewId)
-    .toBe("team-1");
+    .toBe("team-2");
+  await dialog.getByRole("button", { name: "Close", exact: true }).click();
+  await h.page.getByLabel("Team for Alex", { exact: true }).selectOption("");
+  await expect
+    .poll(async () => (await view(alex.context, h.id)).crewId)
+    .toBe("team-3");
   expect((await view(alex.context, h.id)).hero).toEqual(original);
   await h.page.getByRole("button", { name: "Start", exact: true }).click();
   for (const p of [alex, sam])
@@ -873,7 +1010,7 @@ test("players change teams, host moves and removes players without ghost actors"
     .getByRole("button", { name: "Change team", exact: true })
     .click();
   await expect(dialog).toContainText("After this room: Sam team");
-  expect((await view(alex.context, h.id)).crewId).toBe("team-1");
+  expect((await view(alex.context, h.id)).crewId).toBe("team-3");
   await dialog
     .getByRole("button", { name: "Cancel change", exact: true })
     .click();
@@ -896,8 +1033,8 @@ test("players change teams, host moves and removes players without ghost actors"
   await expect(projector.locator(".board-member")).toHaveCount(2);
   // Finish Red's room while Blue remains in its fight: the newcomer waits safely.
   const s = server.app.sessions.get(h.id)!;
-  s.crews["team-1"]!.progress.phase = "map";
-  s.crews["team-1"]!.progress.combat = null;
+  s.crews["team-3"]!.progress.phase = "map";
+  s.crews["team-3"]!.progress.combat = null;
   await server.app.advance(1);
   await expect(
     alex.page.getByText(

@@ -5,11 +5,37 @@ export interface TeamChoice {
   name?: string;
 }
 
+export function activeTeam(s: Session, crewId: string): boolean {
+  return !!s.crews[crewId]?.members.some(
+    (id) => s.members[id] && !s.members[id]!.removed,
+  );
+}
+
+export function removeTeam(s: Session, crewId: string): void {
+  if (s.status !== "lobby")
+    throw new Error("Teams can only be removed in the lobby");
+  const crew = s.crews[crewId];
+  if (!crew || !activeTeam(s, crewId)) throw new Error("Team not found");
+  for (const m of Object.values(s.members)) {
+    if (m.crewId === crewId && !m.removed) {
+      m.crewId = null;
+      delete m.pendingTeam;
+    }
+    if (m.pendingTeam?.crewId === crewId) delete m.pendingTeam;
+  }
+  // Keep the record so stable team IDs and saved historical references survive.
+  crew.members = [];
+  crew.progress.votes = {};
+  crew.progress.choices = {};
+  s.notice = `${crew.name} removed`;
+}
+
 function checkDestination(s: Session, m: Member, choice: TeamChoice): void {
   if (s.status === "finished") throw new Error("Session has ended");
   if (choice.crewId) {
     const crew = s.crews[choice.crewId];
-    if (!crew) throw new Error("Team not found");
+    if (!crew || !activeTeam(s, choice.crewId))
+      throw new Error("Team not found");
     const reserved = Object.values(s.members).filter(
       (other) =>
         !other.removed &&
@@ -94,7 +120,12 @@ export function changeTeam(s: Session, m: Member, choice: TeamChoice): string {
 export function applyTeamChanges(s: Session): void {
   if (s.status === "finished") return;
   for (const m of Object.values(s.members)) {
-    if (m.removed || !m.pendingTeam || !safeToMove(s, m)) continue;
+    if (m.removed || !m.pendingTeam) continue;
+    if (m.pendingTeam.crewId && !activeTeam(s, m.pendingTeam.crewId)) {
+      delete m.pendingTeam;
+      continue;
+    }
+    if (!safeToMove(s, m)) continue;
     // Capacity is reserved when the request is saved, including late joins.
     checkDestination(s, m, m.pendingTeam);
     move(s, m, m.pendingTeam);
